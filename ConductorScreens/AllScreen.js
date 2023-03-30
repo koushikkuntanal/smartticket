@@ -72,7 +72,7 @@ alert(error);
 })
 }
     return(
-        <View style={styles.body}>
+        <View style={styles.body}>  
           
          <Text>{Type}</Text>
           

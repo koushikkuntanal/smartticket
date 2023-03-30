@@ -29,7 +29,8 @@ const EditProfile =({route}) =>{
 
     const [image,setImage]  = useState('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph');
     const [profilepic,setProfilePic] = useState(false);
-    const [hasPermission,setHasPermission] = useState(); 
+    const [hasPermission,setHasPermission] = useState();
+    const [loading,setLoading] = useState(); 
     let numreg = /^[0-9]+$/;
     
     
@@ -45,7 +46,7 @@ const EditProfile =({route}) =>{
         setMobile(data.Umobile);
         setDob(data.UDoB);
         setAddress1(data.UAddr1);
-        setAddress2(data.UAddr2);
+        setAddress2(data.UAddr2);  
         setCity(data.Ucity);
         setPin((data.UPinCode).toString());
         setAadhar(data.Uaadhar);
@@ -118,6 +119,7 @@ const EditProfile =({route}) =>{
           
 
       const onPressSave = async()=>{
+        setLoading(true);
        if(image == '')
        {setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph')}
        if(numreg.test(name) === false && name.length!=0 && gender != 'Unknown' && address1.length !=0 && address2.length !=0 &&(city.length !=0 && (numreg.test(city)==false)) && pin.length !=0 && pin.length == 6 && aadhar.length !=0 && aadhar.length == 12) {
@@ -189,6 +191,7 @@ const EditProfile =({route}) =>{
    {
      Alert.alert('Warning','Enter valid Aadhar number');
    }
+   setLoading(false);
     }
       
       
@@ -322,13 +325,16 @@ const EditProfile =({route}) =>{
             </View>
              
             </View>
+            
            </View>
+           {loading ?  <Image  source={require('../assets/loading.gif')} /> : null}
            <Btn
             textColor="white"
             bgColor={btnColor}
             btnLabel="Save"
             Press={onPressSave}
             />
+            
         </View>
         </ScrollView>       
     );

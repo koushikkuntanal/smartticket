@@ -30,6 +30,7 @@ const [profilepic,setProfilePic] = useState(false);
 const today = new Date();
 const [date, setDate] = useState(new Date());
 const [showDatePicker, setShowDatePicker] = useState(false);
+const [loading,setLoading] = useState();
 
 const onChange = (event, selectedDate) => {
   const currentDate = selectedDate;
@@ -57,7 +58,9 @@ const showDatepicker = () => {
 };
 
     const onPressHandler = () => {
+      setLoading(true);
       navigation.navigate('Edit Profile',{data:Data});
+      setLoading(false);
     }
     
   
@@ -148,7 +151,7 @@ const removeProfile = ()=>{
   ToastAndroid.show('Profile pic removed',ToastAndroid.LONG)
 }
     
-
+ 
 
     return ( 
       <ScrollView style={{backgroundColor:'#F9E5F3' ,flex:1}}>
@@ -317,9 +320,9 @@ const removeProfile = ()=>{
             
             </View>
              
-            </View>
+            </View>  
            </View>
-           
+           {loading ?  <Image  source={require('../assets/loading.gif')} /> : null}
            <Btn
             textColor="white"
             bgColor={btnColor}

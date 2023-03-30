@@ -2,6 +2,7 @@
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Pressable,Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 
 
@@ -12,6 +13,10 @@ export default function Screen_A({route}){
 
     const onPressHandler = () => {
        navigation.navigate('Login');
+    }
+
+    const  History = () => {
+      navigation.navigate('Screen_C');
     }
     return(
       <View style={styles.body}>
@@ -54,15 +59,25 @@ export default function Screen_A({route}){
                 />
              </View> 
              
-            </PagerView>  
+            </PagerView> 
+
+             
             
           </View>
           
           
+         
+          
           </View>
        
-        
-         <Text style={styles.text}>
+          <View style={styles.parent1}>
+            <TouchableOpacity onPress={History}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-Profile.png')}
+            /><Text style={styles.text}>History</Text>
+           </TouchableOpacity>
+          </View>
+         <Text style={styles.text1}>
           Screen A
         </Text>
         <Pressable
@@ -85,32 +100,51 @@ export default function Screen_A({route}){
 
     body: {
       flex:1,
-      justifyContent: 'center',
+      //justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#ffffff',
     },
   
     text: {
-      fontSize: 20,
-      //fontWeight:'bold',
-      margin: 10,
+      fontSize: 12,
+      fontWeight:'bold',
+      marginTop:5,
+      alignSelf:'center'
     },
 
+    text1 : {
+      fontSize:20,
+      alignSelf:'center',
+      marginTop:15
+    },
     Container: {
-      //backgroundColor: 'red',
+      backgroundColor: '#ffffff',
       //flex:1,
       paddingRight:1,
-      marginBottom:355,
+      //marginBottom:355,
+      marginTop:10,
       width:360,
-      height:180,
+      height:190,
       
     },
+
+    
     parent:{
       backgroundColor:'#FFFFFF',
       borderWidth:0.2,
       flex:1,
       borderRadius:12,
      
+    },
+
+    parent1:{
+      backgroundColor:'#ffffff',
+      marginTop:10,
+      width:357,
+      height:75,
+      borderRadius:9,
+      borderWidth:1
+      
     },
 
     pager:{
@@ -126,6 +160,12 @@ export default function Screen_A({route}){
       //fontWeight:'bold'
     },
     
-    
+    icon:{
+      aspectRatio:1,
+      width:50,
+      height:52,
+      alignSelf:'center',
+      marginTop:2.1
+    }
   });
   
