@@ -158,8 +158,8 @@ const removeProfile = ()=>{
              <StatusBar hidden={false} style="light" backgroundColor='#f9e5f3'  />
             <Text style={styles.head}>Profile</Text>
             
-             { (Data.Uphoto == '')?  
-            <View>
+             {(Data.Uphoto == '')?  
+            <View style={{borderWidth:1,borderRadius:60}}>
            <Image
               style={styles.image}
               resizeMode='cover'
@@ -171,7 +171,7 @@ const removeProfile = ()=>{
            </View>
        :
             
-            Data.Uphoto && <View><Image resizeMode='contain' source={{uri:Data.Uphoto}} style={styles.image}/>
+            Data.Uphoto && <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{uri:Data.Uphoto}} style={styles.image}/>
              
             </View>
 

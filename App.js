@@ -53,6 +53,9 @@ import TicketScreen from './ConductorScreens/TicketScreen';
 import ChangePasswordConductor from './ConductorScreens/ChangePasswordConductor';
 import { ProfileApi } from './Screens/Api';
 import EditProfile from './Screens/EditProfile';
+import SetRouteAsset from './ConductorScreens/SetRouteAsset';
+
+
 
 
 
@@ -585,6 +588,7 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Check' component={ValidateTicketChecker}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='ChangePasswordConductor' component={ChangePasswordConductor}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Edit Profile' component={EditProfile}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Route Asset' component={SetRouteAsset}/>
      
      
      </Stack.Navigator>
