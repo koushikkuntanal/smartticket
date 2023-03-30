@@ -201,13 +201,9 @@ const EditProfile =({route}) =>{
             {console.log('link of img to be sent',image)}
             {console.log('data in edit',data)}
              {  
-           
-       
-            
-            image && <View><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
+            image && <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
              <View style={{backgroundColor:'pink',position:'absolute',right:1,bottom:1,padding:11,borderRadius:100}}><Ionicons name='camera' size={28} color="black" onPress={openDialog}/></View>
             </View>
-
             }
             <View style={styles.parent}>
            <View elevation={5} style={{backgroundColor:background,padding:35,borderRadius:15,

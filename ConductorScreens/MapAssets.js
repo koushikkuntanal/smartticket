@@ -3,14 +3,15 @@ import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity}
 import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
+import { useNavigation } from "@react-navigation/native";
 
 const MapAssets = () =>{
   const height = 800;
   const width = 500;
     const maskRowHeight = 30;
     const maskColWidth = (width - 200) / 2;
-
-    const [hasPermission, setHasPermission] = useState(null);
+    const navigation = useNavigation();
+     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
   
     useEffect(() => {
@@ -24,16 +25,16 @@ const MapAssets = () =>{
   
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
-      //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-      Alert.alert('Alert!', `Are you sure you want to proceed to this website ${data}?`, [
+      console.log(data)
+      Alert.alert('Alert!', `Proceed with this asset ${data}?`, [
         {
           text: 'Cancel',
           onPress: () => null,
           style: 'cancel',
         },
         {
-          text: 'Go to link',
-          onPress:() => Linking.openURL(data)
+          text: 'Proceed',
+          onPress:() =>navigation.navigate('Route Asset',{data:data}),
           
         },
         
