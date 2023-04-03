@@ -7,17 +7,15 @@ import PagerView from 'react-native-pager-view';
 
 
 
-export default function Screen_A({route}){
+export default function Screen_A(){
   const navigation = useNavigation();
    // const data= route.params.userData;
 
     const onPressHandler = () => {
        navigation.navigate('Login');
     }
-
-    const  History = () => {
-      navigation.navigate('Screen_C');
-    }
+    
+    
     return(
       <View style={styles.body}>
        {/* {console.log('data in user dashoard',data)} */}
@@ -71,11 +69,11 @@ export default function Screen_A({route}){
           </View>
        
           <View style={styles.parent1}>
-            <TouchableOpacity onPress={History}>
+            <TouchableOpacity onPress={()=>null}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Profile.png')}
             /><Text style={styles.text}>History</Text>
-           </TouchableOpacity>
+           </TouchableOpacity>                                   
           </View>
          <Text style={styles.text1}>
           Screen A

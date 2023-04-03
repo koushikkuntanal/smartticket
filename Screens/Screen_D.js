@@ -14,7 +14,7 @@ const Screen_D = () =>{
   let distance;
   let fare,date,time;
   const perKmFees=5;                          //Assume per km fees is 5 rs
-  let orderId = 'Kou71',customerId = 'kou39';
+  let orderId = 'Kou72',customerId = 'kou40';
   const [email,setEmail] = useState();
   const [cphone,setCphone] = useState('');
   const [upi,setUpi] = useState('');

@@ -17,7 +17,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useEffect,useState } from 'react';
-import { BackHandler,Alert } from 'react-native';
+import { BackHandler,Alert,Image } from 'react-native';
 
 import Constants from 'expo-constants';
 import { DrawerItem } from '@react-navigation/drawer';
@@ -38,7 +38,7 @@ import Dfaq from './Screens/Dfaq';
 import PaymentScreen from './Screens/PaymentScreen';
 import Success from './Screens/Success';
 import LekpayLogin from './Screens/Login';
-import { darkPink } from './components/Constants';
+import { btnColor, darkPink } from './components/Constants';
 import AllScreens from './ConductorScreens/AllScreen';
 import CashHandler from './ConductorScreens/CashHandler';
 import CheckTickets from './ConductorScreens/CheckTickets';
@@ -54,6 +54,8 @@ import ChangePasswordConductor from './ConductorScreens/ChangePasswordConductor'
 import { ProfileApi } from './Screens/Api';
 import EditProfile from './Screens/EditProfile';
 import SetRouteAsset from './ConductorScreens/SetRouteAsset';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Btn from './components/Btn';
 
 
 
@@ -173,6 +175,65 @@ function TabNavigator({route}) {
 const data = route.params.userData;
  StackNavigator(data);
 console.log('tab data',data);
+// if(data.AuthID == 'U2'){
+//   alert('gich gili gili');
+// }
+ 
+const today = new Date();
+  useEffect(()=>{
+    (async()=>{
+      await ProfileApi({
+        "flag":data.Flag,
+        "id":data.AuthID
+      }).then(res=>{console.log('dob notification data',res.data);
+      console.log('name of user',res.data.Uname);
+      let dob=today.getFullYear() + '-'+ (today.getMonth()+1) + '-' + today.getDate();
+      var  dd =today.getDate();
+      var mm =today.getMonth()+1;
+      var yyyy = today.getFullYear();
+  
+      if(dd<10){
+        dd='0'+dd;
+      }
+      if(mm<10){
+        mm='0'+mm;
+      }
+      dob = yyyy+'-'+mm+'-'+dd;
+      console.log("current date",dob);
+      console.log('birthday of user ',res.data.UDoB )
+      if(dob == res.data.UDoB){
+      
+        Alert.alert(
+          'Happy Birthday!', 
+          'Wishing you a very happy birthday!', 
+           
+          [
+            
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          {
+             cancelable: false,
+            //  customView: (
+            //   <Image
+            //     source={require('./assets/birthday-image.png')}
+            //     style={{ width: 200, height: 200 }}
+            //   />
+            // ),
+            
+             }
+        );
+            
+        // const customAlert = () => (
+        //   <Image style={{width:50}}source={require('./assets/birthday-image.png')} />
+        // );
+        
+        // Alert.alert('', '', [], { customView: customAlert });
+      }
+
+     
+    })
+    })()
+  },[]);
   return (
     <Tab.Navigator
    
@@ -183,6 +244,7 @@ console.log('tab data',data);
         let iconName;
 
         if (route.name === 'Screen_A') {
+
           iconName =  'heart'
             size = focused ? 25 : 22;
            color = focused 
