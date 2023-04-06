@@ -5,7 +5,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { useNavigation } from "@react-navigation/native";
 
-const MapAssets = () =>{
+const MapAssets = ({route}) =>{
+  const id= route.params.id;
   const height = 800;
   const width = 500;
     const maskRowHeight = 30;
@@ -34,7 +35,7 @@ const MapAssets = () =>{
         },
         {
           text: 'Proceed',
-          onPress:() =>navigation.navigate('Route Asset',{data:data}),
+          onPress:() =>navigation.navigate('Route Asset',{data:data,id:id}),
           
         },
         
@@ -50,7 +51,7 @@ const MapAssets = () =>{
     }
   return (
     <View style={styles.body}>
-      
+      {console.log('id of emp',id)}
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}

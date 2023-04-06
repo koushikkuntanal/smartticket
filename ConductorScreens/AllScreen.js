@@ -28,7 +28,7 @@ const AllScreens =({route}) =>{
     }
     
 const ScannerAsset = () =>{
-    navigation.navigate('Capture Asset');
+    navigation.navigate('Capture Asset',{id:id});
 }
 const checkTickets = () =>{
     navigation.navigate('Check Tickets');
@@ -78,7 +78,9 @@ alert(error);
           
             <StatusBar hidden={false} style="dark" backgroundColor='#F9E5F3'  />
            
-           { (Type == 'Conductor') ?   <View style={styles.card}> 
+           { (Type == 'Conductor') ? 
+             <View>
+              <View style={styles.card}> 
             
             <TouchableOpacity onPress={Profile}>
             <Image style={styles.icon} resizeMode='contain'
@@ -86,33 +88,38 @@ alert(error);
             /><Text style={styles.text}>Profile</Text>
            </TouchableOpacity>
 
-           
-
            <TouchableOpacity onPress={ScannerAsset}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Asset.png')}
             />
             <Text style={styles.text}>Asset</Text>
            </TouchableOpacity>
+
            <TouchableOpacity onPress={checkTickets}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-CheckTicket.png')}
             />
             <Text style={styles.text}>Validate</Text>
            </TouchableOpacity>
+           
+           
 
-           <TouchableOpacity onPress={issueTickets}>
+            </View> 
+            <View style={styles.card}>
+            <TouchableOpacity onPress={issueTickets}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Ticket.png')}
             />
             <Text style={styles.text}>Tickets</Text>
            </TouchableOpacity>
+
            <TouchableOpacity onPress={cashHandler}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Cash.png')}
             />
             <Text style={styles.text}>Cash</Text>
            </TouchableOpacity>
+
            <TouchableOpacity onPress={() => navigation.navigate('ChangePasswordConductor',{
              ID : id,
              flag: Flag
@@ -120,9 +127,11 @@ alert(error);
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-ResetPwd.png')}
             />
+          <Text style={styles.text}>Change</Text>
           <Text style={styles.text}>Password</Text>
            </TouchableOpacity>
-            </View> 
+            </View>
+             </View>
             
           :  <View style={styles.card}>
           <TouchableOpacity onPress={()=>navigation.navigate('Map Asset')}>
@@ -209,8 +218,8 @@ const styles = StyleSheet.create({
       },
       icon:{
         aspectRatio:1,
-        width:50,
-        height:50,
+        width:60,
+        height:60,
         alignSelf:'center'
       },
       text:{

@@ -199,6 +199,16 @@ const removeProfile = ()=>{
            onChangeText={(value)=>setName(value)}
             />
             </View>
+            <View style={styles.container}>
+            <Text style={styles.text}>Email</Text>
+            <Field
+             width="100%"
+             value={`: ${(Data.Uemail)}`}
+             editable={false}
+             placeholder="Email" 
+           
+            />
+            </View>
             <View style={[styles.container,{height:40},]}>
             <Text style={styles.text}>Gender</Text>
             { <Picker

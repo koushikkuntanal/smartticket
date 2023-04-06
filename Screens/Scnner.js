@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Alert,Button} from "react-native";
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
+import { useNavigation } from "@react-navigation/native";
 
-const Scnner = () =>{
+const Scnner = ({route}) =>{
+  const forEmaildata = route.params.data;
   const height = 800;
   const width = 500;
     const maskRowHeight = 30;
@@ -12,6 +14,8 @@ const Scnner = () =>{
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+
+    const navigation = useNavigation();
 
     const falsescanner = () => {
        setScanned(false);
@@ -35,15 +39,15 @@ const Scnner = () =>{
       setScanned(true);
       console.log(scanned);
       //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-      Alert.alert('Alert!', `Are you sure you want to proceed to this website ${data}?`, [
+      Alert.alert('Alert!', `Are you sure you want to proceed to this asset ${data}?`, [
         {
           text: 'Cancel',
           onPress: () => null,
           style: 'cancel',
         },
         {
-          text: 'Go to link',
-          onPress:() => Linking.openURL(data)
+          text: 'Proceed',
+          onPress:() => navigation.navigate('Screen_D',{data:data,emailData:forEmaildata})
           
         },
         

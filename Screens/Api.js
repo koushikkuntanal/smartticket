@@ -198,3 +198,50 @@ export const EditprofileApi = async (data) =>{
   });
   return res;
 }
+
+export const getRouteApi = async ()=>{        //conductor gets route
+  const res = await axios({
+    method:'get',
+    url:'https://amsweets.in/getRoute/',
+    
+  });
+  return res;
+}
+
+export const setRouteApi = async (data) =>{   //conductor sets route
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/setRoute/',
+    data:data
+  });
+  return res;
+}
+
+export const getAssetIdApiForEmp = async (data) =>{   //conductor gets AssetID
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getRoute/astid',
+    data:data
+  });
+  return res;
+}
+
+
+
+export const getRouteIdApi = async (data) =>{   //user gets route Id
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getStage/routeID',
+    data:data
+  });
+  return res;
+}
+
+export const getStagesApi = async (data) =>{   //user gets stages Id
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getStage/',
+    data:data
+  });
+  return res;
+}

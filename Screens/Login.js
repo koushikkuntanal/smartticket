@@ -180,7 +180,7 @@ const LekpayLogin = () =>{
           "Mobile":mNumber,
           "Password":password
         })
-        .then(res=>{console.log(res.data)
+        .then(res=>{console.log('data after login',res.data)
           if(res.data.message == "Wrong Phone number/Password!!"){
             alert('Wrong Phone number/Password!!');
           }

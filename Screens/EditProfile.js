@@ -26,13 +26,18 @@ const EditProfile =({route}) =>{
     const [city,setCity] = useState('');
     const [pin,setPin] = useState('');
     const [aadhar,setAadhar] = useState('');
-
+    const [email,setEmail] = useState('');
     const [image,setImage]  = useState('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph');
     const [profilepic,setProfilePic] = useState(false);
     const [hasPermission,setHasPermission] = useState();
     const [loading,setLoading] = useState(); 
     let numreg = /^[0-9]+$/;
     
+
+    const validateEmail = (email) => {
+      const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+      return regex.test(email);
+    };
     
     useEffect(()=>{
   
@@ -50,6 +55,7 @@ const EditProfile =({route}) =>{
         setCity(data.Ucity);
         setPin((data.UPinCode).toString());
         setAadhar(data.Uaadhar);
+        setEmail(data.Uemail);
         if(data.Uphoto != ''){setImage(data.Uphoto);}
         else{setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sphyyy')}
       
@@ -122,7 +128,7 @@ const EditProfile =({route}) =>{
         setLoading(true);
        if(image == '')
        {setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph')}
-       if(numreg.test(name) === false && name.length!=0 && gender != 'Unknown' && address1.length !=0 && address2.length !=0 &&(city.length !=0 && (numreg.test(city)==false)) && pin.length !=0 && pin.length == 6 && aadhar.length !=0 && aadhar.length == 12) {
+       if(numreg.test(name) === false && name.length!=0 && gender != 'Unknown' && address1.length !=0 && address2.length !=0 &&(city.length !=0 && (numreg.test(city)==false)) && pin.length !=0 && pin.length == 6 && aadhar.length !=0 && aadhar.length == 12 && (validateEmail(email)) == true) {
        await EditprofileApi({
             "flag":data.Flag,
             "Id":data.UserId,
@@ -133,7 +139,8 @@ const EditProfile =({route}) =>{
             "Pin":pin,
             "Address1":address1,
             "Address2":address2,
-            "Img":image
+            "Img":image,
+            "Email":email
         })
         .then(res=>{console.log(res.data.message)
           if(res.data.message == 'Edit Success'){
@@ -191,6 +198,12 @@ const EditProfile =({route}) =>{
    {
      Alert.alert('Warning','Enter valid Aadhar number');
    }
+   else if(email.length == 0){
+    alert('Please enter email!')
+   }
+   else if((validateEmail(email))== false){
+    alert('Please enter valid email');
+   }
    setLoading(false);
     }
       
@@ -216,6 +229,16 @@ const EditProfile =({route}) =>{
              editable={true}
              placeholder="Name" 
            onChangeText={(value)=>setName(value)}
+            />
+            </View>
+            <View style={styles.container}>
+            <Text style={styles.text}>Email</Text>
+            <Field
+             width="100%"
+             value={`${(email)}`}
+             editable={true}
+             placeholder="Email" 
+           onChangeText={(value)=>setEmail(value)}
             />
             </View>
             <View style={[styles.container,{height:40},]}>

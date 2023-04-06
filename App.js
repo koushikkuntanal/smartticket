@@ -174,7 +174,7 @@ function DrawerNavigator() {
 function TabNavigator({route}) {
 const data = route.params.userData;
  StackNavigator(data);
-console.log('tab data',data);
+// console.log('tab data',data);
 // if(data.AuthID == 'U2'){
 //   alert('gich gili gili');
 // }
@@ -200,7 +200,7 @@ const today = new Date();
       }
       dob = yyyy+'-'+mm+'-'+dd;
       console.log("current date",dob);
-      console.log('birthday of user ',res.data.UDoB )
+      console.log('birthday of user ',res.data.UDoB)
       if(dob == res.data.UDoB){
       
         Alert.alert(
@@ -311,7 +311,7 @@ const today = new Date();
 function StackNavigator (data) {
  
   const userData = data;
-  console.log('stack show',userData);
+  
   useEffect(() => {
     
 
@@ -372,10 +372,7 @@ function StackNavigator (data) {
        headerLeft: () => (
         
           <View style={{backgroundColor:'pink',justifyContent:'center',alignItems:'center',marginLeft:10,padding:5,borderRadius:20}}>
-           {console.log("data....",route.params.userData)
-           
-           }
-           
+          
            <Ionicons
              //style={{paddingLeft: 10}}
              name= 'person-outline'
@@ -393,7 +390,7 @@ function StackNavigator (data) {
             })
               .catch(error=>{console.log(error)
               alert(error)})
-              console.log("data....1",route.params.userData.AuthID);
+              
               }}
            />
          </View>
@@ -404,7 +401,20 @@ function StackNavigator (data) {
           <MaterialCommunityIcons
             style={{marginRight:15}}
             name= 'qrcode-scan'
-           onPress={() => navigation.navigate("Scnner")}
+           onPress={async()=>{
+            await ProfileApi({
+              "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
+                "id": route.params.userData.Flag=='U'? route.params.userData.AuthID :route.params.userData[0].UserId
+            })
+            .then(res=>{
+              console.log('for switced emp sacnner',res.data)
+              navigation.navigate('Scnner',{data:(res.data)})
+          
+          })
+            .catch(error=>{console.log(error)
+            alert(error)})
+            
+            }}
             
             size={25}
             color='#ffffff'
