@@ -1,3 +1,4 @@
+import { AntDesign } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -14,6 +15,11 @@ const SetRouteAsset = ({route}) =>{
     const [loading,setLoading] = useState();
     const [routesData,setRoutesData] = useState([]); 
     const [assetId,setAssetId] = useState('');
+    const [from,setFrom] = useState('');
+    const [to,setTo] = useState('');
+    const [revRoute,setRevRoute] = useState(false);
+    const [fromIndex,setFromIndex] = useState('');
+
     useEffect(()=>{
       (async()=>
       await getRouteApi().then(res=>{console.log(res.data)
@@ -47,27 +53,38 @@ const SetRouteAsset = ({route}) =>{
             await setRouteApi({
               "EmpId":id,
               "RouteID":sourceDestination,
-              "AstId":assetId
+              "AstId":assetId,
+              "revRoute":revRoute ? 'T' : 'F' 
             }).then(res=>{console.log(res.data)
               if(res.data.message == 'Asset Route Map Success')
               {alert('Route successfully set!');
             navigation.goBack();
+            navigation.goBack();
             }
               else{alert('Please try again!!')}
-            }).catch(error=>{console.log(error)})
+            }).catch(error=>{'error when setting route',console.log(error)})
             
         }
         setLoading(false);
     }
+ 
+    const onPressReverse = () =>{
+      setRevRoute(!revRoute);
+
+    }
+
     return(
         <View style={styles.body}>
+          <Text>{mapData}</Text>
            <View style={styles.input}>
             {console.log('var routes',routesData,assetId)}
             {console.log('id of emp in setRouteScreen',id)}
                 <Picker
                         // itemStyle={{height:40}}
                         selectedValue={sourceDestination}
-                        onValueChange={(label, index) => setSourceDestination(label)}
+                        onValueChange={(label, index) => {setSourceDestination(label)
+                          setFromIndex(index)
+                        }}
                         mode="dropdown" // Android only
                         style={styles.picker}
                         >
@@ -80,7 +97,80 @@ const SetRouteAsset = ({route}) =>{
                         })}
                          </Picker>
             </View>
-            <Text>For asset : {mapData}</Text>
+            
+             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+             <Text>Start : </Text>
+             <View style={styles.input}>
+                
+              
+            <Picker
+              // itemStyle={{height:40}}
+               selectedValue={from}
+               onValueChange={(label, index) => {setFrom(label)
+               
+               }}
+               mode="dropdown" // Android only
+               style={styles.picker}
+             > 
+               { routesData.map((item,index)=>{
+                       if(fromIndex == index)
+                          {return revRoute ? (<Picker.Item
+                            style={styles.pickerItem}
+                              key={index}
+                              label={item.RouteEStage}
+                              value={item.StageID} 
+                           />) : (<Picker.Item
+                            style={styles.pickerItem}
+                              key={index}
+                              label={item.RouteSStage}
+                              value={item.StageID} 
+                           />)
+                           ;}
+                         })
+                          
+              }
+        </Picker>
+        </View>
+             </View>
+             <AntDesign style={{alignSelf:'center',transform: [{ rotate: '90deg' }],}} name="swap" size={32}  color="black" onPress={onPressReverse}/>
+       
+             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+             <Text>End : </Text>
+             <View style={styles.input}>
+                
+              
+            <Picker
+              // itemStyle={{height:40}}
+               selectedValue={to}
+               onValueChange={(label, index) => {setTo(label)
+               
+               }}
+                mode="dialog" // Android only
+               style={styles.picker}
+             > 
+               { routesData.map((item,index)=>{
+                       if(fromIndex == index)
+                          {return revRoute ? (<Picker.Item
+                            style={styles.pickerItem}
+                              key={index}
+                              label={item.RouteSStage}
+                              value={item.StageID} 
+                           />)
+                           :
+                           (<Picker.Item
+                            style={styles.pickerItem}
+                              key={index}
+                              label={item.RouteEStage}
+                              value={item.StageID} 
+                           />)
+                           
+                           ;}
+                         })
+                          
+              }
+        </Picker>
+       </View>
+             </View>
             
             <Btn
              textColor="white"

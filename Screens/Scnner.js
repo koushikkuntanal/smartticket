@@ -47,7 +47,7 @@ const Scnner = ({route}) =>{
         },
         {
           text: 'Proceed',
-          onPress:() => navigation.navigate('Screen_D',{data:data,emailData:forEmaildata})
+          onPress:() => navigation.navigate('Source Destination',{data:data,emailData:forEmaildata})
           
         },
         

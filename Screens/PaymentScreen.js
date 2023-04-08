@@ -68,7 +68,7 @@ const PaymentScreen= ({route})=>{
         customer_details: {
           customer_id: customerId,
           customer_email: email,
-          customer_phone: phone
+          customer_phone: phone.toString()
         },
         order_id: orderId,
         order_amount: amount,
@@ -96,6 +96,7 @@ const PaymentScreen= ({route})=>{
 
     return (paymentStatus == 'PAID') ? <View style={{alignItems:'center',justifyContent:'center',flex:1}}><Text>Recieved</Text></View> :    
     <View style={styles.body}>
+      {console.log('details in payment screen',orderId,phone,email,Upi,amount)}
         <TouchableOpacity onPress={createOrderApi}>
         <Text>UPI Payment</Text>
        

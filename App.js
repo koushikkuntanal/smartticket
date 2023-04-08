@@ -56,6 +56,7 @@ import EditProfile from './Screens/EditProfile';
 import SetRouteAsset from './ConductorScreens/SetRouteAsset';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from './components/Btn';
+import SourceDestination from './Screens/SourceDestination';
 
 
 
@@ -661,6 +662,7 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='ChangePasswordConductor' component={ChangePasswordConductor}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Edit Profile' component={EditProfile}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Route Asset' component={SetRouteAsset}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Source Destination' component={SourceDestination}/>
      
      
      </Stack.Navigator>

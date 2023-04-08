@@ -228,6 +228,7 @@ export const getAssetIdApiForEmp = async (data) =>{   //conductor gets AssetID
 
 
 
+
 export const getRouteIdApi = async (data) =>{   //user gets route Id
   const res = await axios({
     method:'Post',
@@ -245,3 +246,22 @@ export const getStagesApi = async (data) =>{   //user gets stages Id
   });
   return res;
 }
+
+export const getRevRouteFlagApi = async (data) =>{   //user gets revRoute Flag
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getStage/arflag',
+    data:data
+  });
+  return res;
+}
+
+export const getFareForUsers = async (data) =>{   //user gets revRoute Flag
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getFare/',
+    data:data
+  });
+  return res;
+}
+
