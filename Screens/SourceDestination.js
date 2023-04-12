@@ -72,7 +72,7 @@ const SourceDestination = ({ route }) => {
             "RouteID": res.data[0].RouteID
           }).then(async res => {
             // console.log('res when getStagesIDApi is hit', res.data);
-          
+
             const data = [];
             for (let i = 0; i < (res.data).length; i++) {
               await getStagesApi({
@@ -87,8 +87,8 @@ const SourceDestination = ({ route }) => {
 
             console.log('adding stage', stages);
             setReversedStages([...(data)].reverse());
-            console.log('to ad frrom' ,to ,from)
-            
+            console.log('to ad frrom', to, from)
+
 
           }).catch(error => {
             console.log(error)
@@ -133,8 +133,14 @@ const SourceDestination = ({ route }) => {
   const handleSubmit = () => {
     // Handle form submission
 
-    if (from === to || passengerNumber == 0 || upi == '') {
+    if (from === to || upi == '') {
       alert('Please enter all the details.');
+    } else if (to == null) {
+      alert('Please enter To address');
+    } else if (from == null) {
+      alert('Please enter From address');
+    } else if (passengerNumber == 0) {
+      alert('Passenger Number cannot be zero!');
     }
     else {
       // calculateDistance();
@@ -184,8 +190,8 @@ const SourceDestination = ({ route }) => {
     setLoading(false);
   }
 
-  
-  const getFareBoth = async (fromV,toV) => {
+
+  const getFareBoth = async (fromV, toV) => {
     setLoading(true);
     console.log('from and to i getFareBoth ', fromV, toV);
     await getFareForUsers({
@@ -241,17 +247,36 @@ const SourceDestination = ({ route }) => {
                 selectedValue={from}
                 onValueChange={(value, index) => {
                   setFrom(value);
-                  console.log('from value in from picker',from)
+                  console.log('from value in from picker', from)
                   setFromIndex(index);
 
-                if(stages[index+1] != undefined)
-                { setTo(stages[index+1].StageID);
-                 getFareBoth(value,stages[index+1].StageID)}
-                 else alert('Destination cannot be selected!! ')
+                  if (revData == 'F') {
+                    if (stages[index + 1] != undefined) {
+                      setTo(stages[index + 1].StageID);
+                      getFareBoth(value, stages[index + 1].StageID)
+                    }
+                    else if (stages[index + 1] == undefined) {
+                      setTo(stages[index].StageID);
+                      alert('Destination cannot be selected!! ')
+                    }
+                  }
+                  else if (revData == 'T') {
+                    console.log('stages ', reversedStages[index + 1]);
+                    if (reversedStages[index + 1] != undefined) {
+                      setTo(reversedStages[index + 1].StageID);
+                      getFareBoth(value, reversedStages[index + 1].StageID)
+                    }
+                    else if (reversedStages[index + 1] == undefined) {
+                      alert('Destination cannot be selected!! ')
+                      setTo(reversedStages[index].StageID);
+                    }
+
+                  }
                   // getFareFrom(value);
                   // getFareTo(stages[index+1].StageID);
-                  
+
                 }}
+
                 mode="dropdown" // Android only
                 style={styles.picker}
               >
@@ -286,10 +311,10 @@ const SourceDestination = ({ route }) => {
                 // itemStyle={{height:40}}
                 selectedValue={to}
                 onValueChange={async (value, index) => {
-                
+
                   setTo(value);
-                  console.log('to value in to picker',to)
-                   getFareTo(value);
+                  console.log('to value in to picker', to)
+                  getFareTo(value);
                   // console.log('from and to',from,value);
                   //     await getFareForUsers({
                   //         "from":from,
@@ -314,7 +339,7 @@ const SourceDestination = ({ route }) => {
                   :
                   stages.map((item, index) => {
                     if (index > fromIndex) {
-                      
+
                       return (<Picker.Item
                         style={styles.pickerItem}
                         key={item.StageID}
@@ -377,7 +402,7 @@ const SourceDestination = ({ route }) => {
           />
         </View> : null}
         {/* {console.log(apiFare)} */}
-        {(apiFare != undefined && apiFare!=0) ? <View style={styles.fare}><Text style={styles.textfare}>Amount : {'\u20B9'} {apiFare * passengerNumber}</Text></View> : null}
+        {(apiFare != undefined && apiFare * passengerNumber != 0 && from != null && to != null) ? <View style={styles.fare}><Text style={styles.textfare}>Amount : {'\u20B9'} {apiFare * passengerNumber}</Text></View> : null}
 
       </View>
       {
