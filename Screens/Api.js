@@ -238,7 +238,15 @@ export const getRouteIdApi = async (data) =>{   //user gets route Id
   return res;
 }
 
-export const getStagesApi = async (data) =>{   //user gets stages Id
+export const getStagesIDApi = async (data) =>{   //user gets stages Id
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getStage/id',
+    data:data
+  });
+  return res;
+}
+export const getStagesApi = async (data) =>{   //user gets stages 
   const res = await axios({
     method:'Post',
     url:'https://amsweets.in/getStage/',

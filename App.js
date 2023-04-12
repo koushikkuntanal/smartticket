@@ -5,7 +5,7 @@ import { StyleSheet, Text, View,Pressable, ImageBackground,TextInput,Button} fro
 import Screen_A from './Screens/Screen_A';
 import Screen_B from './Screens/Screen_B';
 import Screen_C from './Screens/Screen_C';
-import Screen_D from './Screens/Screen_D';
+
 import Settings from './Screens/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -57,6 +57,7 @@ import SetRouteAsset from './ConductorScreens/SetRouteAsset';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from './components/Btn';
 import SourceDestination from './Screens/SourceDestination';
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -298,10 +299,10 @@ const today = new Date();
         component={Screen_C}
        /> 
 
-       <Tab.Screen
+       {/* <Tab.Screen
         name="Screen_D"
         component={Screen_D}
-       /> 
+       />  */}
 
     
       

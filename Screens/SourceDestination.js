@@ -5,7 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import { useNavigation } from "@react-navigation/native";
 import Field from "../components/Field";
-import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi } from "./Api";
+import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi, getStagesIDApi } from "./Api";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -27,6 +27,7 @@ const SourceDestination = ({route}) =>{
   const reg =  /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w\w+)+$/;
   const [routeId,setRouteId] = useState('');
   const [stages,setStages] = useState([]);
+  let stag =[];
   const [reversedStages, setReversedStages] = useState([]);
   const [fromIndex,setFromIndex] = useState('');
  const [revData,setRevData] = useState();
@@ -60,12 +61,45 @@ const SourceDestination = ({route}) =>{
         }).then(async res=>{console.log('res when getRouteIdApi is hit')
         setRouteId(res.data[0].RouteID)
          
-            await getStagesApi({
+            await getStagesIDApi({
               "RouteID" : res.data[0].RouteID
-            }).then(async res=>{console.log('res when getStagesApi is hit')
-            setStages(res.data);
-            setReversedStages([...(res.data)].reverse());
+            }).then(async res=>{
+              console.log('res when getStagesIDApi is hit',res.data);
+            // setStages(res.data);
+            // setReversedStages([...(res.data)].reverse());
+              
+            // (res.data).map(async (item,index)=>{
+              
+            //   await getStagesApi({
+          
+            //     "StageID":item.StageID
+            //   }).then(res=>{
+            //     console.log('res when stag name id hit',res.data)
+            //     setStages(prevData => [...prevData, ...(res.data)]);
+            //     // stag.push(...(res.data));
+            //   })
+            // })
+            const data = [];
+            for(let i = 0;i<(res.data).length;i++){
+              await getStagesApi({
+                "StageID":(res.data)[i].StageID
+              }).then(res=>{
+                    console.log('res when stag name id hit',)
+                    // setStages(prevData => [...prevData, (res.data)]);
+                    data.push(res.data);
+                   
+                  })
+            }
+            setStages(data);
             
+            console.log('adding stage',stages); 
+             setReversedStages([...(data)].reverse());
+             await getFareForUsers({
+              "from":from,
+              "to":to,
+          }).then(res=>{console.log('data when get fare is hit',res.data.Fare)
+          setApiFare(res.data.Fare);
+         }).catch(err=>{console.log('err when get fare is hit',err)})
             
   }).catch(error=>{console.log(error)
     alert(error)
@@ -161,26 +195,28 @@ const SourceDestination = ({route}) =>{
     <View style={styles.body}>
       {/* {console.log('qr data',assestdata)}
       {console.log('route id when useeffect is hit',routeId)}
-      {console.log('rev stages',reversedStages)} */}
+      
       {/* {console.log('index',fromIndex)}
       {console.log('email data',emailData.Uemail,emailData.Umobile)} */}
+      {console.log('rev stages',reversedStages)} 
       {console.log('revDta',revData)}
       <View elevation={5} style={styles.parent}>
- {console.log('stages',stages)}
- {console.log('rev stages',reversedStages)}
+ {/* {console.log('final stages',stages)} */}
+
+ {/* {console.log('rev stages',reversedStages)} */}
         <Text style={styles.title}>Bus Ticket Booking</Text>
         <Text style={{fontSize:18,marginVertical:10}}>Bus info : {assestdata}</Text>
         <View style={styles.card}>
                     
                     {    (reversedStages.length == 0) ?<Text style={styles.routeName}>loading</Text>:
                       (revData=='T') ? <Text style={styles.routeName}>{reversedStages[0].StageName}</Text>:
-                <Text style={styles.routeName}>{stages[0].StageName}</Text>
+                (stages.length == 0) ? <Text style={styles.routeName}>loading</Text>:<Text style={styles.routeName}>{stages[0].StageName}</Text>
               } 
                 <AntDesign style={{alignSelf:'center'}} name="arrowright" size={32}  color="black" onPress={null}/>
 
                     {    (reversedStages.length == 0) ?<Text style={styles.routeName}>loading</Text>:
                     (revData=='T') ?  <Text style={styles.routeName}>{reversedStages[stages.length-1].StageName}</Text> :
-                <Text style={styles.routeName}>{stages[stages.length-1].StageName}</Text>
+                (stages.length==0) ? <Text style={styles.routeName}>loading</Text>:<Text style={styles.routeName}>{stages[stages.length-1].StageName}</Text>
               }    
       </View>
    <View>
@@ -207,7 +243,7 @@ const SourceDestination = ({route}) =>{
                        
                           return (<Picker.Item
                             style={styles.pickerItem}
-                              key={index}
+                              key={item.StageID}
                               label={item.StageName}
                               value={item.StageID} 
                            />);
@@ -217,7 +253,7 @@ const SourceDestination = ({route}) =>{
                 
                            return (<Picker.Item 
                               style={styles.pickerItem}
-                              key={index}
+                              key={item.StageID}
                               label={item.StageName}
                               value={item.StageID} 
                            />);
@@ -250,7 +286,7 @@ const SourceDestination = ({route}) =>{
                           if(index>fromIndex)
                           {return (<Picker.Item
                             style={styles.pickerItem}
-                             key={index}
+                             key={item.StageID}
                              label={item.StageName}
                              value={item.StageID} 
                           />);}
@@ -260,7 +296,7 @@ const SourceDestination = ({route}) =>{
                         if(index>fromIndex)
                           {return (<Picker.Item
                             style={styles.pickerItem}
-                             key={index}
+                             key={item.StageID}
                              label={item.StageName}
                              value={item.StageID} 
                           />
@@ -333,7 +369,7 @@ const SourceDestination = ({route}) =>{
       }
     {loading ?  <Image  source={require('../assets/loading.gif')} /> : null}
   </View>
-       
+      //  <View>{console.log('array final',stages)}<Text>Hello</Text></View>
  
   );
 }

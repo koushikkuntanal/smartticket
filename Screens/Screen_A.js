@@ -76,7 +76,7 @@ export default function Screen_A(){
            </TouchableOpacity>                                   
           </View>
          <Text style={styles.text1}>
-          Screen A
+          {/* Screen A */}
         </Text>
         <Pressable
          onPress={onPressHandler}
