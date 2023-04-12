@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet,View,Text} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Screen_B = () => {
+const History = () => {
   
   
   
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default Screen_B;
+export default History;

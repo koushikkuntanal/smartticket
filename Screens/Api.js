@@ -273,3 +273,11 @@ export const getFareForUsers = async (data) =>{   //user gets revRoute Flag
   return res;
 }
 
+export const transactionforUsers = async (data) =>{  //transaction for users
+  const res = await axios({
+    method:'Post',
+    url:'https://amseets.in/transaction/id',
+    data:data
+  });
+  return res;
+}

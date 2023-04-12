@@ -2,24 +2,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Pressable} from 'react-native';
 
-export default function Screen_C({navigation}){
+export default function LastTicket({navigation}){
 
-    const onPressHandler = () => {
-       navigation.navigate('Screen_D');
-    }
+    
     return(
       <View style={styles.body}>
         <Text style={styles.text}>
           Screen C
         </Text>
-        <Pressable
-         onPress={onPressHandler}
-         style={({pressed})=>({backgroundColor: pressed? '#ddd' : '#0f0'})}
-        >
-          <Text style={styles.text}>
-            Go to Screen D
-          </Text>
-        </Pressable>
+        
+          
+        
       </View>
     )
   }

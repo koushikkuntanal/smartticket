@@ -3,8 +3,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Pressable, ImageBackground,TextInput,Button} from 'react-native';
 import Screen_A from './Screens/Screen_A';
-import Screen_B from './Screens/Screen_B';
-import Screen_C from './Screens/Screen_C';
+
+
 
 import Settings from './Screens/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -58,6 +58,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from './components/Btn';
 import SourceDestination from './Screens/SourceDestination';
 import { AntDesign } from '@expo/vector-icons';
+import LastTicket from './Screens/Screen_C';
+import History from './Screens/Screen_B';
 
 
 
@@ -205,6 +207,7 @@ const today = new Date();
       console.log('birthday of user ',res.data.UDoB)
       if(dob == res.data.UDoB){
       
+        
         Alert.alert(
           'Happy Birthday!', 
           'Wishing you a very happy birthday!', 
@@ -215,27 +218,19 @@ const today = new Date();
           ],
           {
              cancelable: false,
-            //  customView: (
-            //   <Image
-            //     source={require('./assets/birthday-image.png')}
-            //     style={{ width: 200, height: 200 }}
-            //   />
-            // ),
+            
             
              }
         );
             
-        // const customAlert = () => (
-        //   <Image style={{width:50}}source={require('./assets/birthday-image.png')} />
-        // );
         
-        // Alert.alert('', '', [], { customView: customAlert });
       }
 
      
     })
     })()
   },[]);
+
   return (
     <Tab.Navigator
    
@@ -252,13 +247,13 @@ const today = new Date();
            color = focused 
            ? '#C80088'
            :  'black'; 
-        } else if (route.name === 'Screen_B') {
+        } else if (route.name === 'History') {
           iconName = 'car'
           size = focused ? 25 : 22;
           color = focused
           ? '#C80088'
           : 'black'
-        } else if (route.name === 'Screen_C') {
+        } else if (route.name === 'LastTicket') {
           iconName = 'rocket'
           size = focused ? 25 : 22;
           color = focused                                 
@@ -290,13 +285,13 @@ const today = new Date();
       />
       <Tab.Screen
         
-        name="Screen_B"
-        component={Screen_B}
+        name="History"
+        component={History}
        /> 
 
       <Tab.Screen
-        name="Screen_C"
-        component={Screen_C}
+        name="LastTicket"
+        component={LastTicket}
        /> 
 
        {/* <Tab.Screen

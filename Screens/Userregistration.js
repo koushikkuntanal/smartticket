@@ -49,7 +49,7 @@ const onChange = (event, selectedDate) => {
     if(mm<10){
       mm='0'+mm;
     }
-    dob = yyyy+'-'+mm+'-'+dd;
+    dob = dd+'-'+mm+'-'+yyyy;
     console.log('after',dob);
 };
 
