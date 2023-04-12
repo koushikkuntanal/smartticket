@@ -42,19 +42,24 @@ const SetRouteAsset = ({route}) =>{
     },[])
     
     const onPressSetRoute = async() =>{
-        console.log(sourceDestination);
+      const now = new Date();
+      const timestamp = now.toLocaleTimeString(); 
+      const datestamp = now.toLocaleDateString(); 
+      
+        console.log(sourceDestination); 
         setLoading(true);
         if(sourceDestination == 'Unknown' )
         {
             alert('Please select route!');
         }
         else
-        {
+        { console.log('timestamp',datestamp,timestamp);
             await setRouteApi({
               "EmpId":id,
               "RouteID":sourceDestination,
               "AstId":assetId,
-              "revRoute":revRoute ? 'T' : 'F' 
+              "revRoute":revRoute ? 'T' : 'F' ,
+              "time": datestamp +' '+timestamp
             }).then(res=>{console.log(res.data)
               if(res.data.message == 'Asset Route Map Success')
               {alert('Route successfully set!');

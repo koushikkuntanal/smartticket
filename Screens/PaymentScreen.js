@@ -18,6 +18,8 @@ const PaymentScreen= ({route})=>{
   const amount = (route.params.Fare);
   const email = (route.params.mail);
   const [dataPayment,setDataPayment] = useState([]); 
+  const from = (route.params.From);
+  const to = (route.params.To);
 
 
   const confirmPayment = (obj)=>{
@@ -96,7 +98,7 @@ const PaymentScreen= ({route})=>{
 
     return (paymentStatus == 'PAID') ? <View style={{alignItems:'center',justifyContent:'center',flex:1}}><Text>Recieved</Text></View> :    
     <View style={styles.body}>
-      {console.log('details in payment screen',orderId,phone,email,Upi,amount)}
+      {console.log('details in payment screen',orderId,phone,email,Upi,amount,from,to)}
         <TouchableOpacity onPress={createOrderApi}>
         <Text>UPI Payment</Text>
        
