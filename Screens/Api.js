@@ -276,7 +276,16 @@ export const getFareForUsers = async (data) =>{   //user gets revRoute Flag
 export const transactionforUsers = async (data) =>{  //transaction for users
   const res = await axios({
     method:'Post',
-    url:'https://amseets.in/transaction/id',
+    url:'https://amsweets.in/transaction/id',
+    data:data
+  });
+  return res;
+}
+
+export const transactionStatusApi = async (data) =>{  //transaction data post for users
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/pay',
     data:data
   });
   return res;

@@ -5,7 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import { useNavigation } from "@react-navigation/native";
 import Field from "../components/Field";
-import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi, getStagesIDApi } from "./Api";
+import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi, getStagesIDApi, transactionforUsers } from "./Api";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -15,7 +15,10 @@ const SourceDestination = ({ route }) => {
   var [revRoute, setRevRoute] = useState();
   const navigation = useNavigation();
   const [from, setFrom] = useState('');
+  const [fromName, setFromName] = useState('');
   const [to, setTo] = useState('');
+  const [toName, setToName] = useState('');
+
   let distance;
   let fare, date, time;
   const perKmFees = 5;                          //Assume per km fees is 5 rs
@@ -30,6 +33,7 @@ const SourceDestination = ({ route }) => {
   let stag = [];
   const [reversedStages, setReversedStages] = useState([]);
   const [fromIndex, setFromIndex] = useState('');
+  const [toIndex, setToIndex] = useState('');
   const [revData, setRevData] = useState();
   const [loading, setLoading] = useState();
   const [apiFare, setApiFare] = useState();
@@ -37,7 +41,7 @@ const SourceDestination = ({ route }) => {
 
   useEffect(() => {
     // console.log('sending asset id',assestdata);
-    // console.log('recieved email data',emailData);
+     console.log('recieved email data',emailData);
     console.log('from to values', from, to);
     setEmail(emailData.Uemail);
     setCphone(emailData.Umobile);
@@ -70,6 +74,7 @@ const SourceDestination = ({ route }) => {
 
           await getStagesIDApi({
             "RouteID": res.data[0].RouteID
+
           }).then(async res => {
             // console.log('res when getStagesIDApi is hit', res.data);
 
@@ -130,7 +135,7 @@ const SourceDestination = ({ route }) => {
   //   }
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle form submission
 
     if (from === to || upi == '') {
@@ -147,10 +152,19 @@ const SourceDestination = ({ route }) => {
       // console.log(fare);
       date = new Date().toDateString();
       time = new Date().toLocaleTimeString();
-      console.log('details fro upi', email, cphone, upi)
+      console.log('details fro upi', email, cphone, upi,revData,reversedStages[fromIndex].StageName,reversedStages[1+fromIndex+toIndex].StageName);
+
+      await transactionforUsers({
+        "UserId":emailData.UserId,
+        "RouteName": (revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+        "StartStage":(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+        "EndStage":(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+        "Fare":apiFare
+      }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data)
+     if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
-        From: from,
-        To: to,
+        From: (revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+        To: (revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         Fare: apiFare,
         Date: date,
         Time: time,
@@ -158,9 +172,16 @@ const SourceDestination = ({ route }) => {
         mail: email.trim(),
         cphone: cphone,
         upi: upi,
-        orderid: orderId,
-        customerid: customerId
+        orderid: res.data.orderid,
+        customerid: emailData.UserId
       });
+     }
+    })
+      .catch(err=>{console.log(err)})
+       
+      console.log((revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName))
+      
+      
     }
   };
 
@@ -206,11 +227,12 @@ const SourceDestination = ({ route }) => {
   return (
 
     <View style={styles.body}>
+    
+      {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId)}
       {/* {console.log('qr data',assestdata)}
       {console.log('route id when useeffect is hit',routeId)}
       
-      {/* {console.log('index',fromIndex)}
-      {console.log('email data',emailData.Uemail,emailData.Umobile)} */}
+          {console.log('index',fromIndex)}
       {/* {console.log('rev stages', reversedStages)}
       {console.log('revDta', revData)} */}
       <View elevation={5} style={styles.parent}>
@@ -247,16 +269,20 @@ const SourceDestination = ({ route }) => {
                 selectedValue={from}
                 onValueChange={(value, index) => {
                   setFrom(value);
+                 
                   console.log('from value in from picker', from)
                   setFromIndex(index);
 
                   if (revData == 'F') {
                     if (stages[index + 1] != undefined) {
                       setTo(stages[index + 1].StageID);
+                      // setToName(stages[index + 1].StageName);
                       getFareBoth(value, stages[index + 1].StageID)
                     }
                     else if (stages[index + 1] == undefined) {
                       setTo(stages[index].StageID);
+                      // setToName(stages[index].StageName);
+
                       alert('Destination cannot be selected!! ')
                     }
                   }
@@ -264,11 +290,14 @@ const SourceDestination = ({ route }) => {
                     console.log('stages ', reversedStages[index + 1]);
                     if (reversedStages[index + 1] != undefined) {
                       setTo(reversedStages[index + 1].StageID);
+                      // setToName(reversedStages[index + 1].StageName);
+
                       getFareBoth(value, reversedStages[index + 1].StageID)
                     }
                     else if (reversedStages[index + 1] == undefined) {
                       alert('Destination cannot be selected!! ')
                       setTo(reversedStages[index].StageID);
+                      // setToName(reversedStages[index].StageName);
                     }
 
                   }
@@ -311,8 +340,9 @@ const SourceDestination = ({ route }) => {
                 // itemStyle={{height:40}}
                 selectedValue={to}
                 onValueChange={async (value, index) => {
-
+                  
                   setTo(value);
+                  setToIndex(index);
                   console.log('to value in to picker', to)
                   getFareTo(value);
                   // console.log('from and to',from,value);
