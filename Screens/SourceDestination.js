@@ -156,15 +156,16 @@ const SourceDestination = ({ route }) => {
 
       await transactionforUsers({
         "UserId":emailData.UserId,
-        "RouteName": (revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
-        "StartStage":(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
-        "EndStage":(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+        "RouteName": routeId,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+        "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+        "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
         From: (revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         To: (revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+        
         Fare: apiFare,
         Date: date,
         Time: time,

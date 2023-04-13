@@ -20,47 +20,47 @@ const PaymentScreen = ({ route }) => {
   const [trancData, setTrancData] = useState("");
   const from = route.params.From;
   const to = route.params.To;
+  
   const [status, setStatus] = useState("");
+  
+  const checkOrderS =() =>{
+    var obj = setInterval(callCheck,1000);
 
-  const checkPaymentWithDelay = () => {
-    console.log('satus',status)
-    if (status == "paid") {
-      clearTimeout(checkPaymentWithDelay);
-    }
-    setTimeout(function () {
-      checkOrder(orderId)
-        .then(async (res) => {
-          if (res.data.order_status == "PAID") {
-            clearTimeout(checkPaymentWithDelay);
-            clearTimeout(setTimeout);
-            setStatus("paid");
-            setTrancData(res.data);
-            await transactionStatusApi({
-              "transid": res.data.cf_order_id,
-              "OrderID": res.data.order_id,
-              "status":res.data.order_status,
-              "timestamp":res.data.created_at.toString()
-            })
-              .then((res) => {
-                // console.log(res.data);
-                
+     function callCheck(){
+       checkOrder(orderId)
+       .then(async (res) => {
+        console.log('status',res.data.order_status)
+                if (res.data.order_status == "PAID") {
+                  clearInterval(obj);
+                  setStatus("paid");
+                  setTrancData(res.data);
+                  await transactionStatusApi({
+                    "transid": res.data.cf_order_id,
+                    "OrderID": res.data.order_id,
+                    "status":res.data.order_status,
+                    "timestamp":res.data.created_at.toString()
+                  })
+                    .then((res) => {
+                       console.log(res.data);
+                      
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                 
+                }
+                else if(res.data.order_status == "ACTIVE"){
+                  clearInterval(obj);
+                  alert('Please complete payment!! or Try again');
+                  
+                }
               })
-              .catch((err) => {
-                console.log(err);
+              .catch((error) => {
+                console.log(error);
               });
-           
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      //Put All Your Code Here, Which You Want To Execute After Some Delay Time.
-      // Alert.alert("Alert Shows After 5 Seconds of Delay.")
-    }, 500);
-    if (status == "paid") {
-      clearTimeout(setTimeout);
     }
-  };
+  }
+
 
   const createOrderApi = async () => {
     await createOrder({
@@ -98,7 +98,10 @@ const PaymentScreen = ({ route }) => {
   };
 
   return status == "paid" ? (
+  
     <View style={styles.container}>
+      {console.log('retur',status)}
+     
       <View style={styles.row}>
         <Text style={styles.label}>Date:</Text>
         <Text style={styles.value}>{trancData.created_at}</Text>
@@ -149,8 +152,9 @@ const PaymentScreen = ({ route }) => {
           title="pay"
           onPress={() => {
             Linking.openURL(data);
-            // checkPaymentWithDelay();
-            setInterval(checkPaymentWithDelay, 5000);
+            
+            
+            checkOrderS();
           }}
         />
       ) : null}
