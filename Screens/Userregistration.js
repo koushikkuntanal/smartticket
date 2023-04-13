@@ -268,8 +268,18 @@ const removeProfile = ()=>{
                   
                     />
                     
-
+         
          </View>
+
+            <View style={styles.container}>
+            <Text style={styles.text}>UPI ID</Text>
+            <Field width="100%"
+             value= {`: ${(Data.UPI)}`}
+             editable={true}
+             placeholder="UPI ID"
+            
+            /> 
+            </View>
             <View style={styles.container}>
             <Text style={styles.text}>Adress 1</Text> 
             <Field width="100%"

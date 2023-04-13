@@ -59,7 +59,8 @@ import Btn from './components/Btn';
 import SourceDestination from './Screens/SourceDestination';
 import { AntDesign } from '@expo/vector-icons';
 import LastTicket from './Screens/Screen_C';
-import History from './Screens/Screen_B';
+import Screen_B from './Screens/Screen_B';
+import UsersPasswordChange from './Screens/UsersPasswordChange';
 
 
 
@@ -247,7 +248,7 @@ const today = new Date();
            color = focused 
            ? '#C80088'
            :  'black'; 
-        } else if (route.name === 'History') {
+        } else if (route.name === 'Screen_B') {
           iconName = 'car'
           size = focused ? 25 : 22;
           color = focused
@@ -285,8 +286,8 @@ const today = new Date();
       />
       <Tab.Screen
         
-        name="History"
-        component={History}
+        name="Screen_B"
+        component={Screen_B}
        /> 
 
       <Tab.Screen
@@ -629,6 +630,19 @@ function StackNavigator (data) {
           backgroundColor: '#C80088'
         }
       }}
+      />
+
+      <Stack.Screen
+        name='UsersPasswordChange'
+        component={UsersPasswordChange}
+        options={{
+          title: 'UsersChangePassword',
+          headerShown: true,
+  
+          headerStyle:{
+            backgroundColor: '#C80088'
+          }
+        }}
       />
      
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}, }}

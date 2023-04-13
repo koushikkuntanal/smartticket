@@ -15,6 +15,11 @@ export default function Screen_A(){
        navigation.navigate('Login');
     }
     
+    // const changePassword = () => {
+    //   navigation.navigate('UsersPasswordChange');
+       
+
+    // }
     
     return(
       <View style={styles.body}>
@@ -73,8 +78,17 @@ export default function Screen_A(){
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Profile.png')}
             /><Text style={styles.text}>History</Text>
-           </TouchableOpacity>                                   
-          </View>
+           </TouchableOpacity> 
+
+           <TouchableOpacity onPress={()=>null}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-ResetPwd.png')}
+            /><Text style={styles.text}>Change Password</Text>
+           </TouchableOpacity> 
+           </View>
+           
+           
+           
          <Text style={styles.text1}>
           {/* Screen A */}
         </Text>
@@ -141,7 +155,9 @@ export default function Screen_A(){
       width:357,
       height:75,
       borderRadius:9,
-      borderWidth:1
+      borderWidth:1,
+      flexDirection:'row',
+      justifyContent:'space-evenly'
       
     },
 

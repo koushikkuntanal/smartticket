@@ -21,6 +21,7 @@ const EditProfile =({route}) =>{
     const [gender,setGender] = useState('');
     const [mobile,setMobile] = useState('');
     const [Dob,setDob] = useState('');
+    const [Upi,setUpi] = useState('');
     const [address1,setAddress1] = useState('');
     const [address2,setAddress2] = useState('');
     const [city,setCity] = useState('');
@@ -38,6 +39,12 @@ const EditProfile =({route}) =>{
       const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
       return regex.test(email);
     };
+
+    const validateUPIID = (upiId) => {
+      const regex = /^[\w.-]+@[\w-]+.[\w]{1,}$/;
+      return regex.test(upiId);
+    };
+    
     
     useEffect(()=>{
   
@@ -50,6 +57,7 @@ const EditProfile =({route}) =>{
         setGender(data.Ugender);
         setMobile(data.Umobile);
         setDob(data.UDoB);
+        setUpi(data.UPI)
         setAddress1(data.UAddr1);
         setAddress2(data.UAddr2);  
         setCity(data.Ucity);
@@ -128,7 +136,7 @@ const EditProfile =({route}) =>{
         setLoading(true);
        if(image == '')
        {setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph')}
-       if(numreg.test(name) === false && name.length!=0 && gender != 'Unknown' && address1.length !=0 && address2.length !=0 &&(city.length !=0 && (numreg.test(city)==false)) && pin.length !=0 && pin.length == 6 && aadhar.length !=0 && aadhar.length == 12 && (validateEmail(email)) == true) {
+       if(numreg.test(name) === false && name.length!=0 && gender != 'Unknown' && address1.length !=0 && address2.length !=0 &&(city.length !=0 && (numreg.test(city)==false)) && pin.length !=0 && pin.length == 6 && aadhar.length !=0 && aadhar.length == 12 && (validateEmail(email)) == true && (validateUPIID(Upi)) == true ) {
        await EditprofileApi({
             "flag":data.Flag,
             "Id":data.UserId,
@@ -140,7 +148,8 @@ const EditProfile =({route}) =>{
             "Address1":address1,
             "Address2":address2,
             "Img":image,
-            "Email":email
+            "Email":email,
+            "Upi":Upi
         })
         .then(res=>{console.log(res.data.message)
           if(res.data.message == 'Edit Success'){
@@ -165,6 +174,12 @@ const EditProfile =({route}) =>{
       else if(gender == 'Unknown'){
           Alert.alert('Warning','Select gender');
          }
+      else if(Upi.length == 0){
+        Alert.alert('Warning','Enter UPI ID');
+      } 
+      else if(validateUPIID(Upi) == false){
+        Alert.alert('Warning','Enter valid upi id');
+      }  
       else if(address1.length == 0)
        {
          Alert.alert('Warning','Enter address1');
@@ -280,7 +295,15 @@ const EditProfile =({route}) =>{
                 />
                 </View>
 
-          
+           <View style={styles.container}>
+           <Text style={styles.text}>UPI ID</Text>
+           <Field width="100%"
+            value={`${(Upi)}`}
+            editable={true}
+            placeholder="UPI ID"
+            onChangeText={(value)=>setUpi(value)}
+           />
+           </View>
             
          
             <View style={styles.container}>

@@ -181,6 +181,15 @@ export const ChangePasswordApi = async (data) => {
   return res;
 } 
 
+export const UsersChangePasswordApi = async (data) => {
+  const res = await axios({
+    method:'patch',
+    url:'https://amsweets.in/chng/Password',
+    data:data
+  });
+  return res;
+} 
+
 export const ProfileApi = async (data) => {
   const res = await axios({
     method:'post',
