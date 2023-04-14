@@ -184,53 +184,53 @@ const data = route.params.userData;
 //   alert('gich gili gili');
 // }
  
-const today = new Date();
-  useEffect(()=>{
-    (async()=>{
-      await ProfileApi({
-        "flag":data.Flag,
-        "id":data.AuthID
-      }).then(res=>{console.log('dob notification data',res.data);
-      console.log('name of user',res.data.Uname);
-      let dob=today.getFullYear() + '-'+ (today.getMonth()+1) + '-' + today.getDate();
-      var  dd =today.getDate();
-      var mm =today.getMonth()+1;
-      var yyyy = today.getFullYear();
+// const today = new Date();
+//   useEffect(()=>{
+//     (async()=>{
+//       await ProfileApi({
+//         "flag":data.Flag,
+//         "id":data.AuthID
+//       }).then(res=>{console.log('dob notification data',res.data);
+//       console.log('name of user',res.data.Uname);
+//       let dob=today.getFullYear() + '-'+ (today.getMonth()+1) + '-' + today.getDate();
+//       var  dd =today.getDate();
+//       var mm =today.getMonth()+1;
+//       var yyyy = today.getFullYear();
   
-      if(dd<10){
-        dd='0'+dd;
-      }
-      if(mm<10){
-        mm='0'+mm;
-      }
-      dob = yyyy+'-'+mm+'-'+dd;
-      console.log("current date",dob);
-      console.log('birthday of user ',res.data.UDoB)
-      if(dob == res.data.UDoB){
+//       if(dd<10){
+//         dd='0'+dd;
+//       }
+//       if(mm<10){
+//         mm='0'+mm;
+//       }
+//       dob = yyyy+'-'+mm+'-'+dd;
+//       console.log("current date",dob);
+//       console.log('birthday of user ',res.data.UDoB)
+//       if(dob == res.data.UDoB){
       
         
-        Alert.alert(
-          'Happy Birthday!', 
-          'Wishing you a very happy birthday!', 
+//         Alert.alert(
+//           'Happy Birthday!', 
+//           'Wishing you a very happy birthday!', 
            
-          [
+//           [
             
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ],
-          {
-             cancelable: false,
+//             { text: 'OK', onPress: () => console.log('OK Pressed') },
+//           ],
+//           {
+//              cancelable: false,
             
             
-             }
-        );
+//              }
+//         );
             
         
-      }
+//       }
 
      
-    })
-    })()
-  },[]);
+//     })
+//     })()
+//   },[]);
 
   return (
     <Tab.Navigator

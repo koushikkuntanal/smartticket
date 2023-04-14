@@ -160,12 +160,12 @@ const SourceDestination = ({ route }) => {
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare
-      }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data)
+      }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
         From: (revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         To: (revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
-        
+        routeName:(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
         Fare: apiFare,
         Date: date,
         Time: time,
@@ -173,7 +173,7 @@ const SourceDestination = ({ route }) => {
         mail: email.trim(),
         cphone: cphone,
         upi: upi,
-        orderid: res.data.orderid,
+        Orderid: res.data.data.orderid,
         customerid: emailData.UserId
       });
      }

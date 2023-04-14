@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { View, StyleSheet, Text } from "react-native";
-import { checkOrder, createOrder, orderPay, transactionStatusApi } from "./Api";
+import { View, StyleSheet, Text ,Image} from "react-native";
+import { checkOrder, createOrder, orderPay, transactionQrApi, transactionStatusApi } from "./Api";
 const axios = require("axios");
 import * as Linking from "expo-linking";
 import { Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// import QRCode from "react-native-qrcode-svg";
 
 const PaymentScreen = ({ route }) => {
   const [data, setData] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
-  const orderId = route.params.orderid;
+  const orderId = route.params.Orderid;
   const customerId = route.params.customerid;
   const navigation = useNavigation();
   const phone = route.params.cphone;
@@ -20,8 +21,9 @@ const PaymentScreen = ({ route }) => {
   const [trancData, setTrancData] = useState("");
   const from = route.params.From;
   const to = route.params.To;
-  
+  const routeName = route.params.routeName;
   const [status, setStatus] = useState("");
+  const [qrValue, setQrValue] = useState('Your String Value');
   
   const checkOrderS =() =>{
     var obj = setInterval(callCheck,1000);
@@ -37,7 +39,7 @@ const PaymentScreen = ({ route }) => {
                   await transactionStatusApi({
                     "transid": res.data.cf_order_id,
                     "OrderID": res.data.order_id,
-                    "status":res.data.order_status,
+                    "tstatus":res.data.order_status,
                     "timestamp":res.data.created_at.toString()
                   })
                     .then((res) => {
@@ -47,6 +49,18 @@ const PaymentScreen = ({ route }) => {
                     .catch((err) => {
                       console.log(err);
                     });
+
+                    await transactionQrApi({
+                      "cid":customerId,
+                      "orderid":orderId,
+                      "route":routeName,
+                      "from":from,
+                      "to":to,
+                      "fare":amount
+                    }).then(res=>{console.log('res ehen qr is hit',res.data)
+                  setQrValue('data:image/png;base64,'+res.data);
+                  })
+                    .catch(err=>{console.log('err ehwn qr is hiy',err)})
                  
                 }
                 else if(res.data.order_status == "ACTIVE"){
@@ -100,6 +114,7 @@ const PaymentScreen = ({ route }) => {
   return status == "paid" ? (
   
     <View style={styles.container}>
+      
       {console.log('retur',status)}
      
       <View style={styles.row}>
@@ -130,6 +145,14 @@ const PaymentScreen = ({ route }) => {
         <Text style={styles.label}>Description:</Text>
         <Text style={styles.value}>{from} to {to}</Text>
       </View>
+      {
+        console.log('qr',qrValue)
+      }  
+     
+         <View style={{alignItems:'center',justifyContent:'center',marginTop:20}}>
+         <Image source={{uri:`${qrValue}`}} style={{width:250,height:250,}}></Image>
+         </View>
+      
     </View>
   ) : (
     <View style={styles.body}>
@@ -158,6 +181,12 @@ const PaymentScreen = ({ route }) => {
           }}
         />
       ) : null}
+      <View>
+      
+        
+      
+      </View>
+      
     </View>
   );
 };

@@ -299,3 +299,12 @@ export const transactionStatusApi = async (data) =>{  //transaction data post fo
   });
   return res;
 }
+
+export const transactionQrApi = async (data) =>{  //transaction data qr  get for users
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/qr',
+    data:data
+  });
+  return res;
+}

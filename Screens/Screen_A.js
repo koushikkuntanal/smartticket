@@ -1,14 +1,18 @@
 
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, useNavigation, } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View,Pressable,Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
+import Btn from '../components/Btn';
+import { btnColor } from '../components/Constants';
 
 
 
 export default function Screen_A(){
   const navigation = useNavigation();
+ 
    // const data= route.params.userData;
 
     const onPressHandler = () => {
@@ -20,6 +24,10 @@ export default function Screen_A(){
        
 
     // }
+
+    
+
+    
     
     return(
       <View style={styles.body}>
@@ -64,7 +72,7 @@ export default function Screen_A(){
              
             </PagerView> 
 
-             
+            
             
           </View>
           
@@ -73,7 +81,7 @@ export default function Screen_A(){
           
           </View>
        
-          <View style={styles.parent1}>
+          <View style={styles.card}>
             <TouchableOpacity onPress={()=>null}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Profile.png')}
@@ -92,14 +100,15 @@ export default function Screen_A(){
          <Text style={styles.text1}>
           {/* Screen A */}
         </Text>
-        <Pressable
-         onPress={onPressHandler}
-         style={({pressed})=>({backgroundColor: pressed? 'orange' : 'lightblue'})}
-        >
-          <Text style={styles.text}>
-            Logout
-          </Text>
-        </Pressable> 
+        <View>
+        <Btn
+            textColor="white"
+            bgColor={btnColor}
+            btnLabel="Logout"
+            Press={onPressHandler}
+            />
+        </View>
+        
         
       </View>
 
@@ -125,7 +134,8 @@ export default function Screen_A(){
     },
 
     text1 : {
-      fontSize:20,
+      fontSize:12,
+      fontWeight:'bold',
       alignSelf:'center',
       marginTop:15
     },
@@ -149,16 +159,35 @@ export default function Screen_A(){
      
     },
 
-    parent1:{
-      backgroundColor:'#ffffff',
-      marginTop:10,
-      width:357,
-      height:75,
-      borderRadius:9,
-      borderWidth:1,
-      flexDirection:'row',
-      justifyContent:'space-evenly'
+    // parent1:{
+    //   backgroundColor:'#ffffff',
+    //   marginTop:10,
+    //   width:357,
+    //   height:75,
+    //   borderRadius:9,
+    //   borderWidth:1,
+    //   flexDirection:'row',
+    //   justifyContent:'space-evenly'
       
+    // },
+
+    card: {
+        
+      width:"90%",
+      flexDirection:'row',
+      justifyContent:'space-evenly',
+      backgroundColor: '#ffffff',
+      borderRadius: 9,
+      padding: 16,
+      marginTop: 12,
+      shadowColor: '#000000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 12,
     },
 
     pager:{
