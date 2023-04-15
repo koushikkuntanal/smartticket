@@ -6,6 +6,7 @@ const axios = require("axios");
 import * as Linking from "expo-linking";
 import { Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import PagerView from 'react-native-pager-view';
 // import QRCode from "react-native-qrcode-svg";
 
 const PaymentScreen = ({ route }) => {
@@ -114,6 +115,7 @@ const PaymentScreen = ({ route }) => {
 
   return status == "paid" ? (
   
+    <View>
     <View style={styles.container}>
       
       {console.log('retur',status)}
@@ -133,7 +135,7 @@ const PaymentScreen = ({ route }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Amount:</Text>
         <Text style={[styles.value, styles.amount]}>
-          {trancData.order_amount}
+        {'\u20B9'} {trancData.order_amount}
         </Text>
       </View>
       <View style={styles.row}>
@@ -155,10 +157,47 @@ const PaymentScreen = ({ route }) => {
       }  
      
          <View style={{alignItems:'center',justifyContent:'center',marginTop:20}}>
-         <Image source={{uri:`${qrValue}`}} style={{width:250,height:250,}}></Image>
+         <Image source={{uri:`${qrValue}`}} style={{width:150,height:150,}}></Image>
          </View>
       
+      
     </View>
+
+    <View style={styles.container1}>
+      <View style={styles.parent}>
+        <PagerView
+         style={styles.pager}
+         initialPage={0}
+        >
+         <View key="1" style={{borderRadius:8}}>
+              <Image
+                  style={{width:"100%",height:"100%",borderRadius:11}}
+                  resizeMode='stretch'
+                  source={require('../assets/Scenry.png')}
+                  
+                />
+             </View>
+             <View key="2" style={{borderRadius:8}}>
+             <Image 
+                  style={{width:"100%",height:"100%",borderRadius:11}}
+                  resizeMode='stretch'
+                  source={require('../assets/Buildings.png')}
+                  
+                />
+             </View> 
+             <View key="3" style={{borderRadius:8}}>
+             <Image 
+                  style={{width:"100%",height:"100%",borderRadius:11}}
+                  resizeMode='stretch'
+                  source={require('../assets/Wow.png')}
+                  
+                />
+             </View>    
+        </PagerView>
+      </View>
+    </View>
+    </View>
+    
   ) : (
     <View style={styles.body}>
       {console.log(
@@ -235,6 +274,33 @@ const styles = StyleSheet.create({
   },
   orderStatus: {
     color: "green",
+  },
+
+  container1:{
+    // backgroundColor: '#ffffff',
+    //flex:1,
+    // paddingRight:1,
+    paddingLeft:13,
+    //marginBottom:355,
+    marginTop:3,
+   
+    width:372,
+    height:150,
+  },
+
+  parent:{
+    // backgroundColor:'red',
+    borderWidth:0.2,
+    flex:1,
+    borderRadius:12,
+    // paddingLeft:5
+  },
+
+  pager:{
+    flex:1,
+    alignSelf:'stretch',
+    // backgroundColor:'red',
+    
   },
 });
 
