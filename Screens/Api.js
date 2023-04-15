@@ -308,3 +308,12 @@ export const transactionQrApi = async (data) =>{  //transaction data qr  get for
   });
   return res;
 }
+
+export const ConductorVerifyApi = async (data) =>{  //Conductor verify used in CheckTickets.js
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/qrverify',
+    data:data
+  });
+  return res;
+}

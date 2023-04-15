@@ -4,6 +4,7 @@ import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { Audio } from 'expo-av';
+import { ConductorVerifyApi } from "../Screens/Api";
 
 const CheckTickets = () =>{
   const height = 800;
@@ -37,31 +38,46 @@ const CheckTickets = () =>{
    
     },[]);
   
-    const handleBarCodeScanned = ({ type, data }) => {
-     // console.log(data.length);
+    const handleBarCodeScanned = async ({ type, data }) => {
+      setScanned(true);
+     try{ console.log(JSON.parse(data));
+      var qrObj=JSON.parse(data);
+      console.log(qrObj.orderid);
       if(data.length != 1)                    // check for valid ticket
       {
-        playSound(true);
+        await ConductorVerifyApi({
+          "OrderID":qrObj.orderid
+        }).then(res=>{console.log(res.data)
+        if(res.data.message == 'OK'){
+          playSound(true);
+        }
+        else {
+          playSound(false);
+        }
+
+        Alert.alert('Success!!', `Data scanned = ${res.data.message}`, [
+          
+          {
+            text: 'Ok',
+            onPress:() => null
+            
+          },
+          
+         
+        ]);
+        })
+       
       } else{
-        playSound(false);
+        alert('Qr is empty');
       }
-      setScanned(true);
+     
       
       //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-      Alert.alert('Success!!', `Data scanned = \n${data}?`, [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {
-          text: 'Go to link',
-          onPress:() => Linking.openURL(data)
-          
-        },
-        
-       
-      ]);
+      
+    }
+      catch(err){
+        alert(err);
+      }
     };
   
     if (hasPermission === null) {
