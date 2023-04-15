@@ -22,6 +22,7 @@ const PaymentScreen = ({ route }) => {
   const from = route.params.From;
   const to = route.params.To;
   const routeName = route.params.routeName;
+  const busNo = route.params.busNo;
   const [status, setStatus] = useState("");
   const [qrValue, setQrValue] = useState('Your String Value');
   
@@ -144,6 +145,10 @@ const PaymentScreen = ({ route }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Description:</Text>
         <Text style={styles.value}>{from} to {to}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>Bus Number:</Text>
+        <Text style={styles.value}>{busNo}</Text>
       </View>
       {
         console.log('qr',qrValue)
