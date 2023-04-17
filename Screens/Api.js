@@ -317,3 +317,12 @@ export const ConductorVerifyApi = async (data) =>{  //Conductor verify used in C
   });
   return res;
 }
+
+export const getRouteIdEmp = async (data) =>{  //get route id for emp used in isseuTickets.js
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/employee/routeid',
+    data:data
+  });
+  return res;
+}

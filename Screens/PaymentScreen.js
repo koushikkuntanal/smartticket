@@ -42,7 +42,8 @@ const PaymentScreen = ({ route }) => {
                     "transid": res.data.cf_order_id,
                     "OrderID": res.data.order_id,
                     "tstatus":res.data.order_status,
-                    "timestamp":res.data.created_at.toString()
+                    "timestamp":res.data.created_at.toString(),
+                    "Tgen":'Q'
                   })
                     .then((res) => {
                        console.log(res.data);

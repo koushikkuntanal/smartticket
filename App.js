@@ -388,6 +388,7 @@ function StackNavigator (data) {
              size={25}
              color='#ffffff'
              onPress={async()=>{
+              console.log(route.params.userData.Flag)
               await ProfileApi({
                 "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
                   "id": route.params.userData.Flag=='U'? route.params.userData.AuthID :route.params.userData[0].UserId
@@ -412,8 +413,8 @@ function StackNavigator (data) {
             name= 'qrcode-scan'
            onPress={async()=>{
             await ProfileApi({
-              "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
-                "id": route.params.userData.Flag=='U'? route.params.userData.AuthID :route.params.userData[0].UserId
+              "flag":route.params.userData.Flag == 'U'? route.params.userData.Flag : route.params.userData[0].Flag,
+                "id": route.params.userData.Flag == 'U'? route.params.userData.AuthID : route.params.userData[0].UserId
             })
             .then(res=>{
               console.log('for switced emp sacnner',res.data)

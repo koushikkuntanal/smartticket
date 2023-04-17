@@ -19,7 +19,8 @@ const AllScreens =({route}) =>{
         "flag":Flag,
         "id":id
       })
-      .then(res=>{console.log('details in allscreen',res.data)
+      .then(res=>{
+        // console.log('details in allscreen',res.data)
       navigation.navigate('lekpayProfile',{data:res.data});
     })
       .catch(error=>alert(error));
@@ -33,8 +34,17 @@ const ScannerAsset = () =>{
 const checkTickets = () =>{
     navigation.navigate('Check Tickets');
 }
-const issueTickets =() =>{
-    navigation.navigate('Issue Tickets');
+const issueTickets =async() =>{
+  await ProfileApi({
+    "flag":Flag,
+    "id":id
+  })
+  .then(res=>{
+    // console.log('details in allscreen',res.data)
+  navigation.navigate('Issue Tickets',{data:res.data});
+})
+  .catch(error=>alert(error));
+    // navigation.navigate('Issue Tickets');
 }
 const cashHandler=() =>{
     navigation.navigate('Cash Handler');
