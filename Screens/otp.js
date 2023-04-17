@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState,useEffect } from "react";
 import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity} from "react-native";
 import Btn from "../components/Btn";
@@ -43,17 +44,21 @@ const Otp = ({route}) =>{
          
         }catch(error){
             alert(error);
+
         }
         setLoading(false);
+        setOtp('');
     }
   return (
     <View style={styles.body}>
-      
+       
+       <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}></StatusBar>
         <Text style={styles.head}>Verification</Text>
        <View style={styles.parent}>
             <View style={styles.container}>
             <Field width="70%"
             placeholder="Enter OTP" 
+            value={otp}
             keyboardType="numeric" 
             onChangeText={(value)=>setOtp(value)}
             />

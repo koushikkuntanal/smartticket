@@ -159,6 +159,7 @@ import Field from "../components/Field";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { LoginApi} from "./Api";
+import { StatusBar } from "expo-status-bar";
 
 const LekpayLogin = () =>{
   const [mNumber,setNumber]  = useState('');
@@ -204,7 +205,9 @@ const LekpayLogin = () =>{
         .catch(error=>{console.log(error)})
 
         
-      }else if(mNumber.length != 10 || mNumber.length == 0){
+      }else if(mNumber.length == 0){
+        alert('Enter phone number');
+      }else if(mNumber.length != 10){
         alert('Please enter valid number');
       }else if(password.length<8){
         alert('Please enter password of length more than 8.')
@@ -219,6 +222,7 @@ const LekpayLogin = () =>{
   }
   return (
     <View style={styles.body}>
+      <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}></StatusBar>
         <Image
         style={styles.image}
         resizeMode='cover'

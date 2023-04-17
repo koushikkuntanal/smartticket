@@ -7,6 +7,7 @@ import { darkPink } from "../components/Constants";
 import Btn from "../components/Btn";
 import { useNavigation } from "@react-navigation/native";
 import { setPasswordApi } from "./Api";
+import { StatusBar } from "expo-status-bar";
 
 const SetPassword = ({route}) =>{
     const [password,setPassword] = useState('');
@@ -52,14 +53,18 @@ const SetPassword = ({route}) =>{
         console.log(error);
       }
       setLoading(false);
+      setPassword('');
+      setConfirmPassword('');
     }
   return (
     <View style={styles.body}>
+      <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}></StatusBar>
         <Text style={styles.head}>Password Setup</Text>
       <View style={styles.parent}>
      <View style={styles.container}>
      <Field width="58%"
          placeholder="Enter New Password" 
+         value={password}
          secureTextEntry={!showPassword}
          password={true}
             onChangeText={(value)=>setPassword(value)}
@@ -80,6 +85,7 @@ const SetPassword = ({route}) =>{
         <View style={styles.container}>
         <Field width="70%"
          placeholder="Confirm New Password" 
+         value={confirmPassword}
          secureTextEntry={true}
          password={true}
             onChangeText={(value)=>setConfirmPassword(value)}

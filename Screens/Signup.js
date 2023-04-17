@@ -133,6 +133,8 @@ const SignUp = () =>{
       }catch(error){
         Alert.alert(error);
       }
+      setNumber('');
+      setDob('');
     }
 
 
@@ -141,6 +143,8 @@ const SignUp = () =>{
     return(
      
         <View style={styles.body}>
+
+          
              <Image
         style={styles.image}
         resizeMode='cover'
@@ -150,7 +154,7 @@ const SignUp = () =>{
           <Text style={styles.head}>Register</Text>
           <View style={styles.parent}>
          <View style={styles.container1}>
-         <Field width='70%' placeholder="Mobile Number" keyboardType="numeric" onChangeText={(value)=>setNumber(value)}/>
+         <Field width='70%' placeholder="Mobile Number" value={mNumber} keyboardType="numeric" onChangeText={(value)=>setNumber(value)}/>
          </View>
            
          
