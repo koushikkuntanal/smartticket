@@ -14,7 +14,7 @@ const SourceDestination = ({ route }) => {
   const assestdata = route.params.data;
   var [revRoute, setRevRoute] = useState();
   const navigation = useNavigation();
-  const [from, setFrom] = useState('');
+  const [from, setFrom] = useState('');    
   const [fromName, setFromName] = useState('');
   const [to, setTo] = useState('');
   const [toName, setToName] = useState('');
@@ -45,6 +45,7 @@ const SourceDestination = ({ route }) => {
     console.log('from to values', from, to);
     setEmail(emailData.Uemail);
     setCphone(emailData.Umobile);
+    setUpi(emailData.UPI);
     (async () => {
       await getAssetIdApiForEmp({
         "id": assestdata
@@ -92,7 +93,7 @@ const SourceDestination = ({ route }) => {
 
             console.log('adding stage', stages);
             setReversedStages([...(data)].reverse());
-            console.log('to ad frrom', to, from)
+            console.log('reverser staged',reversedStages)
 
 
           }).catch(error => {
@@ -138,9 +139,13 @@ const SourceDestination = ({ route }) => {
   const handleSubmit = async () => {
     // Handle form submission
 
-    if (from === to || upi == '') {
+    if (from === to) {
       alert('Please enter all the details.');
-    } else if (to == null) {
+    }
+    else if(emailData.UPI == ''){
+      alert("Please complete your profile");
+    
+    }else if (to == null) {
       alert('Please enter To address');
     } else if (from == null) {
       alert('Please enter From address');
@@ -159,14 +164,14 @@ const SourceDestination = ({ route }) => {
         "RouteName": routeId,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
-        "Fare":apiFare
+        "Fare":apiFare * passengerNumber
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
         From: (revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         To: (revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         routeName:(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
-        Fare: apiFare,
+        Fare: apiFare*passengerNumber,
         Date: date,
         Time: time,
         //Fare:fare,
@@ -230,7 +235,7 @@ const SourceDestination = ({ route }) => {
 
     <View style={styles.body}>
     
-      {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId)}
+      {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId,emailData.UPI)}
       {/* {console.log('qr data',assestdata)}
       {console.log('route id when useeffect is hit',routeId)}
       
@@ -424,7 +429,7 @@ const SourceDestination = ({ route }) => {
        onChangeText={(value)=>setCphone(value)}
             />
     </View> */}
-        {(apiFare != undefined) ? <View style={[styles.input, { marginTop: 12 }]}>
+        {/* {(apiFare != undefined) ? <View style={[styles.input, { marginTop: 12 }]}>
           <Field
             width="100%"
             editable={true}
@@ -432,7 +437,7 @@ const SourceDestination = ({ route }) => {
             placeholder="UPI ID"
             onChangeText={(value) => setUpi(value)}
           />
-        </View> : null}
+        </View> : null} */}
         {/* {console.log(apiFare)} */}
         {(apiFare != undefined && apiFare * passengerNumber != 0 && from != null && to != null) ? <View style={styles.fare}><Text style={styles.textfare}>Amount : {'\u20B9'} {apiFare * passengerNumber}</Text></View> : null}
 

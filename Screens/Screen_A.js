@@ -41,9 +41,7 @@ export default function Screen_A(){
             <PagerView 
               style={styles.pager}
               initialPage={0}
-              //onPageScroll={(e) => console.log(e)}
-              //onPageSelected={(e) => console.log(e)}
-              //onPageScrollStateChanged={(e) => console.log(e)}
+             
               >
              <View key="1" style={{borderRadius:8}}>
               <Image 
@@ -101,12 +99,12 @@ export default function Screen_A(){
           {/* Screen A */}
         </Text>
         <View>
-        <Btn
+        {/* <Btn
             textColor="white"
             bgColor={btnColor}
             btnLabel="Logout"
             Press={onPressHandler}
-            />
+            /> */}
         </View>
         
         

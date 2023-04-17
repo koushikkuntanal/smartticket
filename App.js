@@ -61,7 +61,7 @@ import { AntDesign } from '@expo/vector-icons';
 import LastTicket from './Screens/Screen_C';
 import Screen_B from './Screens/Screen_B';
 import UsersPasswordChange from './Screens/UsersPasswordChange';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -248,12 +248,12 @@ const data = route.params.userData;
            color = focused 
            ? '#C80088'
            :  'black'; 
-        } else if (route.name === 'Screen_B') {
-          iconName = 'car'
-          size = focused ? 25 : 22;
-          color = focused
-          ? '#C80088'
-          : 'black'
+        // } else if (route.name === 'Screen_B') {
+        //   iconName = 'car'
+        //   size = focused ? 25 : 22;
+        //   color = focused
+        //   ? '#C80088'
+        //   : 'black'
         } else if (route.name === 'LastTicket') {
           iconName = 'rocket'
           size = focused ? 25 : 22;
@@ -284,11 +284,11 @@ const data = route.params.userData;
         component={Screen_A}
         
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         
         name="Screen_B"
         component={Screen_B}
-       /> 
+       />  */}
 
       <Tab.Screen
         name="LastTicket"
@@ -307,32 +307,43 @@ const data = route.params.userData;
 }
 
 function StackNavigator (data) {
+
+  const [mNumber,setNumber]  = useState('');
+  const [password,setPassword] = useState('');
  
   const userData = data;
   
-  useEffect(() => {
+  // useEffect(() => {
     
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
-  const backAction = () => {
-    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-      {
-        text: 'Cancel',
-        onPress: () => null,
-        style: 'cancel',
-      },
-      {text: 'YES', onPress: () => BackHandler.exitApp()},
-    ]);
-    return true;
-  };
+  // const backAction = () => {
+  //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => null,
+  //       style: 'cancel',
+  //     },
+  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
+  //   ]);
+  //   return true;
+  // };
  
+  const handleLogout = async () => {
+    
+   
+    navigation.navigate('Login');
+
+    
+  };
+   
   
   const Stack = createStackNavigator();
   const navigation = useNavigation();
@@ -439,7 +450,7 @@ function StackNavigator (data) {
             style={{marginRight:15}}
             name="exit-to-app"
             size={25}
-            onPress={backAction}
+            onPress={handleLogout}
             color='#ffffff'
           />
           

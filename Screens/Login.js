@@ -213,6 +213,8 @@ const LekpayLogin = () =>{
     }catch(error){
       alert(error);
     }
+    setNumber('');
+    setPassword('');
     setLoading(false);
   }
   return (
@@ -228,7 +230,8 @@ const LekpayLogin = () =>{
         <View style={styles.container}>
         <Field width="70%"
         keyboardType='numeric'
-         placeholder="Mobile Number" 
+         placeholder="Mobile Number"
+         value={mNumber} 
         onChangeText={(value)=>setNumber(value)}
             />
         </View>
@@ -237,6 +240,7 @@ const LekpayLogin = () =>{
         secureTextEntry={!showPassword}
         password={true}
          placeholder="Password" 
+         value={password}
          onChangeText={(value)=>setPassword(value)}
             />
              <Ionicons.Button

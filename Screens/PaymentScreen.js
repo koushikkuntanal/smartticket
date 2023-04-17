@@ -115,7 +115,8 @@ const PaymentScreen = ({ route }) => {
 
   return status == "paid" ? (
   
-    <View>
+    <View style={{flexDirection:'column'}}>
+     
     <View style={styles.container}>
       
       {console.log('retur',status)}
@@ -163,9 +164,9 @@ const PaymentScreen = ({ route }) => {
       
     </View>
 
-    <View style={styles.container1}>
-      <View style={styles.parent}>
-        <PagerView
+    <View style={{padding:10}}>
+      
+         <PagerView
          style={styles.pager}
          initialPage={0}
         >
@@ -193,10 +194,10 @@ const PaymentScreen = ({ route }) => {
                   
                 />
              </View>    
-        </PagerView>
+        </PagerView> 
       </View>
     </View>
-    </View>
+   
     
   ) : (
     <View style={styles.body}>
@@ -240,10 +241,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "pink",
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     padding: 16,
     marginVertical: 8,
@@ -277,15 +278,17 @@ const styles = StyleSheet.create({
   },
 
   container1:{
-    // backgroundColor: '#ffffff',
+    backgroundColor: 'red',
     //flex:1,
-    // paddingRight:1,
-    paddingLeft:13,
+    
+   
     //marginBottom:355,
     marginTop:3,
+    alignItems:'center',
+    flex:1,
+    justifyContent:'center',
    
-    width:372,
-    height:150,
+    
   },
 
   parent:{
@@ -294,13 +297,14 @@ const styles = StyleSheet.create({
     flex:1,
     borderRadius:12,
     // paddingLeft:5
+    
   },
 
   pager:{
-    flex:1,
-    alignSelf:'stretch',
-    // backgroundColor:'red',
+   
+    height:150,
     
+   
   },
 });
 
