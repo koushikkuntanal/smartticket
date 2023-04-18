@@ -62,6 +62,7 @@ import LastTicket from './Screens/Screen_C';
 import Screen_B from './Screens/Screen_B';
 import UsersPasswordChange from './Screens/UsersPasswordChange';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import History from './Screens/Success';
 
 
 
@@ -281,8 +282,8 @@ const data = route.params.userData;
   >
       <Tab.Screen
         name="Screen_A"
-        component={Screen_A}
-        
+         component={Screen_A}
+        initialParams={{data:data}}
       />
       {/* <Tab.Screen
         
@@ -632,8 +633,8 @@ function StackNavigator (data) {
       />
 
 <Stack.Screen 
-       name='Success'
-       component={Success}
+       name='History'
+       component={History}
        options={{
         title: 'Success Page',
         headerShown: true,

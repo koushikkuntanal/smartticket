@@ -326,3 +326,12 @@ export const getRouteIdEmp = async (data) =>{  //get route id for emp used in is
   });
   return res;
 }
+
+export const TransactionHistory = async (data) => {
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/history',
+    data:data
+  });
+  return res;
+}

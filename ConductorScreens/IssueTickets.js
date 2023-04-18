@@ -110,7 +110,7 @@ const IssueTickets = ({route}) =>{
         console.log('rer whe emp cretes o id');
         if(res.data.message == 'OrderID generated'){
           await transactionStatusApi({
-            "transid": 'Cash',
+            "transid": '',
             "OrderID":res.data.data.orderid,
             "tstatus":'PAID',
             "timestamp": datestamp +' '+timestamp,

@@ -10,7 +10,8 @@ import { btnColor } from '../components/Constants';
 
 
 
-export default function Screen_A(){
+export default function Screen_A({route}){
+  const uData = route.params.data;
   const navigation = useNavigation();
  
    // const data= route.params.userData;
@@ -25,13 +26,17 @@ export default function Screen_A(){
 
     // }
 
-    
+    const onclickHistory = async() => {
+      await TransactionHistory({
+       
+      })
+    }
 
     
     
     return(
       <View style={styles.body}>
-       {/* {console.log('data in user dashoard',data)} */}
+       {console.log('data in useruuyjh dashoard',uData)} 
         <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}>
 
         </StatusBar>
@@ -80,7 +85,9 @@ export default function Screen_A(){
           </View>
        
           <View style={styles.card}>
-            <TouchableOpacity onPress={()=>null}>
+            <TouchableOpacity 
+            //onPress={}
+            >
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Profile.png')}
             /><Text style={styles.text}>History</Text>
