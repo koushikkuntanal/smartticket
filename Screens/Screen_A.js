@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
+import { TransactionHistory } from './Api';
 
 
 
@@ -27,9 +28,18 @@ export default function Screen_A({route}){
     // }
 
     const onclickHistory = async() => {
+      console.log(uData);
       await TransactionHistory({
+       "UserId":uData.AuthID ? uData.AuthID : uData[0].UserId,
+      }).then(res=>{
+        // var HistoryObj = JSON.parse(res.data[0].Tdata)
+
+          // console.log(HistoryObj);
+         navigation.navigate('History',{historyData:res.data});
+        })
+        
+        
        
-      })
     }
 
     
@@ -86,10 +96,11 @@ export default function Screen_A({route}){
        
           <View style={styles.card}>
             <TouchableOpacity 
-            //onPress={}
+            onPress={onclickHistory}
             >
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-Profile.png')}
+            
             /><Text style={styles.text}>History</Text>
            </TouchableOpacity> 
 

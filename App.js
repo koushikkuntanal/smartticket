@@ -507,7 +507,7 @@ function StackNavigator (data) {
             onPress={() => navigation.navigate("Faq")}
             size={25}
             color='#ffffff'
-          />
+          />                                                   
 
           
 
@@ -636,7 +636,7 @@ function StackNavigator (data) {
        name='History'
        component={History}
        options={{
-        title: 'Success Page',
+        title: 'History',
         headerShown: true,
 
         headerStyle:{

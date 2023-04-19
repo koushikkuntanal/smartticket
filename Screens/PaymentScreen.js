@@ -45,25 +45,26 @@ const PaymentScreen = ({ route }) => {
                     "timestamp":res.data.created_at.toString(),
                     "Tgen":'Q'
                   })
-                    .then((res) => {
-                       console.log(res.data);
-                      
+                    .then(async (res) => {
+                       console.log('jgkhxkjskj',res.data);
+                       await transactionQrApi({
+                        "cid":customerId,
+                        "orderid":orderId,
+                        "route":routeName,
+                        "from":from,
+                        "to":to,
+                        "fare":amount,
+                        "time":res.data.time
+                      }).then(res=>{console.log('res ehen qr is hit',res.data)
+                    setQrValue('data:image/png;base64,'+res.data);
+                    })
+                      .catch(err=>{console.log('err ehwn qr is hiy',err)})
                     })
                     .catch((err) => {
                       console.log(err);
                     });
 
-                    await transactionQrApi({
-                      "cid":customerId,
-                      "orderid":orderId,
-                      "route":routeName,
-                      "from":from,
-                      "to":to,
-                      "fare":amount
-                    }).then(res=>{console.log('res ehen qr is hit',res.data)
-                  setQrValue('data:image/png;base64,'+res.data);
-                  })
-                    .catch(err=>{console.log('err ehwn qr is hiy',err)})
+                   
                  
                 }
                 else if(res.data.order_status == "ACTIVE"){

@@ -32,7 +32,7 @@ const [date, setDate] = useState(new Date());
 const [showDatePicker, setShowDatePicker] = useState(false);
 const [loading,setLoading] = useState();
 
-const onChange = (event, selectedDate) => {
+const onChange = (event, selectedDate) => {   
   const currentDate = selectedDate;
   setShowDatePicker(Platform.OS === 'ios');
   setDate(currentDate);
@@ -194,7 +194,7 @@ const removeProfile = ()=>{
             <Field
              width="100%"
              value={`: ${(Data.Uname)}`}
-             editable={true}
+             editable={true}                   
              placeholder="Name" 
            onChangeText={(value)=>setName(value)}
             />
