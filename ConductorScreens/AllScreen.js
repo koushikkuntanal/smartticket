@@ -14,6 +14,7 @@ const AllScreens =({route}) =>{
     const mobileNumber = route.params.mobileNumber;
     const Type = route.params.Type;
     const navigation = useNavigation();
+    const [loading, setLoading] = useState();
     const Profile = async()=>{
       await ProfileApi({
         "flag":Flag,
@@ -35,6 +36,7 @@ const checkTickets = () =>{
     navigation.navigate('Check Tickets');
 }
 const issueTickets =async() =>{
+  setLoading(true);
   await ProfileApi({
     "flag":Flag,
     "id":id
@@ -45,12 +47,24 @@ const issueTickets =async() =>{
 })
   .catch(error=>alert(error));
     // navigation.navigate('Issue Tickets');
+    setLoading(false);
 }
-const cashHandler=() =>{
-    navigation.navigate('Cash Handler');
-
+const cashHandler=async () =>{
+  setLoading(true);
+  await ProfileApi({
+    "flag":Flag,
+    "id":id
+  })
+  .then(res=>{
+    // console.log('details in allscreen',res.data)
+  navigation.navigate('Cash Handler',{data:res.data});
+})
+  .catch(error=>alert(error));
+    // navigation.navigate('Cash Handler');
+  setLoading(false);
 }
 const switchU = async() =>{
+  setLoading(true);
  await ProfileApi({
   "flag":Flag,
   "id":id
@@ -80,6 +94,7 @@ const switchU = async() =>{
  .catch(error=>{console.log(error)
 alert(error);
 })
+setLoading(false);
 }
     return(
         <View style={styles.body}>  
@@ -189,7 +204,7 @@ alert(error);
               <Text>Switch to User</Text>
             </TouchableOpacity>
               
-            
+            {loading ? <Image source={require('../assets/loading.gif')} /> : null}
         </View>
     )
 }

@@ -42,9 +42,34 @@ const SetRouteAsset = ({route}) =>{
     },[])
     
     const onPressSetRoute = async() =>{
+      let timestamp;
+      let datestamp;
       const now = new Date();
-      const timestamp = now.toLocaleTimeString(); 
-      const datestamp = now.toLocaleDateString(); 
+      var  dd =now.getDate();
+    var mm =now.getMonth()+1;
+    var yyyy = now.getFullYear();
+    var  hh =now.getHours();
+    var min =now.getMinutes();
+    var ss = now.getSeconds();
+
+    if(dd<10){
+      dd='0'+dd;
+    }
+    if(mm<10){
+      mm='0'+mm;
+    }
+    datestamp= yyyy+'-'+mm+'-'+dd;
+      
+    if(min<10){
+      min = '0' + min;
+    }
+    if(ss<10){
+      ss = '0' + ss;
+    }
+    if(hh<10){
+      hh = '0' + hh;
+    }
+    timestamp = hh +':'+ min +':'+ss;
       
         console.log(sourceDestination); 
         setLoading(true);

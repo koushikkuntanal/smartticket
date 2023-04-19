@@ -1,19 +1,69 @@
 import React, { useState,useEffect } from "react";
 import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity, ImageBackground} from "react-native";
 import { background } from "../components/Constants";
+import {  getRouteNamesApi, TravelHandlerApi } from "../Screens/Api";
 
-const CashHandler =() =>{
+const CashHandler =({route}) =>{
+  const EmpData = route.params.data;
+  const [assetRouteNameFare,setAssetRouteNameFare] = useState([]);
+  const [loading, setLoading] = useState();
+  useEffect(()=>{
+    setLoading(true);
+    (async () =>{
+      await TravelHandlerApi({              //api gets setRoute Data (ids of route)
+        "EmpId":EmpData.EmpId 
+      }).then(async res=>{
+        
+        console.log('ast id got',res.data);
+        const data = [];
+        for (let index = 0; index < (res.data).length-1; index++) {
+          console.log('from',res.data[index].Time);
+          console.log('to',res.data[index+1].Time);
+         await getRouteNamesApi({
+          "AstId":res.data[index].AstId,
+          "RouteID":res.data[index].RouteID,
+          "fromTime":res.data[index].Time,
+          "toTime":res.data[index+1].Time,
+         }).then(res=>{
+         data.push(res.data);
+
+         })
+          
+          
+        }
+        setAssetRouteNameFare(data);
+      })
+
+      .catch(err=>{
+        console.log('err w cashHadlke',err);
+      })
+      
+    })();
+    setLoading(false);
+  },[]);
     return(
         <View style={styles.body}>
-           <View style={styles.card}> 
-            <View style={{alignSelf:'center'}}>
-            <Text>Date:24/02/2023</Text>
-            <Text>Bus Id:123</Text>
-            <Text>Total tickets:80</Text>
-            
-            </View>
-            <View><Text>Cash Collected:{'\u20B9'}560</Text></View>
-           </View>
+           {loading ? <Image source={require('../assets/loading.gif')} /> : null}
+         { console.log('AssetRouteName',assetRouteNameFare)}
+         
+          {
+            assetRouteNameFare.map((item,index)=>{
+              return(
+                <View style={styles.card} key={index}> 
+                <Text style={{textAlignVertical:'center'}}>Trip {index+1}</Text>
+                <View style={{alignSelf:'center'}}>
+                <Text>Date : {item.date.split('-').reverse().join('-')}</Text>
+                <Text>Bus Id : {item.AstRegNo}</Text>
+                <Text>Total Amount: {'\u20B9'} {item.TotalFare}</Text>
+                
+                </View>
+               
+               </View>
+              )
+            })
+           }
+
+
         </View>
     );
 }
@@ -29,7 +79,7 @@ const styles = StyleSheet.create({
     },
     card: {
        
-        width:"97%",
+        width:"85%",
         height:80,
         flexDirection:'row',
        justifyContent:'space-between',

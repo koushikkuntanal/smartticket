@@ -327,7 +327,7 @@ export const getRouteIdEmp = async (data) =>{  //get route id for emp used in is
   return res;
 }
 
-export const TransactionHistory = async (data) => {
+export const TransactionHistory = async (data) => {  // used in Scree A
   const res = await axios({
     method:'Post',
     url:'https://amsweets.in/transaction/history',
@@ -335,3 +335,23 @@ export const TransactionHistory = async (data) => {
   });
   return res;
 }
+
+export const TravelHandlerApi = async (data) => {  // used in CashHadler.js for id
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/employee/astroid',
+    data:data
+  });
+  return res;
+}
+
+
+export const getRouteNamesApi = async (data) => {  // used in CashHadler.js for name
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/employee/tripamount',
+    data:data
+  });
+  return res;
+}
+
