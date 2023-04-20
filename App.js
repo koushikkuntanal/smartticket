@@ -65,6 +65,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import History from './Screens/Success';
 import Screen_C from './Screens/Screen_C';
 import LastTicket from './Screens/LastTicket';
+import CurrentTripAmt from './ConductorScreens/CurrentTripAmt';
 
 
 
@@ -700,6 +701,8 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Edit Profile' component={EditProfile}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Route Asset' component={SetRouteAsset}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Source Destination' component={SourceDestination}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Current Trip' component={CurrentTripAmt}/>
+   
      
      
      </Stack.Navigator>

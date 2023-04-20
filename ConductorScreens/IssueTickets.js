@@ -108,13 +108,15 @@ const IssueTickets = ({route}) =>{
         "Fare":apiFare*passengerNumber,
       }).then(async res=>{
         console.log('rer whe emp cretes o id');
+        console.log('sahj',res.data);
+        
         if(res.data.message == 'OrderID generated'){
           await transactionStatusApi({
             "transid": '',
             "OrderID":res.data.data.orderid,
             "tstatus":'PAID',
             "timestamp": datestamp +' '+timestamp,
-            "Tgen":'E'
+             "Tgen":'E'
           }).then(res=>{
             console.log('re whe issue tivcket i s hit',res.data);
             if(res.data.message == 'Edit Success' ){

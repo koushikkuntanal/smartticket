@@ -63,6 +63,22 @@ const cashHandler=async () =>{
     // navigation.navigate('Cash Handler');
   setLoading(false);
 }
+
+const onPressCurrentTrip=async () =>{
+  setLoading(true);
+  await ProfileApi({
+    "flag":Flag,
+    "id":id
+  })
+  .then(res=>{
+    // console.log('details in allscreen',res.data)
+  navigation.navigate('Current Trip',{data:res.data});
+})
+  .catch(error=>alert(error));
+    // navigation.navigate('Cash Handler');
+  setLoading(false);
+}
+
 const switchU = async() =>{
   setLoading(true);
  await ProfileApi({
@@ -155,6 +171,15 @@ setLoading(false);
           <Text style={styles.text}>Change</Text>
           <Text style={styles.text}>Password</Text>
            </TouchableOpacity>
+            </View>
+            <View style={styles.card}>
+            <TouchableOpacity onPress={onPressCurrentTrip}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-Ticket.png')}
+            />
+            <Text style={styles.text}>Current{'\n'}Trip</Text>
+           </TouchableOpacity>
+
             </View>
              </View>
             
