@@ -90,9 +90,10 @@ const CurrentTripAmt =({route}) =>{
                 <Text style={styles.text}>Bus Id : {item.AstRegNo}</Text>
                 <Text style={styles.text}>Cash: {'\u20B9'} {item.cashFare}</Text>
                 <Text style={styles.text}>QrAmount: {'\u20B9'} {item.qrFare}</Text>
-                <Text style={styles.text}>Total Amount : {'\u20B9'} {parseInt(item.cashFare) + parseInt(item.qrFare)}</Text>
-                <Text style={styles.text}>No. of cash Passengers : </Text>
-                <Text style={styles.text}>No. of qr Passengers : </Text>
+                <Text style={styles.text}>Total Amount : {'\u20B9'} {item.totalFare}</Text>
+                <Text style={styles.text}>No. of cash Passengers : {item.cashpeeps} </Text>
+                <Text style={styles.text}>No. of qr Passengers : {item.qrpeeps}</Text>
+                <Text style={styles.text}>Total Passengers : {item.totalpeeps}</Text>
                 
                 </View>
                
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     card: {
        
         width:"95%",
-        height:"25%",
+        height:"30%",
         flexDirection:'row',
        justifyContent:'space-between',
         backgroundColor: '#ffffff',
