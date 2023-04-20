@@ -9,7 +9,8 @@ export default function LastTicket({route}){
     const [qrValue, setQrValue] = useState('Your String Value');
     let hisObj;
     useEffect(()=>{
-      let obj = JSON.parse(RevhistoryData[0].Tdata);
+      if(RevhistoryData[0] != undefined)
+      {let obj = JSON.parse(RevhistoryData[0].Tdata);
       console.log("api data ",obj);
       (async()=>{
         await transactionQrApi({
@@ -25,11 +26,13 @@ export default function LastTicket({route}){
       setQrValue('data:image/png;base64,'+res.data);
       })
         .catch(err=>{console.log('err ehwn qr is hiy',err)})
-      })();
+      })();}
     },[]);
+    
     return (
        
      <View>
+      {(RevhistoryData.length !=0) ? <View>
        {RevhistoryData.map((item,index)=>{
         
         if(item.Tdata != "")
@@ -82,6 +85,12 @@ export default function LastTicket({route}){
         else return null;
       })}
         
+     </View> 
+     : alert('No last Ticket available..')
+     
+     
+      }
+      
      </View>
     );
 };
