@@ -1,16 +1,19 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Pressable} from 'react-native';
 
-export default function LastTicket({navigation}){
+export default function Screen_C({route}){
+
+    const navigation = useNavigation();
 
     
     return(
       <View style={styles.body}>
-        <Text style={styles.text}>
+       
+        {/* <Text style={styles.text}>
           Screen C
         </Text>
-        
+         */}
           
         
       </View>

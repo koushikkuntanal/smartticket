@@ -27,6 +27,7 @@ const PaymentScreen = ({ route }) => {
   const [status, setStatus] = useState("");
   const [qrValue, setQrValue] = useState('Your String Value');
   
+  
   const checkOrderS =() =>{
     var obj = setInterval(callCheck,1000);
 
@@ -54,7 +55,8 @@ const PaymentScreen = ({ route }) => {
                         "from":from,
                         "to":to,
                         "fare":amount,
-                        "time":res.data.time
+                        "time":res.data.time,
+                        "Tgen":'Q'
                       }).then(res=>{console.log('res ehen qr is hit',res.data)
                     setQrValue('data:image/png;base64,'+res.data);
                     })

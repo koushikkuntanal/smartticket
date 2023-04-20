@@ -138,6 +138,7 @@ const SourceDestination = ({ route }) => {
 
   const handleSubmit = async () => {
     // Handle form submission
+    setLoading(true);
 
     if (from === to) {
       alert('Please enter all the details.');
@@ -188,7 +189,7 @@ const SourceDestination = ({ route }) => {
        
       console.log((revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName))
       
-      
+      setLoading(false);
     }
   };
 

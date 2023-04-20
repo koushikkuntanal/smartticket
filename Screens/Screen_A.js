@@ -42,6 +42,15 @@ export default function Screen_A({route}){
        
     }
 
+    const onclickLastTicket = async() =>{
+      await TransactionHistory({
+        "UserId":uData.AuthID ? uData.AuthID : uData[0].UserId,
+      }).then(res=>{
+         navigation.navigate('LastTicket',{historyData:res.data})
+      })
+      
+    }
+
     
     
     return(
@@ -99,7 +108,7 @@ export default function Screen_A({route}){
             onPress={onclickHistory}
             >
             <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-Profile.png')}
+            source={require('../assets/LekPay-History.png')}
             
             /><Text style={styles.text}>History</Text>
            </TouchableOpacity> 
@@ -109,6 +118,14 @@ export default function Screen_A({route}){
             source={require('../assets/LekPay-ResetPwd.png')}
             /><Text style={styles.text}>Change Password</Text>
            </TouchableOpacity> 
+
+           <TouchableOpacity 
+           onPress={onclickLastTicket}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-MyTicket.png')}
+            /><Text style={styles.text}>LastTicket</Text>
+           </TouchableOpacity> 
+           
            </View>
            
            

@@ -58,12 +58,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Btn from './components/Btn';
 import SourceDestination from './Screens/SourceDestination';
 import { AntDesign } from '@expo/vector-icons';
-import LastTicket from './Screens/Screen_C';
+
 import Screen_B from './Screens/Screen_B';
 import UsersPasswordChange from './Screens/UsersPasswordChange';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import History from './Screens/Success';
-
+import Screen_C from './Screens/Screen_C';
+import LastTicket from './Screens/LastTicket';
 
 
 
@@ -255,7 +256,7 @@ const data = route.params.userData;
         //   color = focused
         //   ? '#C80088'
         //   : 'black'
-        } else if (route.name === 'LastTicket') {
+        } else if (route.name === 'Screen_C') {
           iconName = 'rocket'
           size = focused ? 25 : 22;
           color = focused                                 
@@ -292,8 +293,8 @@ const data = route.params.userData;
        />  */}
 
       <Tab.Screen
-        name="LastTicket"
-        component={LastTicket}
+        name="Screen_C"
+        component={Screen_C}
        /> 
 
        {/* <Tab.Screen
@@ -650,6 +651,19 @@ function StackNavigator (data) {
         component={UsersPasswordChange}
         options={{
           title: 'UsersChangePassword',
+          headerShown: true,
+  
+          headerStyle:{
+            backgroundColor: '#C80088'
+          }
+        }}
+      />
+
+      <Stack.Screen 
+        name='LastTicket'
+        component={LastTicket}
+        options={{
+          title: 'LastTicket',
           headerShown: true,
   
           headerStyle:{
