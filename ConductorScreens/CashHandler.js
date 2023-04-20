@@ -15,15 +15,19 @@ const CashHandler =({route}) =>{
       }).then(async res=>{
         
         console.log('ast id got',res.data);
+        
+        
         const data = [];
         for (let index = 0; index < (res.data).length-1; index++) {
           console.log('from',res.data[index].Time);
           console.log('to',res.data[index+1].Time);
+          console.log('rev id got',res.data[index].revRoute);
          await getRouteNamesApi({
           "AstId":res.data[index].AstId,
           "RouteID":res.data[index].RouteID,
           "fromTime":res.data[index].Time,
           "toTime":res.data[index+1].Time,
+          "revRoute":res.data[index].revRoute,
          }).then(res=>{
          data.push(res.data);
 
@@ -32,6 +36,7 @@ const CashHandler =({route}) =>{
           
         }
         setAssetRouteNameFare(data);
+
       })
 
       .catch(err=>{
@@ -50,7 +55,7 @@ const CashHandler =({route}) =>{
             assetRouteNameFare.map((item,index)=>{
               return(
                 <View style={styles.card} key={index}> 
-                <Text style={{textAlignVertical:'center'}}>Trip {index+1}</Text>
+                <Text style={{textAlignVertical:'center'}}>Route : {item.RouteName}{'\n'}Type : {(item.revRoute=='T') ?<Text>Down</Text> :<Text>Up</Text> }</Text>
                 <View style={{alignSelf:'center'}}>
                 <Text>Date : {item.date.split('-').reverse().join('-')}</Text>
                 <Text>Bus Id : {item.AstRegNo}</Text>
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     },
     card: {
        
-        width:"85%",
+        width:"95%",
         height:80,
         flexDirection:'row',
        justifyContent:'space-between',
