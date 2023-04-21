@@ -5,7 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import { useNavigation } from "@react-navigation/native";
 import Field from "../components/Field";
-import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi, getStagesIDApi, transactionforUsers } from "./Api";
+import { getAssetIdApiForEmp, getFareForUsers, getRevRouteFlagApi, getRouteIdApi, getStagesApi, getStagesIDApi, getTicketType, transactionforUsers } from "./Api";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -50,15 +50,15 @@ const SourceDestination = ({ route }) => {
       await getAssetIdApiForEmp({
         "id": assestdata
       }).then(async res => {
-        console.log('response when getAssetIdApiForEmp() is hit ')
+        console.log('response when getAssetIdApiForEmp() is hit ',res.data)
 
         {
-          // console.log('getting rev rouet flag with asset id', res.data.AstId)
+           console.log('getting rev rouet flag with asset id', res.data.AstId)
           await getRevRouteFlagApi({
 
             "AstId": res.data.AstId
           }).then(res => {
-            console.log('revRoute Flag', res.data)
+            // console.log('revRoute Flag', res.data)
             setLoading(true);
             setRevData(res.data[(res.data).length - 1].revRoute);
             setLoading(false);
@@ -70,14 +70,21 @@ const SourceDestination = ({ route }) => {
         await getRouteIdApi({
           "AssetID": res.data.AstId
         }).then(async res => {
-          // console.log('res when getRouteIdApi is hit')
-          setRouteId(res.data[0].RouteID)
+          //  console.log('res when getRouteIdApi is hit',res.data[res.data.length-1])
+          setRouteId(res.data[res.data.length-1].RouteID)
+
+                 await getTicketType({
+                  "RouteID" : res.data[res.data.length-1].RouteID 
+                 }).then(res=>{
+                  console.log('Tocket type',res.data)
+
+                }).catch(err=>{console.log(err)})
 
           await getStagesIDApi({
-            "RouteID": res.data[0].RouteID
+            "RouteID": res.data[res.data.length-1].RouteID
 
           }).then(async res => {
-            // console.log('res when getStagesIDApi is hit', res.data);
+            //  console.log('res when getStagesIDApi is hit', res.data);
 
             const data = [];
             for (let i = 0; i < (res.data).length; i++) {
@@ -91,9 +98,9 @@ const SourceDestination = ({ route }) => {
             }
             setStages(data);
 
-            console.log('adding stage', stages);
+            // console.log('adding stage', stages);
             setReversedStages([...(data)].reverse());
-            console.log('reverser staged',reversedStages)
+            // console.log('reverser staged',reversedStages)
 
 
           }).catch(error => {
@@ -226,6 +233,7 @@ const SourceDestination = ({ route }) => {
     await getFareForUsers({
       "from": fromV,
       "to": toV,
+
     }).then(res => {
       console.log('data when get fare is hit', res.data.Fare)
       setApiFare(res.data.Fare);
@@ -412,6 +420,7 @@ const SourceDestination = ({ route }) => {
             </View>
 
           </View>
+
         </View>
         {/* <View style={styles.input}>
              <Field 

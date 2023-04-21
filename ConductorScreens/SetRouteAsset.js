@@ -22,7 +22,9 @@ const SetRouteAsset = ({route}) =>{
 
     useEffect(()=>{
       (async()=>
-      await getRouteApi().then(res=>{console.log(res.data)
+      await getRouteApi({
+        "EmpId":id
+      }).then(res=>{console.log(res.data)
       setRoutesData(res.data)
       }).catch(error=>{console.log(error)
       alert(error)

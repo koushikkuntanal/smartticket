@@ -208,11 +208,11 @@ export const EditprofileApi = async (data) =>{
   return res;
 }
 
-export const getRouteApi = async ()=>{        //conductor gets route
+export const getRouteApi = async (data)=>{        //conductor gets routes ased o operator
   const res = await axios({
-    method:'get',
+    method:'post',
     url:'https://amsweets.in/getRoute/',
-    
+    data:data,
   });
   return res;
 }
@@ -355,3 +355,11 @@ export const getRouteNamesApi = async (data) => {  // used in CashHadler.js for 
   return res;
 }
 
+export const getTicketType = async (data) => {  // used in CashHadler.js for tickettype
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/ticket/type',
+    data:data
+  });
+  return res;
+}

@@ -17,10 +17,6 @@ const Scnner = ({route}) =>{
 
     const navigation = useNavigation();
 
-    const falsescanner = () => {
-       setScanned(false);
-       console.log(scanned); 
-    }
   
     useEffect(() => {
 
@@ -80,7 +76,7 @@ const Scnner = ({route}) =>{
         <View style={[{ flex: maskRowHeight }, styles.maskRow, styles.maskFrame]} />
       </View>
      
-      {scanned && <Button title={'Tap to Scan Again'} onPress={falsescanner} />}
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)}/>}
     </View>
   );
 }
