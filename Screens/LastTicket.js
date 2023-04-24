@@ -4,6 +4,7 @@ import { transactionQrApi } from "./Api";
 
 export default function LastTicket({route}){
 
+    
     const historyData = route.params.historyData;
     const RevhistoryData = ([...(historyData)].reverse());
     const [qrValue, setQrValue] = useState('Your String Value');

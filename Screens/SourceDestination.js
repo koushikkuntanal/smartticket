@@ -37,8 +37,9 @@ const SourceDestination = ({ route }) => {
   const [revData, setRevData] = useState();
   const [loading, setLoading] = useState();
   const [apiFare, setApiFare] = useState();
-
-
+  const [TicketTypeData,setTicketDataType] = useState([]);
+  const [SelectTicket,setSelectTicket] = useState('');
+ 
   useEffect(() => {
     // console.log('sending asset id',assestdata);
      console.log('recieved email data',emailData);
@@ -76,8 +77,8 @@ const SourceDestination = ({ route }) => {
                  await getTicketType({
                   "RouteID" : res.data[res.data.length-1].RouteID 
                  }).then(res=>{
-                  console.log('Tocket type',res.data)
-
+                  console.log('Tocket type',res.data.data);
+                 setTicketDataType(res.data.data);
                 }).catch(err=>{console.log(err)})
 
           await getStagesIDApi({
@@ -206,19 +207,22 @@ const SourceDestination = ({ route }) => {
     await getFareForUsers({
       "from": fromV,
       "to": to,
+      "ttype":SelectTicket
     }).then(res => {
-      console.log('data when get fare is hit getFareFrom', res.data.Fare)
+      console.log('data when get fare is hit getFareFrom', res.data)
       setApiFare(res.data.Fare);
     }).catch(err => { console.log('err when get fare is hit', err) })
     setLoading(false);
   }
 
-  const getFareTo = async (toV) => {
+  const getFareTo = async (toV,SelectTicket) => {
+    console.log('getFae to')
     setLoading(true);
     console.log('from and to i getFareTo ', from, toV);
     await getFareForUsers({
       "from": from,
       "to": toV,
+      "ttype":SelectTicket
     }).then(res => {
       console.log('data when get fare is hit', res.data.Fare)
       setApiFare(res.data.Fare);
@@ -227,15 +231,15 @@ const SourceDestination = ({ route }) => {
   }
 
 
-  const getFareBoth = async (fromV, toV) => {
+  const getFareBoth = async (fromV, toV,select) => {
     setLoading(true);
     console.log('from and to i getFareBoth ', fromV, toV);
     await getFareForUsers({
       "from": fromV,
       "to": toV,
-
+      "ttype":select
     }).then(res => {
-      console.log('data when get fare is hit', res.data.Fare)
+      console.log('data when get fare is hit', res.data)
       setApiFare(res.data.Fare);
     }).catch(err => { console.log('err when get fare is hit', err) })
     setLoading(false);
@@ -243,12 +247,15 @@ const SourceDestination = ({ route }) => {
   return (
 
     <View style={styles.body}>
-    
+      {/* {console.log("jfsjgjh",TicketTypeData)}
+      {console.log("jfsjgjh",SelectTicket)} */}
+      
       {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId,emailData.UPI)}
       {/* {console.log('qr data',assestdata)}
       {console.log('route id when useeffect is hit',routeId)}
       
           {console.log('index',fromIndex)}
+          
       {/* {console.log('rev stages', reversedStages)}
       {console.log('revDta', revData)} */}
       <View elevation={5} style={styles.parent}>
@@ -293,7 +300,7 @@ const SourceDestination = ({ route }) => {
                     if (stages[index + 1] != undefined) {
                       setTo(stages[index + 1].StageID);
                       // setToName(stages[index + 1].StageName);
-                      getFareBoth(value, stages[index + 1].StageID)
+                      getFareBoth(value, stages[index + 1].StageID,SelectTicket)
                     }
                     else if (stages[index + 1] == undefined) {
                       setTo(stages[index].StageID);
@@ -308,7 +315,7 @@ const SourceDestination = ({ route }) => {
                       setTo(reversedStages[index + 1].StageID);
                       // setToName(reversedStages[index + 1].StageName);
 
-                      getFareBoth(value, reversedStages[index + 1].StageID)
+                      getFareBoth(value, reversedStages[index + 1].StageID,SelectTicket)
                     }
                     else if (reversedStages[index + 1] == undefined) {
                       alert('Destination cannot be selected!! ')
@@ -345,6 +352,8 @@ const SourceDestination = ({ route }) => {
                     />);
                   })}
               </Picker>
+
+              
             </View>
           </View>
 
@@ -360,7 +369,7 @@ const SourceDestination = ({ route }) => {
                   setTo(value);
                   setToIndex(index);
                   console.log('to value in to picker', to)
-                  getFareTo(value);
+                  getFareTo(value,SelectTicket);
                   // console.log('from and to',from,value);
                   //     await getFareForUsers({
                   //         "from":from,
@@ -374,7 +383,8 @@ const SourceDestination = ({ route }) => {
               >
                 {(revData == 'T') ? reversedStages.map((item, index) => {
                   if (index > fromIndex) {
-                    return (<Picker.Item
+                    return (
+                    <Picker.Item
                       style={styles.pickerItem}
                       key={item.StageID}
                       label={item.StageName}
@@ -383,7 +393,7 @@ const SourceDestination = ({ route }) => {
                   }
                 })
                   :
-                  stages.map((item, index) => {
+                  stages.map((item, index)=>{
                     if (index > fromIndex) {
 
                       return (<Picker.Item
@@ -397,8 +407,70 @@ const SourceDestination = ({ route }) => {
                   })}
               </Picker>
             </View>
+            
           </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+            <Text style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>Ticket Type</Text>
+            
+            {/* <View style={styles.input}>
+           <Picker
+           selectedValue={SelectTicket}
+           mode="dropdown"
+           style={styles.picker}
+           >
+            {
+            TicketType.map((item,index) => {
 
+              return(
+              <Picker.item
+               style={styles.pickerItem}
+               key={index}
+               label={item.ttname}
+               value={item.ttshortname}
+              onValueChange={(value)=>setSelectTicket(value)}
+              />);
+
+
+            }
+            
+              
+            
+            
+            )}
+
+
+            
+           </Picker>
+           </View> */}
+           <View style={styles.input}>
+              <Picker
+                
+                selectedValue={SelectTicket}
+                onValueChange={ (value ) => {
+                  setSelectTicket(value);
+                  getFareBoth(from, to,value)
+                  
+                }}
+                mode="dropdown" // Android only
+                style={styles.picker}
+              >
+                { TicketTypeData.map((item, index) => {
+                   {
+                    return (
+                    <Picker.Item
+                      style={styles.pickerItem}
+                      key={index}
+                      label={item.ttname}
+                      value={item.ttshortname}
+                    />);
+                  }
+                })
+                  
+                  }
+              </Picker>
+            </View>
+           </View>
+           
           <View >
             <View style={styles.buttonsContainer}>
 
