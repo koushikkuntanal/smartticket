@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
+import { color } from 'react-native-reanimated';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
-import { getStagesApi, getStagesIDApi, TravelHandlerApi } from '../Screens/Api';
+import { getStagesApi, getStagesIDApi, setStagePassApi, TravelHandlerApi } from '../Screens/Api';
 
 const SetPassStage = ({route}) => {
     const EmpData = route.params.data;    //gets EmpId for next APi 
@@ -14,30 +15,36 @@ const SetPassStage = ({route}) => {
     const [stages, setStages] = useState([]);
     const [reversedStages, setReversedStages] = useState([]);
     const [selectedStage,setSelectedStage] = useState('');
+    const [routeId,setRouteId] = useState('');
+
+    const [actualIndex,setActualIndex] = useState('');
+    const [selectedIndex,setselectedIndex] = useState('');
+    
     useEffect(()=>{
         (async()=>{
             await TravelHandlerApi({              //api gets setRoute Data (ids of route)
                 "EmpId":EmpData.EmpId 
               }).then(async res=>{console.log('bus data from travel|astroid',res.data)
                 setRevData(res.data[res.data.length - 1].revRoute);
+                setRouteId(res.data[res.data.length-1].RouteID);
                     await getStagesIDApi({
                        "RouteID": res.data[res.data.length-1].RouteID
                     
                      }).then(async res => {
-                        //  console.log('res when getStagesIDApi is hit', res.data);
+                          // console.log('res when getStagesIDApi is hit', res.data);
             
                         const data = [];
-                        for (let i = 0; i < (res.data).length; i++) {
+                        for (let i = 0; i < (res.data.data).length; i++) {
                           await getStagesApi({
-                            "StageID": (res.data)[i].StageID
+                            "StageID": (res.data.data)[i].StageID
                           }).then(res => {
-                            // console.log('res when stag name id hit',)
+                           //  console.log('res when stag name id hit',res.data)
                             data.push(res.data);
-            
+                            
                           })
                         }
                         setStages(data);
-            
+                        setActualIndex(res.data.idx.idx);
                         // console.log('adding stage', stages);
                         setReversedStages([...(data)].reverse());
                         // console.log('reverser staged',reversedStages)
@@ -62,7 +69,50 @@ const SetPassStage = ({route}) => {
             },
             {
                 text: 'Pass Stage',
-                onPress: () => alert('confirm'),
+                onPress: async() => {
+                  let timestamp;
+                  let datestamp;
+                  const now = new Date();
+                  var  dd =now.getDate();
+                var mm =now.getMonth()+1;
+                var yyyy = now.getFullYear();
+                var  hh =now.getHours();
+                var min =now.getMinutes();
+                var ss = now.getSeconds();
+            
+                if(dd<10){
+                  dd='0'+dd;
+                }
+                if(mm<10){
+                  mm='0'+mm;
+                }
+                datestamp= yyyy+'-'+mm+'-'+dd;
+                  
+                if(min<10){
+                  min = '0' + min;
+                }
+                if(ss<10){
+                  ss = '0' + ss;
+                }
+                if(hh<10){
+                  hh = '0' + hh;
+                }
+                timestamp = hh +':'+ min +':'+ss;
+                  
+                  alert('confirm');
+                  await setStagePassApi({
+                    "EmpId":EmpData.EmpId,
+                    "RouteID":routeId,
+                    "StageId":selectedStage,
+                    "idx":parseInt(actualIndex)+1,
+                    "TimeStamp":  datestamp + ' ' + timestamp
+                  }).then(res=>{
+                    console.log(res.data);
+                  }).catch(err=>
+                    {
+                    console.log(err);
+                  })
+                },
                 style: 'default',
             },
         
@@ -85,7 +135,7 @@ const SetPassStage = ({route}) => {
           <AntDesign style={{ alignSelf: 'center' }} name="arrowright" size={24} color="black" onPress={null} />
 
           {(reversedStages.length == 0) ? <Text style={styles.routeName}>loading</Text> :
-            (revData == 'T') ? <View><Text style={styles.routeName}>{reversedStages[stages.length - 1].StageName}</Text></View> :
+            (revData == 'T') ? <Text style={styles.routeName}>{reversedStages[stages.length - 1].StageName}</Text> :
               (stages.length == 0) ? <Text style={styles.routeName}>loading</Text> : <View><Text style={styles.routeName}>{stages[stages.length - 1].StageName}</Text></View>
           }
         </Text>
@@ -100,13 +150,17 @@ const SetPassStage = ({route}) => {
                 
                  selectedValue={selectedStage}
                 onValueChange={(value, index) => {
+                  console.log('hgcavhx',value,'sjgfjsvj',index)
                     setSelectedStage(value);
+                    setselectedIndex(index);
+                    
+
                 }}
                 mode="dropdown" // Android only
                 style={styles.picker}
               >
                 {(revData == 'T') ? reversedStages.map((item, index) => {
-                    if(index == 0)
+                    if(index == actualIndex+1)
                   {return (<Picker.Item
                     style={styles.pickerItem}
                     key={item.StageID}
@@ -116,7 +170,7 @@ const SetPassStage = ({route}) => {
                 })
                   :
                   stages.map((item, index) => {
-                    if(index == 0)
+                    if(index == actualIndex +1)
                     {return (<Picker.Item
                       style={styles.pickerItem}
                       key={item.StageID}
@@ -131,12 +185,13 @@ const SetPassStage = ({route}) => {
           </View>
 
         </View>
+       {(actualIndex == stages.length -2) ? <Text style={[styles.title,{color:'red'}]}>Cannot Pass This Stage!!</Text> :
         <Btn
             textColor="white"
             bgColor={btnColor}
             btnLabel="Pass Stage"
             Press={onPressPassStage}
-          />
+          />}
     </View>
   )
 }
@@ -176,6 +231,7 @@ const styles = StyleSheet.create({
       title: {
         fontSize: 20,
         marginBottom: 20,
+        marginTop:20,
         alignContent:'center',
         textAlignVertical:'center',
       },

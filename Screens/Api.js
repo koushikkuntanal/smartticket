@@ -363,3 +363,12 @@ export const getTicketType = async (data) => {  // used in CashHadler.js for tic
   });
   return res;
 }
+
+export const setStagePassApi = async (data) => {  // used in setPassStage.js for PassStage
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/stage/pass',
+    data:data
+  });
+  return res;
+}

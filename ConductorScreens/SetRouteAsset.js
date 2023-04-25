@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Btn from "../components/Btn";
 import { background, btnColor } from "../components/Constants";
-import { getAssetIdApiForEmp, getRouteApi, setRouteApi } from "../Screens/Api";
+import { getAssetIdApiForEmp, getRouteApi, setRouteApi, setStagePassApi } from "../Screens/Api";
 
 const SetRouteAsset = ({route}) =>{
   const navigation = useNavigation();
@@ -94,7 +94,18 @@ const SetRouteAsset = ({route}) =>{
             navigation.goBack();
             }
               else{alert('Please try again!!')}
-            }).catch(error=>{'error when setting route',console.log(error)})
+            }).catch(error=>{'error when setting route',console.log(error)});
+
+            await setStagePassApi({
+              "EmpId":id,
+              "RouteID":sourceDestination,
+              "StageId":" ",
+              "idx":0,
+              "TimeStamp":  datestamp + ' ' + timestamp
+            }).then(res=>{
+              console.log('reswhe setPass hit 1sr time',res.data);
+
+            }).catch(err=>{console.log(err)})
             
         }
         setLoading(false);
