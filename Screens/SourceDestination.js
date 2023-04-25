@@ -95,7 +95,7 @@ const SourceDestination = ({ route }) => {
                 // console.log('res when stag name id hit',)
                 data.push(res.data);
 
-              })
+              }).catch(err=>{console.log('err stage id',err)})
             }
             setStages(data);
             setActualIndex(res.data.idx.idx);
@@ -164,8 +164,8 @@ const SourceDestination = ({ route }) => {
     else {
       // calculateDistance();
       // console.log(fare);
-      date = new Date().toDateString();
-      time = new Date().toLocaleTimeString();
+      date = new Date().toDateString();   
+      time = new Date().toLocaleTimeString();   
       console.log('details fro upi', email, cphone, upi,revData,reversedStages[fromIndex].StageName,reversedStages[1+fromIndex+toIndex].StageName);
 
       await transactionforUsers({
@@ -174,7 +174,7 @@ const SourceDestination = ({ route }) => {
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare * passengerNumber,
-        "passengers":passengerNumber,
+        "passengers":passengerNumber.toString(), 
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
@@ -260,6 +260,7 @@ const SourceDestination = ({ route }) => {
           
       {/* {console.log('rev stages', reversedStages)}
       {console.log('revDta', revData)} */}
+      {console.log('rev stages', reversedStages)}
       <View elevation={5} style={styles.parent}>
         {/* {console.log('final stages',stages)} */}
 

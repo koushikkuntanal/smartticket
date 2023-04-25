@@ -54,10 +54,10 @@ const PaymentScreen = ({ route }) => {
                         "route":routeName,
                         "from":from,
                         "to":to,
-                        "fare":amount,
-                        "time":res.data.time,
-                        "Tgen":'Q',
-                        "passengers":passengerNumber
+                        "fare":amount,        
+                        "time":res.data.time, 
+                        "Tgen":'Q', 
+                        "passengers":passengerNumber 
                       }).then(res=>{console.log('res ehen qr is hit',res.data)
                     setQrValue('data:image/png;base64,'+res.data);
                     })
