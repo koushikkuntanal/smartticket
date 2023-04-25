@@ -67,6 +67,11 @@ export default function LastTicket({route}){
         <Text style={styles.label}>To : </Text>
         <Text style={styles.value2}>{hisObj.to}</Text>
       </View>
+
+      <View style={styles.row}>
+      <Text style={styles.label}>Number of Passengers : </Text>
+        <Text style={styles.value}>{hisObj.passengers}</Text>
+      </View>
       
       <View style={styles.row}>
         <Text style={styles.label}>Created Time : </Text>

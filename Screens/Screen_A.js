@@ -34,7 +34,7 @@ export default function Screen_A({route}){
       }).then(res=>{
         // var HistoryObj = JSON.parse(res.data[0].Tdata)
 
-          // console.log(HistoryObj);
+          console.log('jsgjh in scareen A',res.data);
          navigation.navigate('History',{historyData:res.data});
         })
         

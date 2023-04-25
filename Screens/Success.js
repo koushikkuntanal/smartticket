@@ -13,7 +13,7 @@ const History = ({route}) =>{
         
         if(item.Tdata != "")
        {  hisObj=JSON.parse(item.Tdata);
-       console.log('items',hisObj)}
+       console.log('items in success',hisObj)}
        if(item.Tdata !=""){
         return(
           
@@ -51,7 +51,10 @@ const History = ({route}) =>{
         <Text style={styles.value}>{hisObj.time}</Text>
       </View>
       
-      
+      <View style={styles.row}>
+        <Text style={styles.label}>Number of Passengers : </Text>
+        <Text style={styles.value}>{hisObj.passengers}</Text>
+      </View>
     
         
         

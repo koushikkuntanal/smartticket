@@ -26,7 +26,7 @@ const PaymentScreen = ({ route }) => {
   const busNo = route.params.busNo;
   const [status, setStatus] = useState("");
   const [qrValue, setQrValue] = useState('Your String Value');
-  
+  const passengerNumber = route.params.passengerNumber;
   
   const checkOrderS =() =>{
     var obj = setInterval(callCheck,1000);
@@ -48,7 +48,7 @@ const PaymentScreen = ({ route }) => {
                   })
                     .then(async (res) => {
                        console.log('jgkhxkjskj',res.data);
-                       await transactionQrApi({
+                       await transactionQrApi({ 
                         "cid":customerId,
                         "orderid":orderId,
                         "route":routeName,
@@ -56,7 +56,8 @@ const PaymentScreen = ({ route }) => {
                         "to":to,
                         "fare":amount,
                         "time":res.data.time,
-                        "Tgen":'Q'
+                        "Tgen":'Q',
+                        "passengers":passengerNumber
                       }).then(res=>{console.log('res ehen qr is hit',res.data)
                     setQrValue('data:image/png;base64,'+res.data);
                     })
@@ -156,6 +157,10 @@ const PaymentScreen = ({ route }) => {
       <View style={styles.row}>
         <Text style={styles.label}>Bus Number:</Text>
         <Text style={styles.value}>{busNo}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>Number of Passengers:</Text>
+        <Text style={styles.value}>{passengerNumber}</Text>
       </View>
       {
         console.log('qr',qrValue)

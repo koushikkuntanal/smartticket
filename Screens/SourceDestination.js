@@ -39,7 +39,7 @@ const SourceDestination = ({ route }) => {
   const [apiFare, setApiFare] = useState();
   const [TicketTypeData,setTicketDataType] = useState([]);
   const [SelectTicket,setSelectTicket] = useState('');
- 
+  const [actualIndex,setActualIndex] = useState('');
   useEffect(() => {
     // console.log('sending asset id',assestdata);
      console.log('recieved email data',emailData);
@@ -85,12 +85,12 @@ const SourceDestination = ({ route }) => {
             "RouteID": res.data[res.data.length-1].RouteID
 
           }).then(async res => {
-            //  console.log('res when getStagesIDApi is hit', res.data);
+              console.log('res when getStagesIDApi is hit', res.data.data);
 
             const data = [];
-            for (let i = 0; i < (res.data).length; i++) {
+            for (let i = 0; i < (res.data.data).length; i++) {
               await getStagesApi({
-                "StageID": (res.data)[i].StageID
+                "StageID": (res.data.data)[i].StageID
               }).then(res => {
                 // console.log('res when stag name id hit',)
                 data.push(res.data);
@@ -98,7 +98,7 @@ const SourceDestination = ({ route }) => {
               })
             }
             setStages(data);
-
+            setActualIndex(res.data.idx.idx);
             // console.log('adding stage', stages);
             setReversedStages([...(data)].reverse());
             // console.log('reverser staged',reversedStages)
@@ -173,7 +173,8 @@ const SourceDestination = ({ route }) => {
         "RouteName": routeId,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
-        "Fare":apiFare * passengerNumber
+        "Fare":apiFare * passengerNumber,
+        "passengers":passengerNumber,
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
@@ -184,6 +185,7 @@ const SourceDestination = ({ route }) => {
         Date: date,
         Time: time,
         //Fare:fare,
+        passengerNumber: passengerNumber,
         mail: email.trim(),
         cphone: cphone,
         upi: upi,
@@ -333,23 +335,23 @@ const SourceDestination = ({ route }) => {
                 style={styles.picker}
               >
                 {(revData == 'T') ? reversedStages.map((item, index) => {
-
+                  if(index == actualIndex){
                   return (<Picker.Item
                     style={styles.pickerItem}
                     key={item.StageID}
                     label={item.StageName}
                     value={item.StageID}
-                  />);
+                  />);}
                 })
                   :
                   stages.map((item, index) => {
-
+                    if(index == actualIndex){
                     return (<Picker.Item
                       style={styles.pickerItem}
                       key={item.StageID}
                       label={item.StageName}
                       value={item.StageID}
-                    />);
+                    />);}
                   })}
               </Picker>
 
@@ -382,19 +384,19 @@ const SourceDestination = ({ route }) => {
                 style={styles.picker}
               >
                 {(revData == 'T') ? reversedStages.map((item, index) => {
-                  if (index > fromIndex) {
+                  if (index > actualIndex) {
                     return (
                     <Picker.Item
                       style={styles.pickerItem}
                       key={item.StageID}
                       label={item.StageName}
-                      value={item.StageID}
-                    />);
+                      value={item.StageID}   
+                    />);  
                   }
                 })
                   :
                   stages.map((item, index)=>{
-                    if (index > fromIndex) {
+                    if (index > actualIndex) {
 
                       return (<Picker.Item
                         style={styles.pickerItem}
