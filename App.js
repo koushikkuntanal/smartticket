@@ -66,6 +66,7 @@ import History from './Screens/Success';
 import Screen_C from './Screens/Screen_C';
 import LastTicket from './Screens/LastTicket';
 import CurrentTripAmt from './ConductorScreens/CurrentTripAmt';
+import SetPassStage from './ConductorScreens/SetPassStage';
 
 
 
@@ -702,6 +703,7 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Route Asset' component={SetRouteAsset}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Source Destination' component={SourceDestination}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Current Trip' component={CurrentTripAmt}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Set Pass Stage' component={SetPassStage}/>
    
      
      

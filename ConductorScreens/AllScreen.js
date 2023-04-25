@@ -64,6 +64,21 @@ const cashHandler=async () =>{
   setLoading(false);
 }
 
+const onPressSetPass = async()=>{
+  setLoading(true);
+  await ProfileApi({
+    "flag":Flag,
+    "id":id
+  })
+  .then(res=>{
+   
+  navigation.navigate('Set Pass Stage',{data:res.data});
+})
+  .catch(error=>alert(error));
+    
+  setLoading(false);
+}
+
 const onPressCurrentTrip=async () =>{
   setLoading(true);
   await ProfileApi({
@@ -178,6 +193,13 @@ setLoading(false);
             source={require('../assets/LekPay-Ticket.png')}
             />
             <Text style={styles.text}>Current{'\n'}Trip</Text>
+           </TouchableOpacity>
+
+           <TouchableOpacity onPress={onPressSetPass}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-Ticket.png')}
+            />
+            <Text style={styles.text}>Passed Stage</Text>
            </TouchableOpacity>
 
             </View>

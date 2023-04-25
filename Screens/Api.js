@@ -336,7 +336,7 @@ export const TransactionHistory = async (data) => {  // used in Scree A
   return res;
 }
 
-export const TravelHandlerApi = async (data) => {  // used in CashHadler.js for id
+export const TravelHandlerApi = async (data) => {  // used in CashHadler.js for id  also used in setPass
   const res = await axios({
     method:'Post',
     url:'https://amsweets.in/employee/astroid',
