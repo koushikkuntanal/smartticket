@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
 import { Alert, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -16,7 +17,7 @@ const SetPassStage = ({route}) => {
     const [reversedStages, setReversedStages] = useState([]);
     const [selectedStage,setSelectedStage] = useState('');
     const [routeId,setRouteId] = useState('');
-
+    const navigation = useNavigation();
     const [actualIndex,setActualIndex] = useState('');
     const [selectedIndex,setselectedIndex] = useState('');
     
@@ -38,7 +39,7 @@ const SetPassStage = ({route}) => {
                           await getStagesApi({
                             "StageID": (res.data.data)[i].StageID
                           }).then(res => {
-                           //  console.log('res when stag name id hit',res.data)
+                             console.log('res when stag name id hit',res.data)
                             data.push(res.data);
                             
                           })
@@ -99,7 +100,7 @@ const SetPassStage = ({route}) => {
                 }
                 timestamp = hh +':'+ min +':'+ss;
                   
-                  alert('confirm');
+                  
                   await setStagePassApi({
                     "EmpId":EmpData.EmpId,
                     "RouteID":routeId,
@@ -108,9 +109,14 @@ const SetPassStage = ({route}) => {
                     "TimeStamp":  datestamp + ' ' + timestamp
                   }).then(res=>{
                     console.log(res.data);
+                    if(res.data.message == 'stage pass set'){
+                      Alert.alert('Success!','Stage passed');
+                      navigation.goBack();
+                    }
                   }).catch(err=>
                     {
                     console.log(err);
+                    alert(err);
                   })
                 },
                 style: 'default',

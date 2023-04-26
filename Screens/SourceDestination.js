@@ -42,7 +42,7 @@ const SourceDestination = ({ route }) => {
   const [actualIndex,setActualIndex] = useState('');
   useEffect(() => {
     // console.log('sending asset id',assestdata);
-     console.log('recieved email data',emailData);
+     console.log('recieved email data',emailData,from,to);
     console.log('from to values', from, to);
     setEmail(emailData.Uemail);
     setCphone(emailData.Umobile);
@@ -80,33 +80,37 @@ const SourceDestination = ({ route }) => {
                   console.log('Tocket type',res.data.data);
                  setTicketDataType(res.data.data);
                 }).catch(err=>{console.log(err)})
-
+                for(let i = 0; i<=2; i++)
           await getStagesIDApi({
-            "RouteID": res.data[res.data.length-1].RouteID
+            "RouteID": res.data[res.data.length-1].RouteID 
 
           }).then(async res => {
-              console.log('res when getStagesIDApi is hit', res.data.data);
-
+              console.log('res when getStagesIDApi is hit', res.data);
+              setActualIndex(res.data.idx.idx);
             const data = [];
             for (let i = 0; i < (res.data.data).length; i++) {
+              console.log('data sending to api',i ,(res.data.data)[i].StageID )
               await getStagesApi({
                 "StageID": (res.data.data)[i].StageID
               }).then(res => {
-                // console.log('res when stag name id hit',)
+                 console.log(`res when stag  id is hit for ${i} usng id`,res.data)
+                 
                 data.push(res.data);
-
-              }).catch(err=>{console.log('err stage id',err)})
+                
+              }).catch(err=>{console.log('err stage id',err)})  
             }
+            console.log('daata',data);
             setStages(data);
-            setActualIndex(res.data.idx.idx);
-            // console.log('adding stage', stages);
             setReversedStages([...(data)].reverse());
+            // console.log('adding stage', stages);
+            
             // console.log('reverser staged',reversedStages)
 
 
-          }).catch(error => {
+          }
+          ).catch(error => {
             console.log(error)
-            alert(error)
+            
           }).catch(error => {
             console.log(error)
             alert(error)
@@ -252,7 +256,7 @@ const SourceDestination = ({ route }) => {
       {/* {console.log("jfsjgjh",TicketTypeData)}
       {console.log("jfsjgjh",SelectTicket)} */}
       
-      {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId,emailData.UPI)}
+      {console.log('email data',emailData.Uemail,emailData.Umobile,emailData.UserId,emailData.UPI,from,to)}
       {/* {console.log('qr data',assestdata)}
       {console.log('route id when useeffect is hit',routeId)}
       
@@ -260,7 +264,7 @@ const SourceDestination = ({ route }) => {
           
       {/* {console.log('rev stages', reversedStages)}
       {console.log('revDta', revData)} */}
-      {console.log('rev stages', reversedStages)}
+     
       <View elevation={5} style={styles.parent}>
         {/* {console.log('final stages',stages)} */}
 
@@ -276,7 +280,7 @@ const SourceDestination = ({ route }) => {
           <AntDesign style={{ alignSelf: 'center' }} name="arrowright" size={32} color="black" onPress={null} />
 
           {(reversedStages.length == 0) ? <Text style={styles.routeName}>loading</Text> :
-            (revData == 'T') ? <Text style={styles.routeName}>{reversedStages[stages.length - 1].StageName}</Text> :
+            (revData == 'T') ? <Text style={styles.routeName}>{reversedStages[reversedStages.length - 1].StageName}</Text> :
               (stages.length == 0) ? <Text style={styles.routeName}>loading</Text> : <Text style={styles.routeName}>{stages[stages.length - 1].StageName}</Text>
           }
         </View>
@@ -300,7 +304,9 @@ const SourceDestination = ({ route }) => {
                   setFromIndex(index);
 
                   if (revData == 'F') {
+                    
                     if (stages[index + 1] != undefined) {
+
                       setTo(stages[index + 1].StageID);
                       // setToName(stages[index + 1].StageName);
                       getFareBoth(value, stages[index + 1].StageID,SelectTicket)
@@ -312,12 +318,12 @@ const SourceDestination = ({ route }) => {
                       alert('Destination cannot be selected!! ')
                     }
                   }
-                  else if (revData == 'T') {
+                   if (revData == 'T') {
                     console.log('stages ', reversedStages[index + 1]);
                     if (reversedStages[index + 1] != undefined) {
                       setTo(reversedStages[index + 1].StageID);
                       // setToName(reversedStages[index + 1].StageName);
-
+                      setFrom(reversedStages[actualIndex].StageID);
                       getFareBoth(value, reversedStages[index + 1].StageID,SelectTicket)
                     }
                     else if (reversedStages[index + 1] == undefined) {
@@ -335,8 +341,8 @@ const SourceDestination = ({ route }) => {
                 mode="dropdown" // Android only
                 style={styles.picker}
               >
-                {(revData == 'T') ? reversedStages.map((item, index) => {
-                  if(index == actualIndex){
+                {(revData === 'T') ? reversedStages.map((item, index) => {
+                  if(index === actualIndex){
                   return (<Picker.Item
                     style={styles.pickerItem}
                     key={item.StageID}
@@ -372,14 +378,13 @@ const SourceDestination = ({ route }) => {
                   setTo(value);
                   setToIndex(index);
                   console.log('to value in to picker', to)
-                  getFareTo(value,SelectTicket);
-                  // console.log('from and to',from,value);
-                  //     await getFareForUsers({
-                  //         "from":from,
-                  //         "to":value,
-                  //     }).then(res=>{console.log('data when get fare is hit',res.data.Fare)
-                  //     setApiFare(res.data.Fare);
-                  //    }).catch(err=>{console.log('err when get fare is hit',err)})
+                  if(revData == 'F')
+                  {getFareBoth(from,value,SelectTicket);}
+                  else{
+                    setFrom(reversedStages[actualIndex].StageID);
+                    getFareBoth(reversedStages[actualIndex].StageID,value,SelectTicket);
+                  }
+                  
                 }}
                 mode="dropdown" // Android only
                 style={styles.picker}

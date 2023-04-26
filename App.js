@@ -67,6 +67,7 @@ import Screen_C from './Screens/Screen_C';
 import LastTicket from './Screens/LastTicket';
 import CurrentTripAmt from './ConductorScreens/CurrentTripAmt';
 import SetPassStage from './ConductorScreens/SetPassStage';
+import AboutUs from './Screens/AboutUs';
 
 
 
@@ -446,7 +447,8 @@ function StackNavigator (data) {
           
           <MaterialIcons
           style={{marginRight:15}}
-           name="notifications" 
+           name="add-circle" 
+           onPress={() => navigation.navigate("AboutUs")}
            size={26} 
            color="#FFFFFF"
             />
@@ -508,7 +510,7 @@ function StackNavigator (data) {
             style={{marginRight:25}}
             name="help-circle-outline"
             onPress={() => navigation.navigate("Faq")}
-            size={25}
+            size={25}                                    
             color='#ffffff'
           />                                                   
 
@@ -668,6 +670,19 @@ function StackNavigator (data) {
           title: 'LastTicket',
           headerShown: true,
   
+          headerStyle:{
+            backgroundColor: '#C80088'
+          }
+        }}
+      />
+
+      <Stack.Screen 
+        name='AboutUs'
+        component={AboutUs}
+        options={{
+          title: 'AboutUs',
+          headerShown: true,
+          
           headerStyle:{
             backgroundColor: '#C80088'
           }

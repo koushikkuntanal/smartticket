@@ -20,8 +20,7 @@ const Scnner = ({route}) =>{
   
     useEffect(() => {
 
-      
-       
+      setScanned(false);       
       const getBarCodeScannerPermissions = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');

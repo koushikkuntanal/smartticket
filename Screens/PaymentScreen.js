@@ -111,10 +111,14 @@ const PaymentScreen = ({ route }) => {
           })
           .catch((error) => {
             console.log(error);
+            alert('Request Failed. Please Try Again!!');
+            navigation.goBack();
           });
       })
       .catch((error) => {
         console.log(error);
+        alert('Request Failed. Please Try Again!!')
+        navigation.goBack();
       });
   };
 
