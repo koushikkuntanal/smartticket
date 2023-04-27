@@ -447,7 +447,7 @@ function StackNavigator (data) {
           
           <MaterialIcons
           style={{marginRight:15}}
-           name="add-circle" 
+           name="error-outline" 
            onPress={() => navigation.navigate("AboutUs")}
            size={26} 
            color="#FFFFFF"
@@ -680,7 +680,7 @@ function StackNavigator (data) {
         name='AboutUs'
         component={AboutUs}
         options={{
-          title: 'AboutUs',
+          title: 'About Us',
           headerShown: true,
           
           headerStyle:{
