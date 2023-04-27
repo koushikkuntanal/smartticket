@@ -10,23 +10,26 @@ const AboutUs = () => {
       <Text style={styles.label}>Proudly owned by</Text> 
     
       <Text style={styles.label1}>POWAHA INFOTECH PVT.LTD</Text>   
+
+      <View style={styles.poha}>
+      <Text style={styles.centertext1}>Contributors</Text>
+      </View>
+
+      <View style={styles.poha}>
+      <Text style={styles.centertext}>Akash Hadli</Text>
+    </View>
       
-      <View style={styles.row}>
-      <Text style={styles.label2}>Contributers</Text>
-      </View>
-      <View style={styles.row}>
-      <Text style={styles.label4}>Akash Hadli</Text>
-      </View>
-     
-      <View style={styles.row}>
-       <Text style={styles.label4}>Koushik V Kuntanal</Text>
-      </View>
-      <View style={styles.row}>
-      <Text style={styles.label4}>Manjunath Basava</Text>
-      </View>
-      <View style={styles.row}>
-      <Text style={styles.label4}>Prathik K</Text>
-      </View>
+    <View style={styles.poha}>
+      <Text style={styles.centertext}>Koushik V Kuntanal</Text>
+    </View> 
+      
+    <View style={styles.poha}>
+      <Text style={styles.centertext}>Manjunath Basava</Text>
+    </View> 
+
+    <View style={styles.poha}>
+      <Text style={styles.centertext}>Prathik K</Text>
+    </View> 
       
     </View>
     </View>
@@ -34,6 +37,22 @@ const AboutUs = () => {
 };
 
 const styles = StyleSheet.create({
+
+  centertext1:{
+    textAlign: 'center',
+    fontSize:22,
+    marginTop:15
+  },
+
+    centertext:{
+      textAlign: 'center',
+      fontSize:18,
+      marginTop:15
+    },
+    poha:{
+      
+      alignItems: 'center'
+    },
 
     body:{
      backgroundColor:"#ffffff",
@@ -51,7 +70,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowRadius: 1,
         width:"92%",
-        height:"46%",
+        height:"55%",
         marginTop:180,
         
       },
@@ -86,28 +105,7 @@ const styles = StyleSheet.create({
        
       },
 
-      label2:{
-        fontSize:21,
-        paddingLeft:90,
-        //marginBottom:8
-      },
-
-    
-      label4:{
-        fontSize: 18,
-        alignSelf:'center',
-        marginTop:7,
-        paddingLeft:98
-
-      },
-
-      label5:{
-        fontSize: 18,
-        alignSelf:'center',
-        marginTop:7,
-        paddingLeft:98
-
-      },
+      
 
 });
 
