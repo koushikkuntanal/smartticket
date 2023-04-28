@@ -71,7 +71,7 @@ const SourceDestination = ({ route }) => {
         await getRouteIdApi({
           "AssetID": res.data.AstId
         }).then(async res => {
-          //  console.log('res when getRouteIdApi is hit',res.data[res.data.length-1])
+            console.log('res when getRouteIdApi jhgskjadjsgj  is hit',res.data)
           setRouteId(res.data[res.data.length-1].RouteID)
 
                  await getTicketType({
@@ -306,10 +306,10 @@ const SourceDestination = ({ route }) => {
                   if (revData == 'F') {
                     
                     if (stages[index + 1] != undefined) {
-
+                      console.log('actual i',actualIndex)
                       setTo(stages[index + 1].StageID);
                       // setToName(stages[index + 1].StageName);
-                      getFareBoth(value, stages[index + 1].StageID,SelectTicket)
+                      getFareBoth(stages[actualIndex].StageID, stages[actualIndex + 1].StageID,SelectTicket)
                     }
                     else if (stages[index + 1] == undefined) {
                       setTo(stages[index].StageID);
@@ -379,7 +379,10 @@ const SourceDestination = ({ route }) => {
                   setToIndex(index);
                   console.log('to value in to picker', to)
                   if(revData == 'F')
-                  {getFareBoth(from,value,SelectTicket);}
+                  
+                  {
+                    setFrom(stages[actualIndex].StageID)
+                    getFareBoth(stages[actualIndex].StageID,value,SelectTicket);}
                   else{
                     setFrom(reversedStages[actualIndex].StageID);
                     getFareBoth(reversedStages[actualIndex].StageID,value,SelectTicket);

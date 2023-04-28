@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { color } from 'react-native-reanimated';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
-import { getStagesApi, getStagesIDApi, setStagePassApi, TravelHandlerApi } from '../Screens/Api';
+import { getStagesApi, getStagesIDApi, setRouteApi, setStagePassApi, TravelHandlerApi } from '../Screens/Api';
 
 const SetPassStage = ({route}) => {
     const EmpData = route.params.data;    //gets EmpId for next APi 
@@ -20,6 +20,7 @@ const SetPassStage = ({route}) => {
     const navigation = useNavigation();
     const [actualIndex,setActualIndex] = useState('');
     const [selectedIndex,setselectedIndex] = useState('');
+    const [assetId,setAssetId] = useState('');
     
     useEffect(()=>{
         (async()=>{
@@ -28,12 +29,13 @@ const SetPassStage = ({route}) => {
               }).then(async res=>{console.log('bus data from travel|astroid',res.data)
                 setRevData(res.data[res.data.length - 1].revRoute);
                 setRouteId(res.data[res.data.length-1].RouteID);
+                if(res.data.length > 2) {setAssetId(res.data[res.data.length-3].AstId)}else{setAssetId(res.data[res.data.length-1].AstId)}
                     await getStagesIDApi({
                        "RouteID": res.data[res.data.length-1].RouteID
                     
                      }).then(async res => {
                           // console.log('res when getStagesIDApi is hit', res.data);
-            
+                        
                         const data = [];
                         for (let i = 0; i < (res.data.data).length; i++) {
                           await getStagesApi({
@@ -53,13 +55,55 @@ const SetPassStage = ({route}) => {
             
                       }).catch(error => {
                         console.log(error)
-                        alert(error)
+                        alert('Please Try again!! ')
                       });
 
             })
         })();
     },[]);
-    
+    const onPressDetach = async ()=>{
+      let timestamp;
+                  let datestamp;
+                  const now = new Date();
+                  var  dd =now.getDate();
+                var mm =now.getMonth()+1;
+                var yyyy = now.getFullYear();
+                var  hh =now.getHours();
+                var min =now.getMinutes();
+                var ss = now.getSeconds();
+            
+                if(dd<10){
+                  dd='0'+dd;
+                }
+                if(mm<10){
+                  mm='0'+mm;
+                }
+                datestamp= yyyy+'-'+mm+'-'+dd;
+                  
+                if(min<10){
+                  min = '0' + min;
+                }
+                if(ss<10){
+                  ss = '0' + ss;
+                }
+                if(hh<10){
+                  hh = '0' + hh;
+                }
+                timestamp = hh +':'+ min +':'+ss;
+      await setRouteApi({
+        "EmpId":EmpData.EmpId,
+        "RouteID":'Detached',
+        "AstId":assetId,
+        "revRoute":'',
+        "time":  datestamp + ' ' + timestamp
+      }).then(res=>{console.log(res.data)
+        if(res.data.message == 'Asset Route Map Success')
+        {alert('Route successfully set!');
+      navigation.goBack();
+      }
+        else{alert('Please try again!!')}
+      }).catch(error=>{'error when setting route',console.log(error)});
+    }
     const onPressPassStage = () =>{
         Alert.alert('Confirm',`Do you want to pass this stage ${selectedStage} ? `, [
             
@@ -191,7 +235,16 @@ const SetPassStage = ({route}) => {
           </View>
 
         </View>
-       {(actualIndex == stages.length -2) ? <Text style={[styles.title,{color:'red'}]}>Cannot Pass This Stage!!</Text> :
+       {(actualIndex == stages.length -2) ? 
+       <View>
+           <Text style={[styles.title,{color:'red'}]}>Cannot Pass This Stage!!</Text>
+           <Btn
+            textColor="white"
+            bgColor={btnColor}
+            btnLabel="Detach Route"
+            Press={onPressDetach}
+          />
+       </View> :
         <Btn
             textColor="white"
             bgColor={btnColor}

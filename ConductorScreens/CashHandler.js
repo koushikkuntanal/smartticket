@@ -18,7 +18,7 @@ const CashHandler =({route}) =>{
         
         
         const data = [];
-        for (let index = 0; index < (res.data).length-1; index++) {
+        for (let index = 0; index < (res.data).length-1; index+=2) {
           console.log('from',res.data[index].Time);
           console.log('to',res.data[index+1].Time);
           console.log('rev id got',res.data[index].revRoute);
@@ -27,8 +27,9 @@ const CashHandler =({route}) =>{
           "RouteID":res.data[index].RouteID,
           "fromTime":res.data[index].Time,
           "toTime":res.data[index+1].Time,
-          "revRoute":res.data[index].revRoute,
+          "revRoute":res.data[index].revRoute
          }).then(res=>{
+          console.log(res.data);
          data.push(res.data);
 
          })
