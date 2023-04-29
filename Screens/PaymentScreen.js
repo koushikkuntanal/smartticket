@@ -27,7 +27,8 @@ const PaymentScreen = ({ route }) => {
   const [status, setStatus] = useState("");
   const [qrValue, setQrValue] = useState('Your String Value');
   const passengerNumber = route.params.passengerNumber;
-  
+   
+  const ttype = route.params.ttype;
   const checkOrderS =() =>{
     var obj = setInterval(callCheck,1000);
 
@@ -44,7 +45,9 @@ const PaymentScreen = ({ route }) => {
                     "OrderID": res.data.order_id,
                     "tstatus":res.data.order_status,
                     "timestamp":res.data.created_at.toString(),
-                    "Tgen":'Q'
+                    "Tgen":'Q',
+                    
+                    
                   })
                     .then(async (res) => {
                        console.log('jgkhxkjskj',res.data);
