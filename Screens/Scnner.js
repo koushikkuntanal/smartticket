@@ -4,9 +4,12 @@ import { View, Text, StyleSheet, Alert,Button} from "react-native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { useNavigation } from "@react-navigation/native";
+import { TransactionHistory } from "./Api";
+
 
 const Scnner = ({route}) =>{
   const forEmaildata = route.params.data;
+
   const height = 800;
   const width = 500;
     const maskRowHeight = 30;
@@ -17,7 +20,7 @@ const Scnner = ({route}) =>{
 
     const navigation = useNavigation();
 
-  
+   let typeData;
     useEffect(() => {
 
       setScanned(false);       
@@ -29,6 +32,18 @@ const Scnner = ({route}) =>{
       getBarCodeScannerPermissions();
       console.log(scanned);
     },[]);
+
+    // (async() => {
+    //   await TransactionHistory({
+    //     "UserId":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+    //   }).then(res=>{
+    //     console.log(res.data)
+    //    typeData = JSON.parse(res.data[res.data.length-1].Tdata),
+    //     console.log(typeData)})
+    //     .catch(err=>console.log(err))
+    // })()
+
+
   
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
@@ -42,6 +57,7 @@ const Scnner = ({route}) =>{
         },
         {
           text: 'Proceed',
+          
           onPress:() => navigation.navigate('Source Destination',{data:data,emailData:forEmaildata})
           
         },
@@ -58,7 +74,7 @@ const Scnner = ({route}) =>{
     }
   return (
     <View style={styles.body}>
-      
+      {console.log('xyx',forEmaildata)}
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}

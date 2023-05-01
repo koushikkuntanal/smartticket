@@ -6,12 +6,14 @@ export default function LastTicket({route}){
 
     
     const historyData = route.params.historyData;
-    const RevhistoryData = ([...(historyData)].reverse());
+    // const RevhistoryData = ([...(historyData)].reverse());
     const [qrValue, setQrValue] = useState('Your String Value');
-    let hisObj;
+    let hisObj=JSON.parse(historyData.Tdata);
+    let obj;
     useEffect(()=>{
-      if(RevhistoryData[0] != undefined)
-      {let obj = JSON.parse(RevhistoryData[0].Tdata);
+      console.log('histadta',hisObj,historyData)
+      if(historyData.Tdata != undefined)
+      { obj = JSON.parse(historyData.Tdata);
       console.log("api data ",obj);
       (async()=>{
         await transactionQrApi({
@@ -22,82 +24,89 @@ export default function LastTicket({route}){
           "to":obj.to,
           "fare":obj.fare,
           "time":obj.time,
-          "Tgen":'Q'
+          "Tgen":'Q',
+          "passengers":obj.passengers,
+          "ttype": obj.ttype,
         }).then(res=>{console.log('res ehen qr is hit',res.data)
       setQrValue('data:image/png;base64,'+res.data);
       })
         .catch(err=>{console.log('err ehwn qr is hiy',err)})
-      })();}
+      })();
+    }
     },[]);
     
+
     return (
-       
-     <View>
-      {(RevhistoryData.length !=0) ? <View>
-       {RevhistoryData.map((item,index)=>{
-        
-        if(item.Tdata != "")
-       {  hisObj=JSON.parse(item.Tdata);
-       console.log('items',hisObj)}
-       if(item.Tdata !="" && index == 0){
-        return(
-          
-          <View style={styles.container} key={index}>
-      
-       
-       
-       <View style={styles.row}>
-        <Text style={styles.label}>OrderID : </Text>
-        <Text style={styles.value}>{hisObj.orderid}</Text>
 
-        <Text style={styles.label}>Fare : </Text>
-        <Text style={styles.value2}>{'\u20B9'} {hisObj.fare}</Text>
-      </View> 
+      <View style={styles.container} >
+      <View style={styles.row}>
+       <Text style={styles.label}>OrderID : </Text>
+       <Text style={styles.value}>{hisObj.orderid}</Text>
 
-      <View style={styles.row}>
-        <Text style={styles.label}>Route : </Text>
-        <Text style={styles.value1}>{hisObj.route}</Text>
-      </View> 
-
-      <View style={styles.row}>
-        <Text style={styles.label}>From : </Text>
-        <Text style={styles.value}>{hisObj.from}</Text>
-      
-     
-        <Text style={styles.label}>To : </Text>
-        <Text style={styles.value2}>{hisObj.to}</Text>
-      </View>
-
-      <View style={styles.row}>
-      <Text style={styles.label}>Number of Passengers : </Text>
-        <Text style={styles.value}>{hisObj.passengers}</Text>
-      </View>
-      
-      <View style={styles.row}>
-        <Text style={styles.label}>Created Time : </Text>
-        <Text style={styles.value}>{hisObj.time}</Text>
-      </View>
-      <View style={{alignItems:'center',justifyContent:'center',marginTop:20}}>
-         <Image source={{uri:`${qrValue}`}} style={{width:150,height:150,}}></Image>
-         </View>
-      
-    
-        
-        
-        
-      
-     </View> 	
-        )}
-        else return null;
-      })}
-        
+       <Text style={styles.label}>Fare : </Text>
+       <Text style={styles.value2}>{'\u20B9'} {hisObj.fare}</Text>
      </View> 
-     : alert('No last Ticket available..')
+
+     <View style={styles.row}>
+       <Text style={styles.label}>Route : </Text>
+       <Text style={styles.value1}>{hisObj.route}</Text>
+     </View> 
+
+     <View style={styles.row}>
+       <Text style={styles.label}>From : </Text>
+       <Text style={styles.value}>{hisObj.from}</Text>
      
-     
-      }
-      
+    
+       <Text style={styles.label}>To : </Text>
+       <Text style={styles.value2}>{hisObj.to}</Text>
      </View>
+
+     <View style={styles.row}>
+     <Text style={styles.label}>Number of Passengers : </Text>
+       <Text style={styles.value}>{hisObj.passengers}</Text>
+     </View>
+     
+     <View style={styles.row}>
+       <Text style={styles.label}>Created Time : </Text>
+       <Text style={styles.value}>{hisObj.time}</Text>
+     </View>
+
+     <View style={styles.row}>
+       <Text style={styles.label}>Ticket Type : </Text>
+       <Text style={styles.value}>{hisObj.ttype}</Text>
+     </View>
+     <View style={{alignItems:'center',justifyContent:'center',marginTop:20}}>
+        <Image source={{uri:`${qrValue}`}} style={{width:150,height:150,}}></Image>
+        </View>
+     
+   
+       
+       
+       
+     
+    </View> 
+    //  <View>
+    //   (hisObj ) ? <View>
+       
+        
+       
+       
+    //   {
+       
+          
+          	
+    //     }
+    //     else return null;
+      
+
+        
+    //  </View> 
+    //  : alert('No last Ticket available..')
+     
+     
+     
+      
+    //  </View>
     );
 };
 

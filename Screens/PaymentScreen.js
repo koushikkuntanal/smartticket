@@ -60,7 +60,8 @@ const PaymentScreen = ({ route }) => {
                         "fare":amount,        
                         "time":res.data.time, 
                         "Tgen":'Q', 
-                        "passengers":passengerNumber 
+                        "passengers":passengerNumber,
+                        "ttype": ttype,
                       }).then(res=>{console.log('res ehen qr is hit',res.data)
                     setQrValue('data:image/png;base64,'+res.data);
                     })
@@ -128,7 +129,7 @@ const PaymentScreen = ({ route }) => {
   return status == "paid" ? (
   
     <View style={{flexDirection:'column'}}>
-     
+     {console.log('ttt',ttype)}
     <View style={styles.container}>
       
       {console.log('retur',status)}
@@ -169,6 +170,11 @@ const PaymentScreen = ({ route }) => {
         <Text style={styles.label}>Number of Passengers:</Text>
         <Text style={styles.value}>{passengerNumber}</Text>
       </View>
+      <View style={styles.row}>
+        <Text style={styles.label}>Ticket Type:</Text>
+        <Text style={styles.value}>{ttype}</Text>
+      </View>
+
       {
         console.log('qr',qrValue)
       }  

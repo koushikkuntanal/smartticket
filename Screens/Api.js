@@ -372,3 +372,12 @@ export const setStagePassApi = async (data) => {  // used in setPassStage.js for
   });
   return res;
 }
+
+export const TransactionLastTicket = async (data) => {
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/last-ticket',
+    data:data
+  });
+  return res;
+}

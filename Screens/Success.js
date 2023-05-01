@@ -56,6 +56,10 @@ const History = ({route}) =>{
         <Text style={styles.value}>{hisObj.passengers}</Text>
       </View>
     
+      <View style={styles.row}>
+        <Text style={styles.label}>Ticket Type : </Text>
+        <Text style={styles.value}>{hisObj.ttype}</Text>
+      </View>
         
         
         

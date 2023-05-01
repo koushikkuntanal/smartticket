@@ -178,8 +178,8 @@ const SourceDestination = ({ route }) => {
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare * passengerNumber,
-        "passengers":passengerNumber.toString(),
-        "ttype":SelectTicket 
+        "Passengers":passengerNumber,
+        "Ttype":SelectTicket 
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
@@ -197,7 +197,7 @@ const SourceDestination = ({ route }) => {
         Orderid: res.data.data.orderid,
         customerid: emailData.UserId,
         busNo:assestdata,
-        // ttype:SelectTicket
+         ttype:SelectTicket
       });
      }
     })

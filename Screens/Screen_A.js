@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
-import { TransactionHistory } from './Api';
+import { TransactionHistory, TransactionLastTicket } from './Api';
 
 
 
@@ -43,10 +43,11 @@ export default function Screen_A({route}){
     }
 
     const onclickLastTicket = async() =>{
-      await TransactionHistory({
+      await TransactionLastTicket({
         "UserId":uData.AuthID ? uData.AuthID : uData[0].UserId,
       }).then(res=>{
-         navigation.navigate('LastTicket',{historyData:res.data})
+        console.log('sxrdcfgvctfvg',res.data)
+          navigation.navigate('LastTicket',{historyData:res.data})
       })
       
     }
