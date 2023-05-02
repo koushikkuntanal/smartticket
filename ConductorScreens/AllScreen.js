@@ -127,6 +127,13 @@ alert(error);
 })
 setLoading(false);
 }
+
+
+//checker screes
+
+const onPressAssetChecker=()=>{
+  navigation.navigate('Map Asset',{id:id});
+}  
     return(
         <View style={styles.body}>  
           
@@ -205,8 +212,10 @@ setLoading(false);
             </View>
              </View>
             
-          :  <View style={styles.card}>
-          <TouchableOpacity onPress={()=>navigation.navigate('Map Asset')}>
+          : 
+          
+          <View style={styles.card}>
+          <TouchableOpacity onPress={onPressAssetChecker}>
           <Image style={styles.icon} resizeMode='contain'
           source={require('../assets/LekPay-Asset.png')}
           />

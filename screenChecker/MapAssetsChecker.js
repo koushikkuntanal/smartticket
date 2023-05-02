@@ -4,7 +4,8 @@ import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 
-const MapAssetsChecker = () =>{
+const MapAssetsChecker = ({route}) =>{
+  const checkerId = route.params.id; 
   const height = 800;
   const width = 500;
     const maskRowHeight = 30;
@@ -49,7 +50,7 @@ const MapAssetsChecker = () =>{
     }
   return (
     <View style={styles.body}>
-      
+      {console.log('checker id',checkerId)}
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}

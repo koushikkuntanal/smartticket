@@ -98,7 +98,7 @@ const SetPassStage = ({route}) => {
         "time":  datestamp + ' ' + timestamp
       }).then(res=>{console.log(res.data)
         if(res.data.message == 'Asset Route Map Success')
-        {alert('Route successfully set!');
+        {alert('Route successfully Detached!!');
       navigation.goBack();
       }
         else{alert('Please try again!!')}
@@ -236,7 +236,7 @@ const SetPassStage = ({route}) => {
 
         </View>
        {(actualIndex == stages.length -2) ? 
-       <View>
+       <View style={styles.body}>
            <Text style={[styles.title,{color:'red'}]}>Cannot Pass This Stage!!</Text>
            <Btn
             textColor="white"
