@@ -7,34 +7,37 @@ const CashHandler =({route}) =>{
   const EmpData = route.params.data;
   const [assetRouteNameFare,setAssetRouteNameFare] = useState([]);
   const [loading, setLoading] = useState();
+  
+  
   useEffect(()=>{
     setLoading(true);
     (async () =>{
       await TravelHandlerApi({              //api gets setRoute Data (ids of route)
         "EmpId":EmpData.EmpId 
       }).then(async res=>{
-        
+       
         console.log('ast id got',res.data);
         
         
-        const data = [];
-        for (let index = 0; index < (res.data).length-1; index+=2) {
-          console.log('from',res.data[index].Time);
-          console.log('to',res.data[index+1].Time);
+        let data = [];
+        for (let index = 0; index < (res.data).length; index++) {
+
+         
           console.log('rev id got',res.data[index].revRoute);
+          
          await getRouteNamesApi({
           "AstId":res.data[index].AstId,
           "RouteID":res.data[index].RouteID,
-          "fromTime":res.data[index].Time,
-          "toTime":res.data[index+1].Time,
-          "revRoute":res.data[index].revRoute
+          "Trip":res.data[index].Trip,
+          "revRoute":res.data[index].revRoute,
+          "Time":res.data[index].Time
          }).then(res=>{
-          console.log(res.data);
+          console.log('pushig data',res.data);
          data.push(res.data);
 
          })
           
-          
+        
         }
         setAssetRouteNameFare(data);
 
@@ -49,16 +52,26 @@ const CashHandler =({route}) =>{
   },[]);
     return(
         <View style={styles.body}>
+          { console.log('AssetRouteName arary',assetRouteNameFare)}
            {loading ? <Image source={require('../assets/loading.gif')} /> : null}
-         { console.log('AssetRouteName',assetRouteNameFare)}
+         
          
           {
             assetRouteNameFare.map((item,index)=>{
               return(
                 <View style={styles.card} key={index}> 
-                <Text style={{textAlignVertical:'center'}}>Route : {item.RouteName}{'\n'}Type : {(item.revRoute=='T') ?<Text>Down</Text> :<Text>Up</Text> }</Text>
+                {/* <Text style={{textAlignVertical:'center'}}>Route : {item.RouteName}{'\n'}Type : {(item.revRoute=='T') ?<Text>Down</Text> :<Text>Up</Text> }</Text> */}
                 <View style={{alignSelf:'center'}}>
-                <Text>Date : {item.date.split('-').reverse().join('-')}</Text>
+                {/* <Text>Date : {assetRouteNameFare.date.split('-').reverse().join('-')}</Text> */}
+                <Text>Route : {item.RouteName}</Text>
+                <Text>Type : {(item.revRoute=='T') ?<Text>Down</Text> :<Text>Up</Text> }</Text>
+                <Text>Trip : {item.trip}</Text>
+                <Text style={styles.text}>Date : {item.time.split('-').reverse().join('-')}</Text>
+                
+                </View>
+     
+                <View style={{alignSelf:'center'}}>
+                {/* <Text>Date : {item.date.split('-').reverse().join('-')}</Text> */}
                 <Text>Bus Id : {item.AstRegNo}</Text>
                 <Text>Total Cash: {'\u20B9'} {item.cashFare}</Text>
                 
@@ -86,7 +99,7 @@ const styles = StyleSheet.create({
     card: {
        
         width:"95%",
-        height:80,
+        height:93,
         flexDirection:'row',
        justifyContent:'space-between',
         backgroundColor: '#ffffff',

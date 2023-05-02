@@ -48,15 +48,14 @@ const CurrentTripAmt =({route}) =>{
         
         const data = [];
         for (let index = (res.data).length-1; index <= (res.data).length-1; index++) {
-          console.log('from',res.data[index].Time);
-          console.log('to',res.data[index].Time);
+          
           console.log('rev id got',res.data[index].revRoute);
          await getRouteNamesApi({
           "AstId":res.data[index].AstId,
           "RouteID":res.data[index].RouteID,
-          "fromTime":res.data[index].Time,
-          "toTime":datestamp +' '+timestamp,
+          "Trip":res.data[index].Trip,
           "revRoute":res.data[index].revRoute,
+          "Time":res.data[index].Time
          }).then(res=>{
          data.push(res.data);
 
@@ -82,11 +81,11 @@ const CurrentTripAmt =({route}) =>{
                 <View style={styles.card} key={index}> 
                 <Text style={{textAlignVertical:'center'}}>Route : {item.RouteName}{'\n'}
                 Type : {(item.revRoute=='T') ?<Text>Down</Text> :<Text>Up</Text> } {'\n'}
-           
+                Trip : {item.trip}
                 
                 </Text>
                 <View style={{alignSelf:'center'}}>
-                <Text style={styles.text}>Date : {item.date.split('-').reverse().join('-')}</Text>
+                <Text style={styles.text}>Date : {item.time.split('-').reverse().join('-')}</Text>
                 <Text style={styles.text}>Bus Id : {item.AstRegNo}</Text>
                 <Text style={styles.text}>Cash: {'\u20B9'} {item.cashFare}</Text>
                 <Text style={styles.text}>QrAmount: {'\u20B9'} {item.qrFare}</Text>

@@ -4,7 +4,7 @@ import { background, btnColor } from "../components/Constants";
 import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import { useNavigation } from "@react-navigation/native";
-import { getFareForUsers, getRouteIdEmp, getStagesApi, getStagesIDApi, transactionforUsers, transactionStatusApi } from "../Screens/Api";
+import { getFareForUsers, getRouteIdEmp, getStagesApi, getStagesIDApi, getTicketType, transactionforUsers, transactionStatusApi } from "../Screens/Api";
 import { AntDesign } from '@expo/vector-icons';
 
 const IssueTickets = ({route}) =>{
@@ -21,6 +21,10 @@ const IssueTickets = ({route}) =>{
   const [toIndex, setToIndex] = useState('');
   const [loading, setLoading] = useState();
   const [passengerNumber, setPassengerNumber] = useState(1);
+  const [actualIndex,setActualIndex] = useState('');
+  const [SelectTicket,setSelectTicket] = useState('');
+  const [TicketTypeData,setTicketDataType] = useState([]);
+  const [TripData,setTripData] = useState('');
   let distance;
   let fare,date,time;
   
@@ -34,24 +38,35 @@ const IssueTickets = ({route}) =>{
       console.log('api data',res.data);
       setRouteId(res.data.RouteID);
       setRevRoute(res.data.revRoute);
+      setTripData(res.data.Trip);
+              await getTicketType({
+                "RouteID" : res.data.RouteID 
+              }).then(res=>{
+                console.log('Tocket type',res.data.data);
+              setTicketDataType(res.data.data);
+              }).catch(err=>{console.log(err)})
+              for(let i = 0; i<=2; i++)
       await getStagesIDApi({
         "RouteID": res.data.RouteID
       }).then(async res => {
-        // console.log('res when getStagesIDApi is hit', res.data);
-
+         console.log('res when getStagesIDApi is hit', res.data);
+         setActualIndex(res.data.idx.idx);
         const data = [];
-        for (let i = 0; i < (res.data).length; i++) {
-          await getStagesApi({
-            "StageID": (res.data)[i].StageID
-          }).then(res => {
-             console.log('res when stag name id hit',)
-            data.push(res.data);
 
+        for (let i = 0; i < (res.data.data).length; i++) {
+        
+          await getStagesApi({
+            "StageID": (res.data.data)[i].StageID
+          }).then(res => {
+             console.log('res when stag name id hit',res.data)
+            data.push(res.data);
+           
           }).catch(err=>{
             console.log('eerr whe getStages Id hit',err);
           })
         }
         setStages(data);
+      
 
        
         setReversedStages([...(data)].reverse());
@@ -90,7 +105,7 @@ const IssueTickets = ({route}) =>{
   }
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (tripD) => {
    setLoading(true);
     // Handle form submission
     if(from === to || passengerNumber ==0 || from =='Unknown' || to=='Unknown'){
@@ -106,6 +121,9 @@ const IssueTickets = ({route}) =>{
         "StartStage":from,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare*passengerNumber,
+        "Passengers":passengerNumber,
+        "Ttype":SelectTicket,
+        "Trip":tripD,
       }).then(async res=>{
         console.log('rer whe emp cretes o id');
         console.log('sahj',res.data);
@@ -145,15 +163,15 @@ const IssueTickets = ({route}) =>{
     setLoading(false);
   }
 
-
-  const getFareBoth = async (fromV, toV) => {
+  const getFareBoth = async (fromV, toV,select) => {
     setLoading(true);
     console.log('from and to i getFareBoth ', fromV, toV);
     await getFareForUsers({
       "from": fromV,
       "to": toV,
+      "ttype":select
     }).then(res => {
-      console.log('data when get fare is hit', res.data.Fare)
+      console.log('data when get fare is hit', res.data)
       setApiFare(res.data.Fare);
     }).catch(err => { console.log('err when get fare is hit', err) })
     setLoading(false);
@@ -161,8 +179,8 @@ const IssueTickets = ({route}) =>{
   return (
     
     <View style={styles.body}>
-    
-   
+    {console.log('idxx',actualIndex)}
+    {console.log('trip ',TripData)}
    
     <View elevation={5} style={styles.parent}>
       
@@ -192,70 +210,72 @@ const IssueTickets = ({route}) =>{
           <View style={styles.input}>
 
             <Picker
-              // itemStyle={{height:40}}
-              selectedValue={from}
-              onValueChange={(value, index) => {
-                setFrom(value);
-               
-                console.log('from value in from picker', from)
-                setFromIndex(index);
+                // itemStyle={{height:40}}
+                selectedValue={from}
+                onValueChange={(value, index) => {
+                  setFrom(value);
+                 
+                  console.log('from value in from picker', from)
+                  setFromIndex(index);
 
-                if (revData == 'F') {
-                  if (stages[index + 1] != undefined) {
-                    setTo(stages[index + 1].StageID);
-                    // setToName(stages[index + 1].StageName);
-                    getFareBoth(value, stages[index + 1].StageID)
+                  if (revData == 'F') {
+                    
+                    if (stages[index + 1] != undefined) {
+                      console.log('actual i',actualIndex)
+                      setTo(stages[index + 1].StageID);
+                      // setToName(stages[index + 1].StageName);
+                      getFareBoth(stages[actualIndex].StageID, stages[actualIndex + 1].StageID,SelectTicket)
+                    }
+                    else if (stages[index + 1] == undefined) {
+                      setTo(stages[index].StageID);
+                      // setToName(stages[index].StageName);
+
+                      alert('Destination cannot be selected!! ')
+                    }
                   }
-                  else if (stages[index + 1] == undefined) {
-                    setTo(stages[index].StageID);
-                    // setToName(stages[index].StageName);
+                   if (revData == 'T') {
+                    console.log('stages ', reversedStages[index + 1]);
+                    if (reversedStages[index + 1] != undefined) {
+                      setTo(reversedStages[index + 1].StageID);
+                      // setToName(reversedStages[index + 1].StageName);
+                      setFrom(reversedStages[actualIndex].StageID);
+                      getFareBoth(value, reversedStages[index + 1].StageID,SelectTicket)
+                    }
+                    else if (reversedStages[index + 1] == undefined) {
+                      alert('Destination cannot be selected!! ')
+                      setTo(reversedStages[index].StageID);
+                      // setToName(reversedStages[index].StageName);
+                    }
 
-                    alert('Destination cannot be selected!! ')
                   }
-                }
-                else if (revData == 'T') {
-                  console.log('stages ', reversedStages[index + 1]);
-                  if (reversedStages[index + 1] != undefined) {
-                    setTo(reversedStages[index + 1].StageID);
-                    // setToName(reversedStages[index + 1].StageName);
+                  // getFareFrom(value);
+                  // getFareTo(stages[index+1].StageID);
 
-                    getFareBoth(value, reversedStages[index + 1].StageID)
-                  }
-                  else if (reversedStages[index + 1] == undefined) {
-                    alert('Destination cannot be selected!! ')
-                    setTo(reversedStages[index].StageID);
-                    // setToName(reversedStages[index].StageName);
-                  }
+                }}
 
-                }
-                // getFareFrom(value);
-                // getFareTo(stages[index+1].StageID);
-
-              }}
-
-              mode="dropdown" // Android only
-              style={styles.picker}
-            >
-              {(revData == 'T') ? reversedStages.map((item, index) => {
-
-                return (<Picker.Item
-                  style={styles.pickerItem}
-                  key={item.StageID}
-                  label={item.StageName}
-                  value={item.StageID}
-                />);
-              })
-                :
-                stages.map((item, index) => {
-
+                mode="dropdown" // Android only
+                style={styles.picker}
+              >
+                {(revData === 'T') ? reversedStages.map((item, index) => {
+                  if(index === actualIndex){
                   return (<Picker.Item
                     style={styles.pickerItem}
                     key={item.StageID}
                     label={item.StageName}
                     value={item.StageID}
-                  />);
-                })}
-            </Picker>
+                  />);}
+                })
+                  :
+                  stages.map((item, index) => {
+                    if(index == actualIndex){
+                    return (<Picker.Item
+                      style={styles.pickerItem}
+                      key={item.StageID}
+                      label={item.StageName}
+                      value={item.StageID}
+                    />);}
+                  })}
+              </Picker>
           </View>
         </View>
 
@@ -263,48 +283,119 @@ const IssueTickets = ({route}) =>{
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
           <Text style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>To</Text>
           <View style={styles.input}>
-            <Picker
-              // itemStyle={{height:40}}
-              selectedValue={to}
-              onValueChange={async (value, index) => {
-                
-                setTo(value);
-                setToIndex(index);
-                console.log('to value in to picker', to)
-                getFareTo(value);
-              
-              }}
-              mode="dropdown" // Android only
-              style={styles.picker}
-            >
-              {(revData == 'T') ? reversedStages.map((item, index) => {
-                if (index > fromIndex) {
-                  return (<Picker.Item
-                    style={styles.pickerItem}
-                    key={item.StageID}
-                    label={item.StageName}
-                    value={item.StageID}
-                  />);
-                }
-              })
-                :
-                stages.map((item, index) => {
-                  if (index > fromIndex) {
-
-                    return (<Picker.Item
+          <Picker
+                // itemStyle={{height:40}}
+                selectedValue={to}
+                onValueChange={async (value, index) => {
+                  
+                  setTo(value);
+                  setToIndex(index);
+                  console.log('to value in to picker', to)
+                  if(revData == 'F')
+                  
+                  {
+                    setFrom(stages[actualIndex].StageID)
+                    getFareBoth(stages[actualIndex].StageID,value,SelectTicket);}
+                  else{
+                    setFrom(reversedStages[actualIndex].StageID);
+                    getFareBoth(reversedStages[actualIndex].StageID,value,SelectTicket);
+                  }
+                  
+                }}
+                mode="dropdown" // Android only
+                style={styles.picker}
+              >
+                {(revData == 'T') ? reversedStages.map((item, index) => {
+                  if (index > actualIndex) {
+                    return (
+                    <Picker.Item
                       style={styles.pickerItem}
                       key={item.StageID}
                       label={item.StageName}
-                      value={item.StageID}
-                    />
-                    );
+                      value={item.StageID}   
+                    />);  
                   }
-                })}
-            </Picker>
-          </View>
-        </View>
+                })
+                  :
+                  stages.map((item, index)=>{
+                    if (index > actualIndex) {
 
+                      return (<Picker.Item
+                        style={styles.pickerItem}
+                        key={item.StageID}
+                        label={item.StageName}
+                        value={item.StageID}
+                      />
+                      );
+                    }
+                  })}
+              </Picker>
+          </View>
+          
+        </View>
+        
         <View >
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+            <Text style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>Ticket Type</Text>
+            
+            {/* <View style={styles.input}>
+           <Picker
+           selectedValue={SelectTicket}
+           mode="dropdown"
+           style={styles.picker}
+           >
+            {
+            TicketType.map((item,index) => {
+
+              return(
+              <Picker.item
+               style={styles.pickerItem}
+               key={index}
+               label={item.ttname}
+               value={item.ttshortname}
+              onValueChange={(value)=>setSelectTicket(value)}
+              />);
+
+
+            }
+            
+              
+            
+            
+            )}
+
+
+            
+           </Picker>
+           </View> */}
+           <View style={styles.input}>
+              <Picker
+                
+                selectedValue={SelectTicket}
+                onValueChange={ (value ) => {
+                  setSelectTicket(value);
+                  getFareBoth(from, to,value)
+                  
+                }}
+                mode="dropdown" // Android only
+                style={styles.picker}
+              >
+                { TicketTypeData.map((item, index) => {
+                   {
+                    return (
+                    <Picker.Item
+                      style={styles.pickerItem}
+                      key={index}
+                      label={item.ttname}
+                      value={item.ttshortname}
+                    />);
+                  }
+                })
+                  
+                  }
+              </Picker>
+            </View>
+           </View>
           <View style={styles.buttonsContainer}>
 
             <Text>No. of Passenger</Text>
@@ -338,7 +429,7 @@ const IssueTickets = ({route}) =>{
           textColor="white"
           bgColor={btnColor}
           btnLabel="Book Ticket"
-        Press = {handleSubmit}
+        Press = {()=>handleSubmit(TripData)}
         /> : null
     }
     {loading ? <Image source={require('../assets/loading.gif')} /> : null}
