@@ -381,3 +381,22 @@ export const TransactionLastTicket = async (data) => {
   });
   return res;
 }
+
+export const LastTickCountApi = async (data) => {
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/ticcount',
+    data:data
+  });
+  return res;
+}
+
+export const LastTicketCountUpdate = async (data) => {
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/transaction/cntupdt',
+    data:data
+  });
+  return res;
+}
+

@@ -37,9 +37,10 @@ const SourceDestination = ({ route }) => {
   const [revData, setRevData] = useState();
   const [loading, setLoading] = useState();
   const [apiFare, setApiFare] = useState();
-  const [TicketTypeData,setTicketDataType] = useState([]);
+  const [TicketTypeData,setTicketDataType] = useState([]); 
   const [SelectTicket,setSelectTicket] = useState('');
   const [actualIndex,setActualIndex] = useState('');
+  const [tripData,setTripData] = useState('');
   useEffect(() => {
     // console.log('sending asset id',assestdata);
      console.log('recieved email data',emailData,from,to);
@@ -59,8 +60,9 @@ const SourceDestination = ({ route }) => {
 
             "AstId": res.data.AstId
           }).then(res => {
-            // console.log('revRoute Flag', res.data)
+             console.log('revRoute Flag', res.data)
             setLoading(true);
+            setTripData(res.data[(res.data).length-1].Trip);
             setRevData(res.data[(res.data).length - 1].revRoute);
             setLoading(false);
           }).catch(err => {
@@ -73,7 +75,7 @@ const SourceDestination = ({ route }) => {
         }).then(async res => {
             console.log('res when getRouteIdApi jhgskjadjsgj  is hit',res.data)
           setRouteId(res.data[res.data.length-1].RouteID)
-
+          
                  await getTicketType({
                   "RouteID" : res.data[res.data.length-1].RouteID 
                  }).then(res=>{
@@ -148,7 +150,7 @@ const SourceDestination = ({ route }) => {
   //   }
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (tripdata) => {
     // Handle form submission
     setLoading(true);
 
@@ -171,7 +173,15 @@ const SourceDestination = ({ route }) => {
       date = new Date().toDateString();   
       time = new Date().toLocaleTimeString();   
       console.log('details fro upi', email, cphone, upi,revData,reversedStages[fromIndex].StageName,reversedStages[1+fromIndex+toIndex].StageName);
-
+      let count;
+      if(SelectTicket == 'ST'){
+        count = 1;
+      }
+      else if(SelectTicket == 'RT'){
+        count = 2;
+      }
+      else {count = 0;}
+      
       await transactionforUsers({
         "Id":emailData.UserId,
         "RouteName": routeId,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
@@ -179,7 +189,9 @@ const SourceDestination = ({ route }) => {
         "EndStage":to,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
         "Fare":apiFare * passengerNumber,
         "Passengers":passengerNumber,
-        "Ttype":SelectTicket 
+        "Ttype":SelectTicket,
+        "Trip":tripdata,
+        "Counter":count
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
@@ -197,11 +209,12 @@ const SourceDestination = ({ route }) => {
         Orderid: res.data.data.orderid,
         customerid: emailData.UserId,
         busNo:assestdata,
-         ttype:SelectTicket
+         ttype:SelectTicket,
+         tripData:tripData
       });
      }
     })
-      .catch(err=>{console.log(err)})
+      .catch(err=>{console.log('when id api',err)})
        
       console.log((revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName))
       
@@ -543,7 +556,7 @@ const SourceDestination = ({ route }) => {
             textColor="white"
             bgColor={btnColor}
             btnLabel="Book Ticket"
-            Press={handleSubmit}
+            Press={()=>handleSubmit(tripData)}
           /> : null
       }
       {loading ? <Image source={require('../assets/loading.gif')} /> : null}

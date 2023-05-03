@@ -10,6 +10,7 @@ import PagerView from 'react-native-pager-view';
 // import QRCode from "react-native-qrcode-svg";
 
 const PaymentScreen = ({ route }) => {
+  const tripData = route.params.tripData;
   const [data, setData] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const orderId = route.params.Orderid;

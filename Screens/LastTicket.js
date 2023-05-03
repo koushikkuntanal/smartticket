@@ -39,6 +39,8 @@ export default function LastTicket({route}){
     return (
 
       <View style={styles.container} >
+       {console.log('historydata',historyData)} 
+       {console.log('hisobj',hisObj)}
       <View style={styles.row}>
        <Text style={styles.label}>OrderID : </Text>
        <Text style={styles.value}>{hisObj.orderid}</Text>

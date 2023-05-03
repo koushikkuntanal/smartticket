@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Alert,Button} from "react-native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { useNavigation } from "@react-navigation/native";
-import { TransactionHistory } from "./Api";
+import { LastTickCountApi, LastTicketCountUpdate, TransactionHistory, TransactionLastTicket } from "./Api";
 
 
 const Scnner = ({route}) =>{
@@ -20,7 +20,8 @@ const Scnner = ({route}) =>{
 
     const navigation = useNavigation();
 
-   let typeData;
+   let historyData;
+   let histobj;
     useEffect(() => {
 
       setScanned(false);       
@@ -31,18 +32,12 @@ const Scnner = ({route}) =>{
   
       getBarCodeScannerPermissions();
       console.log(scanned);
+
+      
     },[]);
 
-    // (async() => {
-    //   await TransactionHistory({
-    //     "UserId":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
-    //   }).then(res=>{
-    //     console.log(res.data)
-    //    typeData = JSON.parse(res.data[res.data.length-1].Tdata),
-    //     console.log(typeData)})
-    //     .catch(err=>console.log(err))
-    // })()
-
+    
+   
 
   
     const handleBarCodeScanned = ({ type, data }) => {
@@ -58,8 +53,67 @@ const Scnner = ({route}) =>{
         {
           text: 'Proceed',
           
-          onPress:() => navigation.navigate('Source Destination',{data:data,emailData:forEmaildata})
-          
+          // onPress:() => navigation.navigate('Source Destination',{data:data,emailData:forEmaildata})
+          onPress:async ()=>{
+            await TransactionLastTicket({
+              "UserId":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+            }).then(res=>{
+              // console.log('yyyy',res.data.Tdata);
+    
+              historyData = res.data;
+            if(historyData.Tdata != undefined){ histobj = JSON.parse(historyData.Tdata)}
+              console.log('tickettype',historyData);
+    
+             if(histobj!=undefined){ if(histobj.ttype == 'ST' || histobj==undefined){
+               alert('Last Ticket is Single Ticket!!');
+                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+              }else{
+                Alert.alert('Last Ticket Available','Would you like to renable ?',[
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: async () => {
+                      await LastTickCountApi({
+                        "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+                      }).then(async res=>{
+                        console.log('when lats ti cointe hirt',res.data);
+                        if(res.data.count > 1)
+                      {  await LastTicketCountUpdate({
+                        "Id":res.data.OrderID,
+                          "count": res.data.count - 1,
+                          
+                        }).then(res=>{
+                          console.log('wgen res last tic yplatw',res.data);
+                          if(res.data.message == 'Ticket Re-Enabled')
+                          {navigation.navigate('LastTicket',{historyData:historyData});}
+                        }).catch(err=>{console.log('err uhen last ciun t uoafaye',err)
+                      alert('try again!!')
+                      })
+                      }
+                      else {
+                        alert('Ticket exhausted')
+                        navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                      }
+                       
+                      }).catch(err=>{
+                        console.log('err ehast tic hyt ',err)
+                      })
+                     },
+                  },
+                ],
+                )
+                
+              }}else{
+                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+              }
+    
+              
+            })
+              .catch(err=>console.log(err))
+          }
         },
         
        
