@@ -21,11 +21,9 @@ const CashHandler =({route}) =>{
         
         let data = [];
         for (let index = 0; index < (res.data).length; index++) {
-
-         
           console.log('rev id got',res.data[index].revRoute);
-          
-         await getRouteNamesApi({
+        if(res.data[index].RouteID != 'Detached')
+          await getRouteNamesApi({
           "AstId":res.data[index].AstId,
           "RouteID":res.data[index].RouteID,
           "Trip":res.data[index].Trip,
@@ -34,13 +32,9 @@ const CashHandler =({route}) =>{
          }).then(res=>{
           console.log('pushig data',res.data);
          data.push(res.data);
-
          })
-          
-        
         }
         setAssetRouteNameFare(data);
-
       })
 
       .catch(err=>{

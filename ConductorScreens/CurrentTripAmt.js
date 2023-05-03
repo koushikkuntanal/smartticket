@@ -50,6 +50,7 @@ const CurrentTripAmt =({route}) =>{
         for (let index = (res.data).length-1; index <= (res.data).length-1; index++) {
           
           console.log('rev id got',res.data[index].revRoute);
+        if(res.data[index].RouteID != 'Detached')
          await getRouteNamesApi({
           "AstId":res.data[index].AstId,
           "RouteID":res.data[index].RouteID,
