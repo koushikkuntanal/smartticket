@@ -98,6 +98,7 @@ const SetRouteAsset = ({route}) =>{
 
             await setStagePassApi({
               "EmpId":id,
+              "AstId":assetId,
               "RouteID":sourceDestination,
               "StageId":" ",
               "idx":0,

@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity, ImageBackground} from "react-native";
+import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity, ImageBackground,ScrollView} from "react-native";
 import { background } from "../components/Constants";
 import {  getRouteNamesApi, TravelHandlerApi } from "../Screens/Api";
 
@@ -45,7 +45,7 @@ const CashHandler =({route}) =>{
     setLoading(false);
   },[]);
     return(
-        <View style={styles.body}>
+        <ScrollView >
           { console.log('AssetRouteName arary',assetRouteNameFare)}
            {loading ? <Image source={require('../assets/loading.gif')} /> : null}
          
@@ -77,7 +77,7 @@ const CashHandler =({route}) =>{
            }
 
 
-        </View>
+        </ScrollView>
     );
 }
 

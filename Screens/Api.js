@@ -400,3 +400,11 @@ export const LastTicketCountUpdate = async (data) => {
   return res;
 }
 
+export const UserStageIdApi = async (data) => { //used in scanner.js to get stageid from
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/getStage/fromtoid',
+    data:data
+  });
+  return res;
+}

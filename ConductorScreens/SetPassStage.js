@@ -104,7 +104,7 @@ const SetPassStage = ({route}) => {
         else{alert('Please try again!!')}
       }).catch(error=>{'error when setting route',console.log(error)});
     }
-    const onPressPassStage = () =>{
+    const onPressPassStage = (assetId) =>{
         Alert.alert('Confirm',`Do you want to pass this stage ${selectedStage} ? `, [
             
             {
@@ -147,6 +147,7 @@ const SetPassStage = ({route}) => {
                   
                   await setStagePassApi({
                     "EmpId":EmpData.EmpId,
+                    "AstId":assetId,
                     "RouteID":routeId,
                     "StageId":selectedStage,
                     "idx":parseInt(actualIndex)+1,
@@ -249,7 +250,7 @@ const SetPassStage = ({route}) => {
             textColor="white"
             bgColor={btnColor}
             btnLabel="Pass Stage"
-            Press={onPressPassStage}
+            Press={()=>onPressPassStage(assetId)}
           />}
     </View>
   )

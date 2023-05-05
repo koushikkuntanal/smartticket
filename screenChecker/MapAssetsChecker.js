@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity}
 import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
+import { getAssetIdApiForEmp } from "../Screens/Api";
 
 const MapAssetsChecker = ({route}) =>{
   const checkerId = route.params.id; 
@@ -34,7 +35,24 @@ const MapAssetsChecker = ({route}) =>{
         },
         {
           text: 'Go to link',
-          onPress:() => Linking.openURL(data)
+          onPress:async () =>{
+            await getAssetIdApiForEmp({
+              "id": data
+            }).then(async res=>{
+              console.log('asset id',res.data.AstId)
+              await getRouteIdApi({
+                    "AssetID": res.data.AstId
+                  }).then(res=>{
+                    console.log('when r id is hit to get stageig passed',res.data)
+                    
+
+                  }).catch(err=>{
+                    console.log('wrr when passed stage oif his',err)
+                  })
+            }).catch(err=>{
+              console.log('err whe asset od is get',err)
+            })
+          }
           
         },
         

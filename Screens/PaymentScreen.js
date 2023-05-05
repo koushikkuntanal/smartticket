@@ -99,9 +99,9 @@ const PaymentScreen = ({ route }) => {
       order_amount: amount,
       order_currency: "INR",
     })
-      .then((res) => {
+      .then(async (res) => {
         // console.log(res);
-        orderPay({
+        await orderPay({
           payment_method: {
             upi: {
               channel: "link",
@@ -115,14 +115,14 @@ const PaymentScreen = ({ route }) => {
             setData(res.data.data.payload.phonepe);
           })
           .catch((error) => {
-            console.log(error);
-            alert('Request Failed. Please Try Again!!');
+            console.log('err when corder pay',error);
+            alert('Request Failed. Please Try Again!!,when orderpay hit');
             navigation.goBack();
           });
       })
       .catch((error) => {
-        console.log(error);
-        alert('Request Failed. Please Try Again!!')
+        console.log('err when create aorder hit',error);
+        alert('Request Failed. Please Try Again!! when createOrderApi')
         navigation.goBack();
       });
   };

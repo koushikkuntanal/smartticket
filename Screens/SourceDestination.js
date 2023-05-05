@@ -54,44 +54,48 @@ const SourceDestination = ({ route }) => {
       }).then(async res => {
         console.log('response when getAssetIdApiForEmp() is hit ',res.data)
 
-        {
-           console.log('getting rev rouet flag with asset id', res.data.AstId)
-          await getRevRouteFlagApi({
+            {
+              console.log('getting rev rouet flag with asset id', res.data.AstId)
+              await getRevRouteFlagApi({
 
-            "AstId": res.data.AstId
-          }).then(res => {
-             console.log('revRoute Flag', res.data)
-            setLoading(true);
-            setTripData(res.data[(res.data).length-1].Trip);
-            setRevData(res.data[(res.data).length - 1].revRoute);
-            setLoading(false);
-          }).catch(err => {
-            console.log('err whne revRoute is get', err)
-            alert(err);
-          })
-        }
+                "AstId": res.data.AstId
+              }).then(res => {
+                console.log('revRoute Flag', res.data)
+                setLoading(true);
+                setTripData(res.data[(res.data).length-1].Trip);
+                setRevData(res.data[(res.data).length - 1].revRoute);
+                setLoading(false);
+              }).catch(err => {
+                console.log('err whne revRoute is get', err)
+                alert(err);
+              })
+            }
         await getRouteIdApi({
           "AssetID": res.data.AstId
         }).then(async res => {
             console.log('res when getRouteIdApi jhgskjadjsgj  is hit',res.data)
-          setRouteId(res.data[res.data.length-1].RouteID)
+          setRouteId(res.data.RouteID)
+           setActualIndex(res.data.idx);
           
                  await getTicketType({
-                  "RouteID" : res.data[res.data.length-1].RouteID 
+                  "RouteID" : res.data.RouteID 
                  }).then(res=>{
                   console.log('Tocket type',res.data.data);
                  setTicketDataType(res.data.data);
                 }).catch(err=>{console.log(err)})
                 for(let i = 0; i<=2; i++)
           await getStagesIDApi({
-            "RouteID": res.data[res.data.length-1].RouteID 
+            "RouteID": res.data.RouteID 
 
           }).then(async res => {
               console.log('res when getStagesIDApi is hit', res.data);
-              setActualIndex(res.data.idx.idx);
+             
             const data = [];
             for (let i = 0; i < (res.data.data).length; i++) {
               console.log('data sending to api',i ,(res.data.data)[i].StageID )
+              setTimeout(() => {
+                console.log(i);
+              }, 1 * 1000); 
               await getStagesApi({
                 "StageID": (res.data.data)[i].StageID
               }).then(res => {
@@ -324,7 +328,7 @@ const SourceDestination = ({ route }) => {
                       console.log('actual i',actualIndex)
                       setTo(stages[index + 1].StageID);
                       // setToName(stages[index + 1].StageName);
-                      getFareBoth(stages[actualIndex].StageID, stages[actualIndex + 1].StageID,SelectTicket)
+                      getFareBoth(stages[actualIndex].StageID,(stages[actualIndex+1] != undefined) ?  stages[actualIndex + 1].StageID : null,SelectTicket)
                     }
                     else if (stages[index + 1] == undefined) {
                       setTo(stages[index].StageID);
@@ -357,7 +361,7 @@ const SourceDestination = ({ route }) => {
                 style={styles.picker}
               >
                 {(revData === 'T') ? reversedStages.map((item, index) => {
-                  if(index === actualIndex){
+                  if(index == actualIndex){
                   return (<Picker.Item
                     style={styles.pickerItem}
                     key={item.StageID}

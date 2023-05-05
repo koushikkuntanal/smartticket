@@ -8,11 +8,15 @@ export default function LastTicket({route}){
     const historyData = route.params.historyData;
     // const RevhistoryData = ([...(historyData)].reverse());
     const [qrValue, setQrValue] = useState('Your String Value');
-    let hisObj=JSON.parse(historyData.Tdata);
+    console.log(historyData.Tdata.length)
+    let hisObj;
+    if(historyData.Tdata.length != 0)
+    { hisObj=JSON.parse(historyData.Tdata);}
     let obj;
     useEffect(()=>{
+      console.log(historyData.Tdata.length)
       console.log('histadta',hisObj,historyData)
-      if(historyData.Tdata != undefined)
+      if(historyData.Tdata.length != 0)
       { obj = JSON.parse(historyData.Tdata);
       console.log("api data ",obj);
       (async()=>{
@@ -36,8 +40,8 @@ export default function LastTicket({route}){
     },[]);
     
 
-    return (
-
+    return (hisObj !=undefined ) ? (
+      
       <View style={styles.container} >
        {console.log('historydata',historyData)} 
        {console.log('hisobj',hisObj)}
@@ -87,29 +91,11 @@ export default function LastTicket({route}){
        
      
     </View> 
-    //  <View>
-    //   (hisObj ) ? <View>
-       
-        
-       
-       
-    //   {
-       
-          
-          	
-    //     }
-    //     else return null;
-      
-
-        
-    //  </View> 
-    //  : alert('No last Ticket available..')
-     
-     
-     
-      
-    //  </View>
-    );
+    
+    
+    ): (  <View style={styles.container} >
+      <Text>No last Ticket</Text>
+      </View>);
 };
 
 const styles = StyleSheet.create({
