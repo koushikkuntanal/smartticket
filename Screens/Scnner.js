@@ -24,7 +24,7 @@ const Scnner = ({route}) =>{
    let historyData;
    let histobj;
     useEffect(() => {
-
+      
       setScanned(false);       
       const getBarCodeScannerPermissions = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -73,20 +73,28 @@ const Scnner = ({route}) =>{
                   
                             historyData = res.data;
                             console.log('hist dataa',historyData);
+                            console.log('hist dataa le',historyData.length);
+                            console.log('hist dataa Tdata le',historyData.Tdata.length);
+                            console.log('co',(historyData.Tdata != undefined && historyData.Tdata.length !=0));
+                            console.log('co',(historyData.length != 0));
+                            console.log('co',(historyData.length != undefined));
 
+
+                            
                           if(forEmaildata.UserId || forEmaildata.AuthID)
-                            {if(historyData.Tdata != '')
+                            {if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0) )
                             {
                               console.log('run histObj in AuthId')
                               console.log('see if ',historyData.Tdata)
                              histobj = JSON.parse(historyData.Tdata)
+                             console.log('histobj',histobj);
                             }
                             else{ console.log('empty got to buy')
                             navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});}
                           }
                             
                           if(forEmaildata.UserId || forEmaildata.AuthID)
-                          if(historyData.Tdata != '')
+                          if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0) )
                           { if(histobj.ttype == 'ST' || histobj==undefined){
                             //  alert('Last Ticket is Single Ticket!!');
                              console.log('no last tic')
@@ -94,8 +102,8 @@ const Scnner = ({route}) =>{
                             
                             }
 
-                            else if(res1.data.RouteID == res.data.RouteName)
-
+                            else  if(res1.data.RouteID == res.data.RouteName)
+                           
                             {
                               
                               await UserStageIdApi({
@@ -126,7 +134,21 @@ const Scnner = ({route}) =>{
                                             console.log('Passes Stage of Bus = ', myArray[resWhenPasswedStageIsGot.data.idx].StageID )
                                             if(myArray[resWhenPasswedStageIsGot.data.idx].StageID == responseOfUserStageIdApi.data.EndStage){
                                               console.log('Valid bec passed stage == use Start in rT')
-                                              
+                                              let datestamp;
+                                              const now = new Date();
+                                              var  dd =now.getDate();
+                                            var mm =now.getMonth()+1;
+                                            var yyyy = now.getFullYear();
+                                            if(dd<10){
+                                              dd='0'+dd;
+                                            }
+                                            if(mm<10){
+                                              mm='0'+mm;
+                                            }
+                                            datestamp= yyyy+'-'+mm+'-'+dd;
+                                        
+                                                console.log('for tic ckeh dtaw',datestamp,'tic time',histobj.time.slice(0,10));
+                                              if(datestamp == histobj.time.slice(0,10)){ 
                                               await LastTickCountApi({
                                                 "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
                                               }).then(res2=>{console.log('res qen cou tibs iuyb at r i d == user id',res2.data)
@@ -195,6 +217,10 @@ const Scnner = ({route}) =>{
                                             }).catch(err=>{
                                               console.log('err when last count is hit',err )
                                             })
+                                          }else{
+                                            console.log('time of ticket expired')
+                                            navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                          }
                                               console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
 
                                             }else{
@@ -224,8 +250,25 @@ const Scnner = ({route}) =>{
                                                     break;
                                                   }
                                                 }
+                                                console.log('approve?',approve);
                                                 if(approve == true){
-                                                  console.log('Approved send to last tcket')
+                                                  let datestamp;
+                                                  const now = new Date();
+                                                  var  dd =now.getDate();
+                                                var mm =now.getMonth()+1;
+                                                var yyyy = now.getFullYear();
+                                                if(dd<10){
+                                                  dd='0'+dd;
+                                                }
+                                                if(mm<10){
+                                                  mm='0'+mm;
+                                                }
+                                                datestamp= yyyy+'-'+mm+'-'+dd;
+                                            
+                                                    console.log('for tic ckeh dtaw',datestamp,'tic time',histobj.time.slice(0,10));
+                                                if(datestamp==histobj.time.slice(0,10)){
+                                                  console.log('Approved send to last tcket');
+
                                                  await LastTickCountApi({
                                                     "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
                                                   }).then(res2=>{console.log('res qen cou tibs iuyb at r i d == user id',res2.data)
@@ -290,7 +333,16 @@ const Scnner = ({route}) =>{
                                                 }).catch(err=>{
                                                   console.log('err when last count is hit',err )
                                                 })
+                                              }else{
+                                                console.log('tic time expi' );
+                                                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata}); 
+                                                
+                                              }
                                                   console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
+                                                }
+                                                else{
+                                                  console.log('not Approved',approve);
+                                                  navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
                                                 }
                                               }
                                             }

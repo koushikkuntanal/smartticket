@@ -8,14 +8,16 @@ export default function LastTicket({route}){
     const historyData = route.params.historyData;
     // const RevhistoryData = ([...(historyData)].reverse());
     const [qrValue, setQrValue] = useState('Your String Value');
-    console.log(historyData.Tdata.length)
+    // console.log(historyData.Tdata.length)
     let hisObj;
+    if(historyData.length != 0 )
     if(historyData.Tdata.length != 0)
     { hisObj=JSON.parse(historyData.Tdata);}
     let obj;
     useEffect(()=>{
-      console.log(historyData.Tdata.length)
-      console.log('histadta',hisObj,historyData)
+      // console.log(historyData.Tdata.length)
+      // console.log('histadta',hisObj,historyData)
+      if(historyData.length != 0)
       if(historyData.Tdata.length != 0)
       { obj = JSON.parse(historyData.Tdata);
       console.log("api data ",obj);
