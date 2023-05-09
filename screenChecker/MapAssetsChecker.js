@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity}
 import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
-import { getAssetIdApiForEmp } from "../Screens/Api";
+import { getAssetIdApiForEmp, getRouteIdApi } from "../Screens/Api";
 
 const MapAssetsChecker = ({route}) =>{
   const checkerId = route.params.id; 

@@ -106,9 +106,9 @@ const SignUp = () =>{
                                                                           }
                                                                           );
                                                                         }}
-     else if(res.data.message == 'user created' ){
-      console.log('created user id',res.data.data.id)
-      navigation.navigate('Otp',{eId:(res.data.data.id),flag:(res.data.data.flag)});
+     else if(res.data.data == 'user created' ){
+      console.log('created user id',res.data)
+      navigation.navigate('Otp',{eId:(res.data.id),flag:(res.data.flag)});
     }
     
     })

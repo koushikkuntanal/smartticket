@@ -74,15 +74,15 @@ const Scnner = ({route}) =>{
                             historyData = res.data;
                             console.log('hist dataa',historyData);
                             console.log('hist dataa le',historyData.length);
-                            console.log('hist dataa Tdata le',historyData.Tdata.length);
-                            console.log('co',(historyData.Tdata != undefined && historyData.Tdata.length !=0));
+                             console.log('hist dataa Tdata le',historyData.Tdata);
+                             console.log('co',(historyData.Tdata != undefined && historyData.Tdata.length !=0));
                             console.log('co',(historyData.length != 0));
                             console.log('co',(historyData.length != undefined));
 
 
                             
                           if(forEmaildata.UserId || forEmaildata.AuthID)
-                            {if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0) )
+                            {if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0 && historyData.Tdata.length !=undefined) )
                             {
                               console.log('run histObj in AuthId')
                               console.log('see if ',historyData.Tdata)
@@ -94,7 +94,7 @@ const Scnner = ({route}) =>{
                           }
                             
                           if(forEmaildata.UserId || forEmaildata.AuthID)
-                          if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0) )
+                          if( (historyData.length != 0 && historyData.length != undefined ) || (historyData.Tdata != undefined && historyData.Tdata.length !=0 && historyData.Tdata.length !=undefined) )
                           { if(histobj.ttype == 'ST' || histobj==undefined){
                             //  alert('Last Ticket is Single Ticket!!');
                              console.log('no last tic')

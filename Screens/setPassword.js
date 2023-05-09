@@ -32,6 +32,7 @@ const SetPassword = ({route}) =>{
           })
           .then(res=>{console.log(res.data.message)
             if(res.data.message == 'Password Set'){
+              alert('Password Set Successfully!!')
               navigation.navigate('Login');
             }
             else alert('Try again');
