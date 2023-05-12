@@ -142,6 +142,15 @@ export const sendOtp = async (data) =>{
   return res;
 }
 
+export const sendOtpForgotPassword = async (data) =>{
+  const res = await axios({
+    method :'post',
+    url:'https://amsweets.in/otp/forgotPassword',
+    data:data
+  });
+  return res;
+}
+
 export const setPasswordApi = async (data) =>{
   const res = await axios({
     method :'patch',
@@ -404,6 +413,33 @@ export const UserStageIdApi = async (data) => { //used in scanner.js to get stag
   const res = await axios({
     method:'Post',
     url:'https://amsweets.in/getStage/fromtoid',
+    data:data
+  });
+  return res;
+}
+
+export const CurrentUsersCnt = async (data) => { //used in MapAssetsChecker.js to get cnt from db
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/checker/currusers',
+    data:data
+  });
+  return res;
+}
+
+export const ReEnableTicket = async (data) => { //used in Scanner.js to put Tdata in Trasncation table
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/user/reenabled-tdata',
+    data:data
+  });
+  return res;
+}
+
+export const ForgotPasswordForUser = async (data) => { //used in forgotpassword.js to get new password
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/user/forgot-password',
     data:data
   });
   return res;

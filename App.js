@@ -68,6 +68,8 @@ import LastTicket from './Screens/LastTicket';
 import CurrentTripAmt from './ConductorScreens/CurrentTripAmt';
 import SetPassStage from './ConductorScreens/SetPassStage';
 import AboutUs from './Screens/AboutUs';
+import ForgotPassword from './Screens/ForgotPassword';
+import ForgotPasswordOtp from './Screens/ForgotPasswordOtp';
 
 
 
@@ -687,6 +689,36 @@ function StackNavigator (data) {
             backgroundColor: '#C80088'
           }
         }}
+
+        
+      />
+
+      <Stack.Screen 
+        name='ForgotPassword'
+        component={ForgotPassword}
+        options={{
+          title: 'Forgot Password',
+          headerShown: true,
+
+          headerStyle:{
+            backgroundColor: '#C80088'
+          }
+        }}
+      
+      />
+
+     <Stack.Screen 
+        name='ForgotPasswordOtp'
+        component={ForgotPasswordOtp}
+        options={{
+          title: 'ForgotPasswordOtp',
+          headerShown: true,
+
+          headerStyle:{
+            backgroundColor: '#C80088'
+          }
+        }}
+      
       />
      
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}, }}

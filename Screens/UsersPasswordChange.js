@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { setPasswordApi, UsersChangePasswordApi } from "../Screens/Api";
 
 const UsersPasswordChange = ({ route }) => {
-    const id = route.params.ID;
+    const id = route.params.EID;
     const Flag = route.params.flag;
 
     const [password,setPassword] = useState('');
@@ -24,18 +24,22 @@ const UsersPasswordChange = ({ route }) => {
         try{
           if(password == confirmPassword && password != '' && confirmPassword != '' && password.length>=8)
           {
+            console.log('id',id,password,Flag)
             //Alert.alert('Success!!','Redirecting to Login Screen.');
             await UsersChangePasswordApi({
               "Id":id,
               "Password":password,
               "flag":Flag
             })
-            .then(res=>{console.log(res.data.message)
+            .then(res=>{console.log('emp',res.data.message)
               if(res.data.message == 'Employee Password Changed'){
-               alert('Password is changed!');
+                navigation.navigate('Login');
+              //  alert('Password is changed!');
               }
-              else alert('Try again');
-             
+              else{
+                // alert('Try again');
+                navigation.navigate('Login');
+              }
             })
             .catch(error=>{console.log(error)})
           
@@ -101,5 +105,37 @@ const UsersPasswordChange = ({ route }) => {
     </View>
     );
 }
+
+const styles = StyleSheet.create({
+  body: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor:background
+  },
+  parent:{
+      //height:400,
+      paddingVertical:50,
+      width:"90%",
+      backgroundColor:'white',
+      alignItems:'center',
+      justifyContent:'center',
+      borderRadius:25,
+      borderWidth:0.5, 
+    },
+    container:{
+      flexDirection:'row',
+      borderWidth:0.5,
+      alignItems:'center',
+      borderRadius:8,
+      marginBottom:10
+    },
+    head:{
+      fontSize:32,
+      fontWeight:"bold",
+     color:headColor,
+     marginBottom:50
+    }
+});
 
 export default UsersPasswordChange

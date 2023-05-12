@@ -3,9 +3,11 @@ import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity}
 import { background } from "../components/Constants";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
-import { getAssetIdApiForEmp, getRouteIdApi } from "../Screens/Api";
+import { CurrentUsersCnt, getAssetIdApiForEmp, getRouteIdApi } from "../Screens/Api";
+import { useNavigation } from "@react-navigation/native";
 
 const MapAssetsChecker = ({route}) =>{
+  const navigation = useNavigation();
   const checkerId = route.params.id; 
   const height = 800;
   const width = 500;
@@ -34,7 +36,7 @@ const MapAssetsChecker = ({route}) =>{
           style: 'cancel',
         },
         {
-          text: 'Go to link',
+          text: 'Go to Report',
           onPress:async () =>{
             await getAssetIdApiForEmp({
               "id": data
@@ -42,9 +44,19 @@ const MapAssetsChecker = ({route}) =>{
               console.log('asset id',res.data.AstId)
               await getRouteIdApi({
                     "AssetID": res.data.AstId
-                  }).then(res=>{
+                  }).then(async res=>{
                     console.log('when r id is hit to get stageig passed',res.data)
-                    
+                      await CurrentUsersCnt({
+                        "RouteID":res.data.RouteID,
+                        "revRoute":res.data.revRoute,
+                        "idx":res.data.idx,
+                        "Trip":res.data.Trip
+                      }).then(resCount=>{
+                        console.log('resCount when passengers cirrent is hit',resCount.data)
+                        navigation.navigate('Report',{countPassengers:resCount.data.count,Asset:data})
+                      }).catch(err=>{
+                        console.log('err when passengers no .is hit',err)
+                      })
 
                   }).catch(err=>{
                     console.log('wrr when passed stage oif his',err)

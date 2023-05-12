@@ -171,6 +171,10 @@ const LekpayLogin = () =>{
   const onPressRegister = () => {
         navigation.navigate('Signup');
        }
+
+  const onPressForgot = () => {
+    navigation.navigate('ForgotPassword')
+  }     
   const onPressSubmit = async()=>{
     setLoading(true);
     try{
@@ -263,7 +267,7 @@ const LekpayLogin = () =>{
             
             />
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressForgot}>
          <Text>Forgot Password?</Text>
       </TouchableOpacity>
 

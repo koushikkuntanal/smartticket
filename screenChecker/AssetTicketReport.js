@@ -2,17 +2,19 @@ import React, { useState,useEffect } from "react";
 import { View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity, ImageBackground} from "react-native";
 import { background } from "../components/Constants";
 
-const AssetTicketReport =() =>{
-    return(
+const AssetTicketReport =({route}) =>{
+    const countPassengers = route.params.countPassengers;
+    const Asset = route.params.Asset;
+  return(
         <View style={styles.body}>
            <View style={styles.card}> 
             <View style={{alignSelf:'center'}}>
-            <Text>Date:24/02/2023</Text>
-            <Text>Bus Id:123</Text>
-            <Text>Total tickets:80</Text>
+
+            <Text>Bus Id : {Asset}</Text>
+            <Text>Total Current Passengers : {countPassengers}</Text>
             
             </View>
-            <View><Text>Cash Collected:{'\u20B9'}560</Text></View>
+            
            </View>
         </View>
     );
