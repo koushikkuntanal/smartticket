@@ -142,22 +142,15 @@ const SourceDestination = ({ route }) => {
     }
   }
 
-  //   const calculateDistance = () =>{
-  //     if(from =='OP1R1S1' && to == 'OP1R1S2' || from =='OP1R1S2' && to == 'OP1R1S1'){
-  //       distance=10;
-  //     }else if(from =='Destination A' && to == 'Destination B' || from =='Destination B' && to == 'Destination A'){
-  //     distance=4;
-  //     }else if(from =='Destination B' && to == 'Destination C' || from =='Destination C' && to == 'Destination B'){
-  //      distance=6;
-  //     }
-  //     fare=(distance*perKmFees)*passengerNumber;
-  //   }
-
-
+ 
   const handleSubmit = async (tripdata) => {
+   
     // Handle form submission
     setLoading(true);
-
+    let i =parseInt(actualIndex)+parseInt(fromIndex);
+    let j = parseInt(actualIndex)+parseInt(toIndex)+1;
+     console.log('from igi',from,fromIndex,'to',to,toIndex,'actual',actualIndex);
+     console.log('stages i hs',stages[i].StageName,stages[j].StageName)
     if (from === to) {
       alert('Please enter all the details.');
     }
@@ -199,8 +192,8 @@ const SourceDestination = ({ route }) => {
       }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
      if(res.data.message == 'OrderID generated'){
       navigation.navigate('PaymentScreen', {
-        From: (revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
-        To: (revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+        From: (revData == 'F')  ? stages[i].StageName : reversedStages[i].StageName,
+        To: (revData == 'F')  ? stages[j].StageName : reversedStages[j].StageName ,
         routeName:(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
         Fare: apiFare*passengerNumber,
         Date: date,
