@@ -439,7 +439,7 @@ export const ReEnableTicket = async (data) => { //used in Scanner.js to put Tdat
 export const ForgotPasswordForUser = async (data) => { //used in forgotpassword.js to get new password
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/user/forgot-password',
+    url:'https://amsweets.in/forgot/password',
     data:data
   });
   return res;

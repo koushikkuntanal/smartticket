@@ -23,7 +23,7 @@ const ForgotPasswordOtp = ({route}) =>{
                 await sendOtpForgotPassword({
                   "id":eId,
                   "otp":otp
-                })
+                })                         
                 .then(res =>{
                  console.log(res.data);
                   if(res.data.data == "Verified"){

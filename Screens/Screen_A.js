@@ -52,6 +52,11 @@ export default function Screen_A({route}){
       
     }
 
+    const onclickchangePassword = () => {
+         console.log('udata',uData)  
+         navigation.navigate('UsersPasswordChange',{EID:uData.AuthID,flag:uData.Flag})
+    }
+
     
     
     return(
@@ -114,7 +119,7 @@ export default function Screen_A({route}){
             /><Text style={styles.text}>History</Text>
            </TouchableOpacity> 
 
-           <TouchableOpacity onPress={()=>null}>
+           <TouchableOpacity onPress={onclickchangePassword}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-ResetPwd.png')}
             /><Text style={styles.text}>Change Password</Text>
