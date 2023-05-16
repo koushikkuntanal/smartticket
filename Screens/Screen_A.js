@@ -1,4 +1,5 @@
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, useNavigation, } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -28,7 +29,8 @@ export default function Screen_A({route}){
     // }
 
     const onclickHistory = async() => {
-      console.log(uData);
+      const got = await AsyncStorage.getItem('Token');
+      console.log(uData,'got',got);
       await TransactionHistory({
        "UserId":uData.AuthID ? uData.AuthID : uData[0].UserId,
       }).then(res=>{

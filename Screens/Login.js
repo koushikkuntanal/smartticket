@@ -160,6 +160,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { LoginApi} from "./Api";
 import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const LekpayLogin = () =>{
   const [mNumber,setNumber]  = useState('');
@@ -167,6 +169,46 @@ const LekpayLogin = () =>{
   const [showPassword, setShowPassword] = useState(false);
   const navigation=useNavigation();
   const [loading,setLoading] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(()=>{
+    (async ()=>{
+     
+      const Mobile = await AsyncStorage.getItem('Mobile');
+      const Password = await AsyncStorage.getItem('Password');
+      console.log('creds',Mobile,Password)
+      if (Mobile != null && Password != null){
+        await LoginApi({
+          "Mobile":Mobile,
+          "Password":Password
+        })
+        .then(res=>{console.log('data after login',res.data)
+          if(res.data.message == "Wrong Phone number/Password!!"){
+            // alert('Wrong Phone number/Password!!');
+          }
+          else if(res.data.data[0].Flag == 'E'){
+            AsyncStorage.setItem('Mobile',mNumber);
+            AsyncStorage.setItem('Password',password);
+            // alert('Emp');
+            navigation.navigate('AllScreens',{
+              ID:res.data.data[0].AuthID,
+              flag:res.data.data[0].Flag,
+              mobileNumber:mNumber,
+              Type:res.data.data[0].Type,
+            });
+          }
+          else if(res.data.data[0].Flag == 'U') {
+            // alert('Login Successful');
+            console.log('data',res.data.data[0])
+            navigation.navigate('tab',{userData:res.data.data[0]}
+    )
+          }
+          else alert('User does not exist.')
+        })
+        .catch(error=>{console.log(error)})  
+      }
+    })();
+  },[]) 
 
   const onPressRegister = () => {
         navigation.navigate('Signup');
@@ -177,10 +219,9 @@ const LekpayLogin = () =>{
   }     
   const onPressSubmit = async()=>{
     setLoading(true);
+   
     try{
       if(mNumber.length == 10 && password.length>=8){
-        
-        //alert('Success!! Redirecting to HomePage...');
         await LoginApi({
           "Mobile":mNumber,
           "Password":password
@@ -190,7 +231,9 @@ const LekpayLogin = () =>{
             alert('Wrong Phone number/Password!!');
           }
           else if(res.data.data[0].Flag == 'E'){
-            alert('Emp');
+            AsyncStorage.setItem('Mobile',mNumber);
+            AsyncStorage.setItem('Password',password);
+            // alert('Emp');
             navigation.navigate('AllScreens',{
               ID:res.data.data[0].AuthID,
               flag:res.data.data[0].Flag,
@@ -199,17 +242,18 @@ const LekpayLogin = () =>{
             });
           }
           else if(res.data.data[0].Flag == 'U') {
-            alert('Login Successful');
+            // alert('Login Successful');
+            AsyncStorage.setItem('Mobile',mNumber);
+            AsyncStorage.setItem('Password',password);
+            console.log('data',res.data.data[0])
             navigation.navigate('tab',{userData:res.data.data[0]}
     )
           }
-
-          else alert('User not exist.')
+          else alert('User does not exist.')
         })
-        .catch(error=>{console.log(error)})
-
-        
-      }else if(mNumber.length == 0){
+        .catch(error=>{console.log(error)})  
+      }
+      else if(mNumber.length == 0){
         alert('Enter phone number');
       }else if(mNumber.length != 10){
         alert('Please enter valid number');

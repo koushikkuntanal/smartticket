@@ -197,16 +197,23 @@ const onPressAssetChecker=()=>{
             <View style={styles.card}>
             <TouchableOpacity onPress={onPressCurrentTrip}>
             <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-Ticket.png')}
+            source={require('../assets/LekPay-CurrentTrip.png')}
             />
             <Text style={styles.text}>Current{'\n'}Trip</Text>
            </TouchableOpacity>
 
            <TouchableOpacity onPress={onPressSetPass}>
             <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-Ticket.png')}
+            source={require('../assets/LekPay-StagePass.png')}
             />
             <Text style={styles.text}>Passed Stage</Text>
+           </TouchableOpacity>
+
+           <TouchableOpacity onPress={switchU}>
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-Switch.png')}
+            />
+            <Text style={styles.text}>Switch User</Text>
            </TouchableOpacity>
 
             </View>
@@ -256,10 +263,7 @@ const onPressAssetChecker=()=>{
 
 
              
-            <TouchableOpacity onPress={switchU} style={{backgroundColor:btnColor,width:170,height:30,alignItems:'center',justifyContent:'center'}}>
-              <Text>Switch to User</Text>
-            </TouchableOpacity>
-              
+           
             {loading ? <Image source={require('../assets/loading.gif')} /> : null}
         </View>
     )

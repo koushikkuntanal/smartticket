@@ -345,7 +345,8 @@ function StackNavigator (data) {
  
   const handleLogout = async () => {
     
-   
+    await AsyncStorage.removeItem('Mobile');
+    await AsyncStorage.removeItem('Password');
     navigation.navigate('Login');
 
     
@@ -721,10 +722,28 @@ function StackNavigator (data) {
       
       />
      
-     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}, }}
+     <Stack.Screen 
+     options={{
+      headerStyle:{backgroundColor:darkPink},
+    
+      headerRight: () => (
+       <View style={{flexDirection:'row'}}>
+        <MaterialCommunityIcons
+            style={{marginRight:18}}
+            name="exit-to-app"
+            size={28}
+            onPress={handleLogout}
+            color='#ffffff'
+          />
+        </View>   
+      )
+    }}
      
      
-     name='AllScreens' component={AllScreens}/>
+     name='AllScreens' 
+     component={AllScreens}
+    
+     />
 
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Cash Handler' component={CashHandler}/>
       

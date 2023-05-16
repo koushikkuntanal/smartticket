@@ -11,8 +11,10 @@ const ForgotPassword = () => {
 
     const navigation = useNavigation();
     const [mNumber,setNumber]  = useState('');
+    const [loading,setLoading] = useState();
 
     const onclickGetOTP = async () => {
+      setLoading(true);
      if( mNumber.length == 0){
       alert('Enter the mobile number')
      }else if(mNumber.length != 10){
@@ -30,6 +32,7 @@ const ForgotPassword = () => {
       }).catch(err=>(console.log(err)));
       
    }
+     setLoading(false);
     }
 
     return (
@@ -59,7 +62,11 @@ const ForgotPassword = () => {
          Press={onclickGetOTP}
          btnLabel="Get OTP"
         />
+
+        {loading ?  <Image  source={require('../assets/loading.gif')} /> : null} 
        </View>
+
+       
     );
 };
 
