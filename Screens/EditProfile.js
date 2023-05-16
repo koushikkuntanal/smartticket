@@ -72,7 +72,7 @@ const EditProfile =({route}) =>{
       if(hasPermission === undefined){
         return <View style={styles.container1}>
         <Text>Requesting for Permissions.</Text>
-        {Alert.alert('Alert!','Permissions being requested',[{text:'Continue'}])}
+        
        </View>
       }else if(!hasPermission){
         //return <Text>Enable Permission</Text>

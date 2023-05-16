@@ -348,7 +348,7 @@ function StackNavigator (data) {
     await AsyncStorage.removeItem('Mobile');
     await AsyncStorage.removeItem('Password');
     navigation.navigate('Login');
-
+    // navigation.replace('Login');
     
   };
    
@@ -725,7 +725,7 @@ function StackNavigator (data) {
      <Stack.Screen 
      options={{
       headerStyle:{backgroundColor:darkPink},
-    
+      headerLeft: null ,
       headerRight: () => (
        <View style={{flexDirection:'row'}}>
         <MaterialCommunityIcons

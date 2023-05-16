@@ -6,6 +6,7 @@ import { background, btnColor, darkPink } from "../components/Constants";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { createUserApi, ProfileApi, searchUserAPi, switchToUserApi } from "../Screens/Api";
+import { BackHandler } from "react-native";
 
 const AllScreens =({route}) =>{
     const [dob,setDob]= useState();
@@ -15,6 +16,30 @@ const AllScreens =({route}) =>{
     const Type = route.params.Type;
     const navigation = useNavigation();
     const [loading, setLoading] = useState();
+
+    useEffect(() => {
+    
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+    
+  }, []);
+
+  const backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
+    ]);
+    return true;
+  };
     const Profile = async()=>{
       await ProfileApi({
         "flag":Flag,

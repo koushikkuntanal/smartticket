@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, useNavigation, } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View,Pressable,Image} from 'react-native';
+import { StyleSheet, Text, View,Pressable,Image, BackHandler, Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
@@ -22,11 +22,7 @@ export default function Screen_A({route}){
        navigation.navigate('Login');
     }
     
-    // const changePassword = () => {
-    //   navigation.navigate('UsersPasswordChange');
-       
-
-    // }
+   
 
     const onclickHistory = async() => {
       const got = await AsyncStorage.getItem('Token');
