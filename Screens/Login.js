@@ -34,6 +34,7 @@ const LekpayLogin = () =>{
 
   }
   useEffect(()=>{
+    setLoading(true);
     (async ()=>{
      
       const Mobile = await AsyncStorage.getItem('Mobile');
@@ -76,6 +77,7 @@ const LekpayLogin = () =>{
         .catch(error=>{console.log(error)})  
       }
     })();
+    setLoading(false);
   },[]) 
 
   const onPressRegister = () => {

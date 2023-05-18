@@ -5,9 +5,11 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { useNavigation } from "@react-navigation/native";
 import { getAssetIdApiForEmp, getRouteIdApi, getStagesIDApi, LastTickCountApi, LastTicketCountUpdate, ReEnableTicket, transactionforUsers, TransactionHistory, TransactionLastTicket, UserStageIdApi } from "./Api";
-
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 const Scnner = ({route}) =>{
+
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
   const forEmaildata = route.params.data;
 
   const height = 800;
@@ -624,7 +626,26 @@ const Scnner = ({route}) =>{
 
       <View style={styles.maskOutter}>
         
+     
+          
+           
+          <BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+     />
+
+            
+            
+         
+          
+          
+         
+       
             <View style={[{ flex: maskRowHeight  }, styles.maskRow, styles.maskFrame]} />
+              
              <View style={[{ flex: 30 }, styles.maskCenter]}>
              <View style={[{ width: maskColWidth }, styles.maskFrame]} />
              <View style={styles.maskInner} />
@@ -671,6 +692,16 @@ const styles = StyleSheet.create({
       
     },
     maskCenter: { flexDirection: 'row' },
+
+    Container:{
+      backgroundColor: '#ffffff',
+      //flex:1,
+      paddingRight:1,
+      //marginBottom:355,
+      marginTop:10,
+      width:360,
+      height:190,
+    }
 });
 
 export default Scnner;

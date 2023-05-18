@@ -9,7 +9,7 @@ import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
 import { TransactionHistory, TransactionLastTicket } from './Api';
-
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 
 export default function Screen_A({route}){
@@ -17,6 +17,8 @@ export default function Screen_A({route}){
   const navigation = useNavigation();
  
    // const data= route.params.userData;
+
+   const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
     const onPressHandler = () => {
        navigation.navigate('Login');
@@ -64,43 +66,20 @@ export default function Screen_A({route}){
 
         </StatusBar>
         <View style={styles.Container}>
-          <View style={styles.parent}>
-           
-            <PagerView 
-              style={styles.pager}
-              initialPage={0}
-             
-              >
-             <View key="1" style={{borderRadius:8}}>
-              <Image 
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Scenry.png')}
-                  
-                />
-             </View>
-             <View key="2" style={{borderRadius:8}}>
-             <Image 
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Buildings.png')}
-                  
-                />
-             </View>
-             <View key="3" style={{borderRadius:8}}>
-             <Image 
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Wow.png')}
-                  
-                />
-             </View> 
-             
-            </PagerView> 
+          
+         
+          <BannerAd
+         
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+     />
 
+        
             
-            
-          </View>
+         
           
           
          
@@ -181,10 +160,10 @@ export default function Screen_A({route}){
       //flex:1,
       paddingRight:1,
       //marginBottom:355,
-      marginTop:10,
+      marginTop:15,
       width:360,
-      height:190,
-      
+      height:72,
+      alignItems:'center'
     },
 
     

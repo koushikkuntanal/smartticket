@@ -25,7 +25,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.koushik123.lekpay"
     },
     "android": {
       "adaptiveIcon": {
@@ -42,5 +43,8 @@
         "projectId": "82f55310-f377-497f-8166-dd43a81da2de"
       }
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-9003278618989837~4705086981"
   }
 }

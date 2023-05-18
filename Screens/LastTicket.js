@@ -1,10 +1,12 @@
 import React, { useEffect,useState } from "react";
 import { View,Text,StyleSheet,Image} from "react-native";
 import { transactionQrApi } from "./Api";
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function LastTicket({route}){
 
-    
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
+
     const historyData = route.params.historyData;
     // const RevhistoryData = ([...(historyData)].reverse());
     const [qrValue, setQrValue] = useState('Your String Value');
@@ -87,12 +89,24 @@ export default function LastTicket({route}){
         <Image source={{uri:`${qrValue}`}} style={{width:150,height:150,}}></Image>
         </View>
      
-   
+     
+      <View style={{alignItems:'center'}}>
+      <BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+     />
+      </View> 
        
        
        
      
     </View> 
+
+    
+    
     
     
     ): (  <View style={styles.container} >
