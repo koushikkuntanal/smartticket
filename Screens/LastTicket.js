@@ -46,10 +46,11 @@ export default function LastTicket({route}){
 
     return (hisObj !=undefined ) ? (
       
-      <View style={styles.container} >
+     <View style={styles.parent}>
+       <View style={styles.container} >
        {console.log('historydata',historyData)} 
        {console.log('hisobj',hisObj)}
-      <View style={styles.row}>
+       <View style={styles.row}>
        <Text style={styles.label}>OrderID : </Text>
        <Text style={styles.value}>{hisObj.orderid}</Text>
 
@@ -90,7 +91,14 @@ export default function LastTicket({route}){
         </View>
      
      
-      <View style={{alignItems:'center'}}>
+     
+       
+       
+       
+     
+    </View> 
+
+    <View>
       <BannerAd
       unitId={adUnitId}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
@@ -98,12 +106,8 @@ export default function LastTicket({route}){
         requestNonPersonalizedAdsOnly: true,
       }}
      />
-      </View> 
-       
-       
-       
-     
-    </View> 
+     </View>
+     </View>
 
     
     
@@ -159,5 +163,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 1,
+  },
+  ads:{
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 1,
+    alignItems:'center'
   }
 });
