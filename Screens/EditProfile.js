@@ -6,10 +6,12 @@ import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button } from "react-native-paper";
-import { EditprofileApi } from "./Api";
+import { EditprofileApi, UploadPicApi } from "./Api";
 import Field from "../components/Field";
 import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
+import mime from "mime";
+import axios from "axios";
 
 let numreg = /^[0-9]+$/;
 const EditProfile =({route}) =>{
@@ -95,6 +97,24 @@ const EditProfile =({route}) =>{
           setImage(result.assets[0].uri);
           setProfilePic(true);
           
+          const Fdata = new FormData();
+            const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
+            Fdata.append('image',{
+              uri : newImageUri,
+              type: mime.getType(newImageUri),
+              name: data.UserId
+             
+            });
+            console.log('dara',Fdata)
+          
+          try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+          });
+          console.log(res.data);}catch(err){console.log(err)}
+          
+          // await UploadPicApi(data).then(res=>{console.log(res.data,'res pic uploaf')}).catch(err=>{console.log('pic upload err',err)})
         }
       }  
         const openCamera = async () => {
@@ -116,7 +136,22 @@ const EditProfile =({route}) =>{
           if (result) {
             setImage(result.assets[0].uri);
             setProfilePic(true);
-           
+            const Fdata = new FormData();
+            const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
+            Fdata.append('image',{
+              uri : newImageUri,
+              type: mime.getType(newImageUri),
+              name: data.UserId
+             
+            });
+            console.log('dara',Fdata)
+            // await UploadPicApi(data).then(res=>{console.log(res.data,'res pic uploaf')}).catch(err=>{console.log('pic upload err',err.message)})
+           try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+              headers:{
+                'Content-Type':'multipart/form-data'
+              }
+            });
+            console.log(res.data);}catch(err){console.log(err)}
           }
       }
       

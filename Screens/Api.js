@@ -444,3 +444,12 @@ export const ForgotPasswordForUser = async (data) => { //used in forgotpassword.
   });
   return res;
 }
+
+export const UploadPicApi = async (data) => { //used in forgotpassword.js to get new password
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/upload/userProfile',
+    data:data
+  });
+  return res;
+}

@@ -106,6 +106,7 @@ const pickImage= async () =>{
 if(result){
     setImage(result.assets[0].uri);
     setProfilePic(true);
+    
   }
 
 
