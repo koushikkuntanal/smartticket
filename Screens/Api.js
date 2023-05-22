@@ -453,3 +453,13 @@ export const UploadPicApi = async (data) => { //used in forgotpassword.js to get
   });
   return res;
 }
+
+export const ProfilePic = async (data) => { //used in edit.
+  const res = await axios({
+    method:'Post',
+    url:'https://amsweets.in/upload/getProfile',
+    data:data
+  });
+  return res;
+}
+

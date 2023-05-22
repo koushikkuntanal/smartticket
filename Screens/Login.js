@@ -62,7 +62,7 @@ const LekpayLogin = () =>{
             navigation.navigate('AllScreens',{
               ID:res.data.data[0].AuthID,
               flag:res.data.data[0].Flag,
-              mobileNumber:mNumber,
+              mobileNumber:res.data.data[0].MobileNo,
               Type:res.data.data[0].Type,
             });
           }

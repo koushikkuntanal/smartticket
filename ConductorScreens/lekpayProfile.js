@@ -9,6 +9,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import { ProfileApi } from "../Screens/Api";
+import mime from "mime";
+import axios from "axios";
 
 
 const LekpayProfile=({route}) =>{
@@ -59,6 +61,23 @@ const pickImage= async () =>{
 if(result){
     setImage(result.assets[0].uri);
     setProfilePic(true);
+
+    const Fdata = new FormData();
+    const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
+    Fdata.append('image',{
+      uri : newImageUri,
+      type: mime.getType(newImageUri),
+      name: empData.EmpId+'.jpg'
+     
+    });
+    console.log('dara',Fdata)
+  
+  try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+    headers:{
+      'Content-Type':'multipart/form-data'
+    }
+  });
+  console.log(res.data);}catch(err){console.log(err)}
   }
 
 
@@ -90,7 +109,22 @@ if(result){
     if (result) {
       setImage(result.assets[0].uri);
       setProfilePic(true);
-     
+      const Fdata = new FormData();
+      const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
+      Fdata.append('image',{
+        uri : newImageUri,
+        type: mime.getType(newImageUri),
+        name: empData.EmpId+'.jpg'
+       
+      });
+      console.log('dara',Fdata)
+    
+    try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+      headers:{
+        'Content-Type':'multipart/form-data'
+      }
+    });
+    console.log(res.data);}catch(err){console.log(err)}
     }
 }
 

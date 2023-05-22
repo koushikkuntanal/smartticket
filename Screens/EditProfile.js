@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button } from "react-native-paper";
-import { EditprofileApi, UploadPicApi } from "./Api";
+import { EditprofileApi, ProfilePic, UploadPicApi } from "./Api";
 import Field from "../components/Field";
 import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
@@ -53,7 +53,52 @@ const EditProfile =({route}) =>{
         (async()=> {
           const mediaPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
           setHasPermission(mediaPermission.status ==="granted");
-        } 
+
+          // await ProfilePic({
+          // "UserId":data.UserId
+          // }).then(res=>{
+          //   console.log('ProfilepIc',res.data)
+          //   const blob = res.blob();
+          //   setImage(URL.createObjectURL(blob));
+          // }).catch(err=>{
+          //   console.log('err profile pic',err);
+          // })
+
+          // try {
+          //   const response = await axios.get('https://amsweets.in/uploads/U1.jpg', {
+          //     responseType: 'arraybuffer',
+          //   });
+    
+          //   const base64Image = Buffer.from(response.data, 'binary').toString('base64');
+          //   setImage(`data:image/jpeg;base64,${base64Image}`);
+          // } catch (error) {
+          //   console.error(error);
+          // }
+
+          fetch(`https://amsweets.in/profile/getProfile/${data.UserId}`)
+          .then(response => {response.blob()
+          console.log('res',response)
+          })
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const base64data = reader.result;
+              console.log('base64',base64data);
+              setImage(base64data);
+              setLoading(false);
+            };
+            reader.readAsDataURL(blob);
+          })
+          .catch(error => {
+            console.error('Error fetching user profile:', error);
+            setLoading(false);
+          });
+        }
+
+
+
+        
+        
         )();
         setName(data.Uname);
         setGender(data.Ugender);
@@ -66,8 +111,10 @@ const EditProfile =({route}) =>{
         setPin((data.UPinCode).toString());
         setAadhar(data.Uaadhar);
         setEmail(data.Uemail);
-        if(data.Uphoto != ''){setImage(data.Uphoto);}
-        else{setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sphyyy')}
+        // if(data.Uphoto != ''){
+        //   setImage(data.Uphoto);
+        // }
+        // else{setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sphyyy')}
       
       },[]);
         
@@ -102,7 +149,7 @@ const EditProfile =({route}) =>{
             Fdata.append('image',{
               uri : newImageUri,
               type: mime.getType(newImageUri),
-              name: data.UserId
+              name: data.UserId+'.jpg'
              
             });
             console.log('dara',Fdata)
@@ -133,7 +180,7 @@ const EditProfile =({route}) =>{
             quality:1
           });
   
-          if (result) {
+          if (result) {                   //open camera code
             setImage(result.assets[0].uri);
             setProfilePic(true);
             const Fdata = new FormData();
@@ -141,9 +188,10 @@ const EditProfile =({route}) =>{
             Fdata.append('image',{
               uri : newImageUri,
               type: mime.getType(newImageUri),
-              name: data.UserId
+              name: data.UserId+'.jpg'
              
             });
+            Fdata.append('userId',data.UserId);
             console.log('dara',Fdata)
             // await UploadPicApi(data).then(res=>{console.log(res.data,'res pic uploaf')}).catch(err=>{console.log('pic upload err',err.message)})
            try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
@@ -151,7 +199,9 @@ const EditProfile =({route}) =>{
                 'Content-Type':'multipart/form-data'
               }
             });
-            console.log(res.data);}catch(err){console.log(err)}
+            console.log(res.data);
+          
+          }catch(err){console.log(err)}
           }
       }
       

@@ -18,7 +18,7 @@ const AllScreens =({route}) =>{
     const [loading, setLoading] = useState();
 
     useEffect(() => {
-    
+    console.log('data in alsscrens ',id,Flag,mobileNumber);
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
