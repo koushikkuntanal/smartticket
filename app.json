@@ -36,7 +36,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.koushik123.lekpay"
+      "package": "com.koushik123.lekpay",
+      "versionCode":1
     },
     "web": {
       "favicon": "./assets/favicon.png"
