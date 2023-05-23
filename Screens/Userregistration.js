@@ -11,7 +11,7 @@ import Btn from "../components/Btn";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useNavigation } from "@react-navigation/native";
-import { ProfileApi } from "./Api";
+import { ProfileApi, ProfilePic } from "./Api";
 
 
 const Userregistration=({route}) =>{
@@ -70,6 +70,15 @@ useEffect(()=>{
   (async()=> {
     const mediaPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     setHasPermission(mediaPermission.status ==="granted");
+
+    await ProfilePic({
+      "UserId":Data.UserId
+    }).then(res=>{
+      console.log('pro data',res.data);
+      setImage(`data:image/jpeg;base64,${res.data}`);
+    }).catch(err=>{
+      console.log('err pro sata',err)
+    })
   } 
   )();
   
@@ -162,7 +171,7 @@ const removeProfile = ()=>{
              <StatusBar hidden={false} style="light" backgroundColor='#f9e5f3'  />
             <Text style={styles.head}>Profile</Text>
             
-             {(Data.Uphoto == '')?  
+             {/* {(Data.Uphoto == '')?  
             <View style={{borderWidth:1,borderRadius:60}}>
            <Image
               style={styles.image}
@@ -179,7 +188,21 @@ const removeProfile = ()=>{
              
             </View>
 
-            } 
+            }  */}
+            {
+              image ? <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
+             
+              </View> : <View style={{borderWidth:1,borderRadius:60}}>
+           <Image
+              style={styles.image}
+              resizeMode='cover'
+              
+              source={require('../assets/Noimage.png')}
+              
+             />  
+              
+           </View>
+            }
              
             {/* <TouchableOpacity
             onPress={openDialog}

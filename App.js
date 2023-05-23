@@ -38,7 +38,7 @@ import Dfaq from './Screens/Dfaq';
 import PaymentScreen from './Screens/PaymentScreen';
 import Success from './Screens/Success';
 import LekpayLogin from './Screens/Login';
-import { btnColor, darkPink } from './components/Constants';
+import { background, btnColor, darkPink } from './components/Constants';
 import AllScreens from './ConductorScreens/AllScreen';
 import CashHandler from './ConductorScreens/CashHandler';
 import CheckTickets from './ConductorScreens/CheckTickets';
@@ -51,7 +51,7 @@ import AssetTicketReport from './screenChecker/AssetTicketReport';
 import ValidateTicketChecker from './screenChecker/ValidateTicketChecker';
 import TicketScreen from './ConductorScreens/TicketScreen';
 import ChangePasswordConductor from './ConductorScreens/ChangePasswordConductor';
-import { ProfileApi } from './Screens/Api';
+import { ProfileApi, ProfilePic } from './Screens/Api';
 import EditProfile from './Screens/EditProfile';
 import SetRouteAsset from './ConductorScreens/SetRouteAsset';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -186,6 +186,7 @@ function DrawerNavigator() {
 function TabNavigator({route}) {
 const data = route.params.userData;
  StackNavigator(data);
+ 
 // console.log('tab data',data);
 // if(data.AuthID == 'U2'){
 //   alert('gich gili gili');
@@ -317,31 +318,30 @@ function StackNavigator (data) {
 
   const [mNumber,setNumber]  = useState('');
   const [password,setPassword] = useState('');
- 
+  const noImage = 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph';
+ const [image,setImage] = useState('');
   const userData = data;
+ 
+
+  
+
   
   // useEffect(() => {
-    
+  //   (async()=>{
+  //     await ProfilePic({
+  //       "UserId":userData.AuthID
+  //     }).then(res=>{
+  //       console.log('pro data',res.data);
+  //       setImage(`data:image/jpeg;base64,${res.data}`);
+  //     }).catch(err=>{
+  //       console.log('err pro sata',err)
+  //     })
+  //   })();
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-
-  //   return () => backHandler.remove();
+   
   // }, []);
 
-  // const backAction = () => {
-  //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-  //     {
-  //       text: 'Cancel',
-  //       onPress: () => null,
-  //       style: 'cancel',
-  //     },
-  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
-  //   ]);
-  //   return true;
-  // };
+  
  
   const handleLogout = async () => {
     
@@ -388,9 +388,9 @@ function StackNavigator (data) {
       
        headerLeft: () => (
         
-          <View style={{backgroundColor:'pink',justifyContent:'center',alignItems:'center',marginLeft:10,padding:5,borderRadius:20}}>
+          <View style={{backgroundColor:'#C80088',justifyContent:'center',alignItems:'center',marginLeft:10,padding:5,borderRadius:20}}>
           
-           <Ionicons
+           {/* <Ionicons
              //style={{paddingLeft: 10}}
              name= 'person-outline'
              size={25}
@@ -410,7 +410,32 @@ function StackNavigator (data) {
               alert(error)})
               
               }}
-           />
+           /> */}
+
+          <TouchableOpacity onPress={async()=>{
+              console.log(route.params.userData.Flag)
+              console.log(route.params.imageData.length)
+              await ProfileApi({
+                "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
+                  "id": route.params.userData.Flag=='U'? route.params.userData.AuthID :route.params.userData[0].UserId
+              })
+              .then(res=>{
+                console.log('for switced emp',res.data)
+                navigation.navigate('Userregistration',{data:(res.data)})
+            
+            })
+              .catch(error=>{console.log(error)
+              alert(error)})
+              
+              }}>
+             {(route.params.imageData.length) > 10000 ? <View style={{borderWidth:0,borderRadius:70}}><Image resizeMode='contain' source={{ uri: route.params.imageData }} style={styles.image}/></View> : <Ionicons
+             //style={{paddingLeft: 10}}
+             name= 'person-outline'
+             size={25}
+            //  color='#ffffff'
+             
+           /> }
+            </TouchableOpacity>
          </View>
        ),
 
@@ -819,6 +844,14 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
 
-  
+  image:{
+    borderRadius:20,
+    // borderWidth:7,
+    borderColor:darkPink,
+    alignSelf:'center',
+    width:40,
+    height:40,
+   
+},
   
 });

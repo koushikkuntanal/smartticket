@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
-import { ProfileApi } from "../Screens/Api";
+import { ProfileApi, ProfilePic } from "../Screens/Api";
 import mime from "mime";
 import axios from "axios";
 
@@ -27,6 +27,15 @@ useEffect(()=>{
   (async()=> {
     const mediaPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     setHasPermission(mediaPermission.status ==="granted");
+
+    await ProfilePic({
+      "UserId":empData.EmpId
+    }).then(res=>{
+      console.log('pro data',res.data);
+      setImage(`data:image/jpeg;base64,${res.data}`);
+    }).catch(err=>{
+      console.log('err pro sata',err)
+    })
   } 
   )();
   
@@ -59,7 +68,7 @@ const pickImage= async () =>{
   });
   
 if(result){
-    setImage(result.assets[0].uri);
+    // setImage(result.assets[0].uri);
     setProfilePic(true);
 
     const Fdata = new FormData();
@@ -67,7 +76,7 @@ if(result){
     Fdata.append('image',{
       uri : newImageUri,
       type: mime.getType(newImageUri),
-      name: empData.EmpId+'.jpg'
+      name: empData.EmpId
      
     });
     console.log('dara',Fdata)
@@ -77,7 +86,10 @@ if(result){
       'Content-Type':'multipart/form-data'
     }
   });
-  console.log(res.data);}catch(err){console.log(err)}
+  console.log(res.data);
+  setImage(`data:image/jpeg;base64,${res.data.data}`);
+  }
+catch(err){console.log(err)}
   }
 
 
@@ -107,14 +119,14 @@ if(result){
     
 
     if (result) {
-      setImage(result.assets[0].uri);
+      // setImage(result.assets[0].uri);
       setProfilePic(true);
       const Fdata = new FormData();
       const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
       Fdata.append('image',{
         uri : newImageUri,
         type: mime.getType(newImageUri),
-        name: empData.EmpId+'.jpg'
+        name: empData.EmpId
        
       });
       console.log('dara',Fdata)
@@ -124,7 +136,9 @@ if(result){
         'Content-Type':'multipart/form-data'
       }
     });
-    console.log(res.data);}catch(err){console.log(err)}
+    console.log(res.data);
+    setImage(`data:image/jpeg;base64,${res.data.data}`);
+  }catch(err){console.log(err)}
     }
 }
 
@@ -148,8 +162,11 @@ const removeProfile = ()=>{
              <StatusBar hidden={false} style="light" backgroundColor={background}  />
             <Text style={styles.head}>Profile</Text>
             
-            { !profilepic?  
-            <View>
+           
+             {
+              image ? <View><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
+              <View style={{backgroundColor:'pink',position:'absolute',right:1,bottom:1,padding:11,borderRadius:100}}><Ionicons name='camera' size={28} color="black" onPress={openDialog}/></View>
+             </View> : <View>
            <Image
               style={styles.image}
               resizeMode='cover'
@@ -159,14 +176,7 @@ const removeProfile = ()=>{
              />  
               <View style={{backgroundColor:'pink',position:'absolute',right:1,bottom:1,padding:11,borderRadius:100}}><Ionicons name='camera' size={28} color="black" onPress={openDialog}/></View>
            </View>
-       :
-            
-            image && <View><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
-             <View style={{backgroundColor:'pink',position:'absolute',right:1,bottom:1,padding:11,borderRadius:100}}><Ionicons name='camera' size={28} color="black" onPress={openDialog}/></View>
-            </View>
-
-            }
-             
+             }
             {/* <TouchableOpacity
             onPress={openDialog}
             style={styles.button}

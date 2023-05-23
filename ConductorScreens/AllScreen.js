@@ -5,7 +5,7 @@ import Btn from "../components/Btn";
 import { background, btnColor, darkPink } from "../components/Constants";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { createUserApi, ProfileApi, searchUserAPi, switchToUserApi } from "../Screens/Api";
+import { createUserApi, ProfileApi, ProfilePic, searchUserAPi, switchToUserApi } from "../Screens/Api";
 import { BackHandler } from "react-native";
 
 const AllScreens =({route}) =>{
@@ -134,12 +134,33 @@ const switchU = async() =>{
     "Dob":res.data.EmpDOB
 
   })
-  .then(res=>{console.log('finding user',res.data)
+  .then(async res=>{console.log('finding user',res.data)
   if(res.data[0] != undefined){if(res.data[0].Flag == 'U' ){
-    navigation.navigate('tab',{userData:res.data})
+    await ProfilePic({
+      "UserId":id
+    }).then(resI=>{
+      console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
+      
+      navigation.navigate('tab',{userData:res.data,imageData:`data:image/jpeg;base64,${resI.data}`}
+      )
+    }).catch(err=>{
+      console.log('err pro sata',err)
+    })
+    // navigation.navigate('tab',{userData:res.data})
   }}else if(res.data.data.flag == 'U'){
-    navigation.navigate('tab'
-    ,{screen:"Screen_A",params:{userData:res.data.data}})
+    console('navigating to tab')
+    await ProfilePic({
+      "UserId":id
+    }).then(resI=>{
+      console.log('aoui fro profiag hot',resI.data,res.data.data[0]);// console.log('pro data',resI.data);
+     
+      navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
+      )
+    }).catch(err=>{
+      console.log('err pro sata',err)
+    })
+    // navigation.navigate('tab'
+    // ,{screen:"Screen_A",params:{userData:res.data.data}})
 
   }
 })

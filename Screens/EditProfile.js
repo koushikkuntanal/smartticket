@@ -49,50 +49,21 @@ const EditProfile =({route}) =>{
     
     
     useEffect(()=>{
-  
+       setLoading(true);
         (async()=> {
           const mediaPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
           setHasPermission(mediaPermission.status ==="granted");
 
-          // await ProfilePic({
-          // "UserId":data.UserId
-          // }).then(res=>{
-          //   console.log('ProfilepIc',res.data)
-          //   const blob = res.blob();
-          //   setImage(URL.createObjectURL(blob));
-          // }).catch(err=>{
-          //   console.log('err profile pic',err);
-          // })
-
-          // try {
-          //   const response = await axios.get('https://amsweets.in/uploads/U1.jpg', {
-          //     responseType: 'arraybuffer',
-          //   });
-    
-          //   const base64Image = Buffer.from(response.data, 'binary').toString('base64');
-          //   setImage(`data:image/jpeg;base64,${base64Image}`);
-          // } catch (error) {
-          //   console.error(error);
-          // }
-
-          fetch(`https://amsweets.in/profile/getProfile/${data.UserId}`)
-          .then(response => {response.blob()
-          console.log('res',response)
+          await ProfilePic({
+            "UserId":data.UserId
+          }).then(res=>{
+            console.log('pro data',res.data);
+            setImage(`data:image/jpeg;base64,${res.data}`);
+          }).catch(err=>{
+            console.log('err pro sata',err)
           })
-          .then(blob => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              const base64data = reader.result;
-              console.log('base64',base64data);
-              setImage(base64data);
-              setLoading(false);
-            };
-            reader.readAsDataURL(blob);
-          })
-          .catch(error => {
-            console.error('Error fetching user profile:', error);
-            setLoading(false);
-          });
+
+          
         }
 
 
@@ -115,7 +86,7 @@ const EditProfile =({route}) =>{
         //   setImage(data.Uphoto);
         // }
         // else{setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sphyyy')}
-      
+      setLoading(false);
       },[]);
         
       if(hasPermission === undefined){
@@ -141,7 +112,8 @@ const EditProfile =({route}) =>{
         });
         
       if(result){
-          setImage(result.assets[0].uri);
+        setLoading(true);
+          // setImage(result.assets[0].uri);
           setProfilePic(true);
           
           const Fdata = new FormData();
@@ -149,7 +121,7 @@ const EditProfile =({route}) =>{
             Fdata.append('image',{
               uri : newImageUri,
               type: mime.getType(newImageUri),
-              name: data.UserId+'.jpg'
+              name: data.UserId
              
             });
             console.log('dara',Fdata)
@@ -159,8 +131,10 @@ const EditProfile =({route}) =>{
               'Content-Type':'multipart/form-data'
             }
           });
-          console.log(res.data);}catch(err){console.log(err)}
-          
+          console.log("case 64",res.data);
+          setImage(`data:image/jpeg;base64,${res.data.data}`);
+        }catch(err){console.log(err)}
+         setLoading(false); 
           // await UploadPicApi(data).then(res=>{console.log(res.data,'res pic uploaf')}).catch(err=>{console.log('pic upload err',err)})
         }
       }  
@@ -181,27 +155,27 @@ const EditProfile =({route}) =>{
           });
   
           if (result) {                   //open camera code
-            setImage(result.assets[0].uri);
+            // setImage(result.assets[0].uri);
             setProfilePic(true);
             const Fdata = new FormData();
             const newImageUri =  "file:///" + result.assets[0].uri.split("file:/").join("");
             Fdata.append('image',{
               uri : newImageUri,
               type: mime.getType(newImageUri),
-              name: data.UserId+'.jpg'
+              name: data.UserId
              
             });
             Fdata.append('userId',data.UserId);
             console.log('dara',Fdata)
-            // await UploadPicApi(data).then(res=>{console.log(res.data,'res pic uploaf')}).catch(err=>{console.log('pic upload err',err.message)})
-           try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
-              headers:{
-                'Content-Type':'multipart/form-data'
-              }
-            });
-            console.log(res.data);
           
-          }catch(err){console.log(err)}
+          try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+          });
+          console.log("case 64",res.data);
+          setImage(`data:image/jpeg;base64,${res.data.data}`);
+        }catch(err){console.log(err)}
           }
       }
       
@@ -214,6 +188,7 @@ const EditProfile =({route}) =>{
         setProfilePic(false);
         setImage('https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1371229056.1675413808&semt=sph')
         ToastAndroid.show('Profile pic removed',ToastAndroid.LONG)
+      
       }
           
 
@@ -232,7 +207,7 @@ const EditProfile =({route}) =>{
             "Pin":pin,
             "Address1":address1,
             "Address2":address2,
-            "Img":image,
+            
             "Email":email,
             "Upi":Upi
         })
@@ -314,7 +289,7 @@ const EditProfile =({route}) =>{
             {console.log('link of img to be sent',image)}
             {console.log('data in edit',data)}
              {  
-            image && <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{uri:image}} style={styles.image}/>
+            image && <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{ uri: image }} style={styles.image}/>
              <View style={{backgroundColor:'pink',position:'absolute',right:1,bottom:1,padding:11,borderRadius:100}}><Ionicons name='camera' size={28} color="black" onPress={openDialog}/></View>
             </View>
             }

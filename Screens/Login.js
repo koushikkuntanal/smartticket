@@ -7,7 +7,7 @@ import { background, btnColor, darkPink, headColor } from "../components/Constan
 import Field from "../components/Field";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
-import { LoginApi} from "./Api";
+import { LoginApi, ProfilePic} from "./Api";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Checkbox from 'expo-checkbox';
@@ -20,7 +20,7 @@ const LekpayLogin = () =>{
   const [loading,setLoading] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isChecked, setChecked] = useState(false);
-
+ const [image,setImage] = useState('');
   const onPressCheck =async (value)=>{
     let rbValue;
     if(value == false){
@@ -52,7 +52,7 @@ const LekpayLogin = () =>{
           "Mobile":Mobile,
           "Password":Password
         })
-        .then(res=>{console.log('data after login',res.data)
+        .then(async res=>{console.log('data after login',res.data)
           if(res.data.message == "Wrong Phone number/Password!!"){
             // alert('Wrong Phone number/Password!!');
           }
@@ -68,9 +68,18 @@ const LekpayLogin = () =>{
           }
           else if(res.data.data[0].Flag == 'U') {
             // alert('Login Successful');
-            console.log('data',res.data.data[0])
-            navigation.navigate('tab',{userData:res.data.data[0]}
-    )
+                await ProfilePic({
+                  "UserId":res.data.data[0].AuthID
+                }).then(resI=>{
+                  console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
+                  setImage(`data:image/jpeg;base64,${resI.data}`);
+                  navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
+                  )
+                }).catch(err=>{
+                  console.log('err pro sata',err)
+                })
+            
+           
           }
           else alert('User does not exist.')
         })
@@ -96,7 +105,7 @@ const LekpayLogin = () =>{
           "Mobile":mNumber,
           "Password":password
         })
-        .then(res=>{console.log('data after login',res.data)
+        .then(async res=>{console.log('data after login',res.data)
           if(res.data.message == "Wrong Phone number/Password!!"){
             alert('Wrong Phone number/Password!!');
           }
@@ -117,8 +126,16 @@ const LekpayLogin = () =>{
             AsyncStorage.setItem('Mobile',mNumber);
             AsyncStorage.setItem('Password',password);
             console.log('data',res.data.data[0])
-            navigation.navigate('tab',{userData:res.data.data[0]}
-    )
+            await ProfilePic({
+              "UserId":res.data.data[0].AuthID
+            }).then(resI=>{
+              console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
+              setImage(`data:image/jpeg;base64,${resI.data}`);
+              navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
+              )
+            }).catch(err=>{
+              console.log('err pro sata',err)
+            })
           }
           else alert('User does not exist.')
         })
