@@ -2,21 +2,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, useNavigation, } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View,Pressable,Image, BackHandler, Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
-import { TransactionHistory, TransactionLastTicket } from './Api';
+import { getAds, TransactionHistory, TransactionLastTicket } from './Api';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+
 
 
 export default function Screen_A({route}){
   const uData = route.params.data;
   const navigation = useNavigation();
- 
-   // const data= route.params.userData;
+ const [adsImages,setAdsImages] = useState([]);
+   const pagerRef = useRef(null);
+     const totalPages = adsImages.length;
+   let currentPage =  0;
+
 
    const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
@@ -24,7 +28,22 @@ export default function Screen_A({route}){
        navigation.navigate('Login');
     }
     useEffect(()=>{
-      console.log('screem a')
+      (async()=>{
+        await getAds().then(res=>{
+          // console.log('ads',res.data);
+          setAdsImages(res.data);
+        }).catch(err=>{
+          console.log('erre ads',err);
+        })
+      })();
+      const intervalId = setInterval(() => {
+        currentPage = (currentPage + 1) % totalPages;
+        pagerRef.current.setPage(currentPage);
+      }, 5000);
+  
+      return () => {
+        clearInterval(intervalId);
+      };
     },[])
    
 
@@ -70,17 +89,38 @@ export default function Screen_A({route}){
         <View style={styles.Container}>
           
          
-          <BannerAd
+          {/* <BannerAd
          
       unitId={adUnitId}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
       }}
-     />
+     /> */}
 
         
-            
+          <PagerView
+          style={styles.pager}
+          initialPage={0}
+          ref={pagerRef}
+         onPageSelected={(event) => {
+          currentPage = event.nativeEvent.position;
+          }}
+          >
+       {adsImages.map((ad) => (
+            <View key={ad.Num} style={{borderRadius:8}}>
+              {console.log('num',ad.Num)}
+                <Image
+                    style={{width:"100%",height:"100%",borderRadius:11}}
+                    resizeMode='stretch'
+                    source={{uri:`data:image/jpeg;base64,${ad.adstr}`}}
+                    
+                  />
+                </View>
+                  
+                  ))
+                }
+                </PagerView> 
          
           
           
@@ -164,7 +204,7 @@ export default function Screen_A({route}){
       //marginBottom:355,
       marginTop:15,
       width:360,
-      height:72,
+      height:150,
       alignItems:'center'
     },
 

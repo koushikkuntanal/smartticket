@@ -581,7 +581,7 @@ function StackNavigator (data) {
       component={Scnner}
       options={{
         headerShown: true,
-         title:'Qr Scanner',
+         title:'QR Scanner',
          headerStyle:{
           backgroundColor: '#C80088'
         }

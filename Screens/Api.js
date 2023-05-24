@@ -463,3 +463,12 @@ export const ProfilePic = async (data) => { //used in edit.
   return res;
 }
 
+export const getAds = async (data) => { //used in dashboard to display ads screen a
+  const res = await axios({
+    method:'get',
+    url:'https://amsweets.in/ads/',
+    data:data
+  });
+  return res;
+}
+
