@@ -71,7 +71,7 @@ const LekpayLogin = () =>{
                 await ProfilePic({
                   "UserId":res.data.data[0].AuthID
                 }).then(resI=>{
-                  console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
+                  console.log('aoui fro profiag hot',resI.data.length);// console.log('pro data',resI.data);
                   setImage(`data:image/jpeg;base64,${resI.data}`);
                   navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
                   )
@@ -129,8 +129,10 @@ const LekpayLogin = () =>{
             await ProfilePic({
               "UserId":res.data.data[0].AuthID
             }).then(resI=>{
-              console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
+              console.log('this should be format',res.data.data[0]);
+              console.log('aoui fro profiag hot',resI.data.length);// console.log('pro data',resI.data);
               setImage(`data:image/jpeg;base64,${resI.data}`);
+              
               navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
               )
             }).catch(err=>{

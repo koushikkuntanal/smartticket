@@ -10,7 +10,7 @@
     ],
     "name": "lekpay",
     "slug": "lekpay",
-    "version": "1.0.0",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,7 +26,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.koushik123.lekpay"
+      "bundleIdentifier": "com.lekpay.lekpay"
     },
     "android": {
       "permissions":[
@@ -37,7 +37,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.koushik123.lekpay",
-      "versionCode":1
+      "versionCode":5
     },
     "web": {
       "favicon": "./assets/favicon.png"

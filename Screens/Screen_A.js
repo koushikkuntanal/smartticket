@@ -23,7 +23,9 @@ export default function Screen_A({route}){
     const onPressHandler = () => {
        navigation.navigate('Login');
     }
-    
+    useEffect(()=>{
+      console.log('screem a')
+    },[])
    
 
     const onclickHistory = async() => {

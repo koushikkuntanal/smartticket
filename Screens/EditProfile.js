@@ -211,11 +211,24 @@ const EditProfile =({route}) =>{
             "Email":email,
             "Upi":Upi
         })
-        .then(res=>{console.log(res.data.message)
+        .then(async res=>{console.log(res.data.message)
           if(res.data.message == 'Edit Success'){
-          alert('Profile Changed!!');
-        navigation.navigate('Screen_A');
-        } else {
+            await ProfilePic({
+              "UserId":data.UserId
+            }).then(resI=>{
+              console.log('aoui fro profiag hot',resI.data.length);// console.log('pro data',resI.data);
+              setImage(`data:image/jpeg;base64,${resI.data}`);
+              console.log('this is my format',data)
+              navigation.navigate('tab',{userData:data,imageData:`data:image/jpeg;base64,${resI.data}`});
+            }).catch(err=>{
+              console.log('err pro sata',err)
+            })
+            alert('Profile Changed!!');
+        // navigation.navigate('Screen_A');
+
+        
+            
+      } else {
           alert('Profile not changed please try again');
         }
       })
@@ -286,7 +299,7 @@ const EditProfile =({route}) =>{
     return(
         <ScrollView style={{backgroundColor:'#FFFFFF' ,flex:1}}>
         <View style={styles.body}>
-            {console.log('link of img to be sent',image)}
+            {console.log('link of img to be sent',image.length)}
             {console.log('data in edit',data)}
              {  
             image && <View style={{borderWidth:1,borderRadius:60}}><Image resizeMode='contain' source={{ uri: image }} style={styles.image}/>

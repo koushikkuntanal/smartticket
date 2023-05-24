@@ -187,7 +187,7 @@ function TabNavigator({route}) {
 const data = route.params.userData;
  StackNavigator(data);
  
-// console.log('tab data',data);
+ console.log('tab data');
 // if(data.AuthID == 'U2'){
 //   alert('gich gili gili');
 // }
@@ -413,8 +413,9 @@ function StackNavigator (data) {
            /> */}
 
           <TouchableOpacity onPress={async()=>{
-              console.log(route.params.userData.Flag)
+              console.log('format a',route.params.userData.AuthID)
               console.log(route.params.imageData.length)
+             if(route.params.userData.AuthID != undefined){ 
               await ProfileApi({
                 "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
                   "id": route.params.userData.Flag=='U'? route.params.userData.AuthID :route.params.userData[0].UserId
@@ -425,7 +426,20 @@ function StackNavigator (data) {
             
             })
               .catch(error=>{console.log(error)
-              alert(error)})
+              alert(error)})}
+              else{
+                await ProfileApi({
+                  "flag":route.params.userData.Flag=='U'? route.params.userData.Flag:route.params.userData[0].Flag,
+                    "id": route.params.userData.Flag=='U'? route.params.userData.UserId :route.params.userData[0].UserId
+                })
+                .then(res=>{
+                  console.log('for switced emp',res.data)
+                  navigation.navigate('Userregistration',{data:(res.data)})
+              
+              })
+                .catch(error=>{console.log(error)
+                alert(error)})
+              }
               
               }}>
              {(route.params.imageData.length) > 10000 ? <View style={{borderWidth:0,borderRadius:70}}><Image resizeMode='contain' source={{ uri: route.params.imageData }} style={styles.image}/></View> : <Ionicons
