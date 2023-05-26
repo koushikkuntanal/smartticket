@@ -185,6 +185,7 @@ function DrawerNavigator() {
 
 function TabNavigator({route}) {
 const data = route.params.userData;
+const imgStr = route.params.imgStr;
  StackNavigator(data);
  
  console.log('tab data');
@@ -290,7 +291,7 @@ const data = route.params.userData;
       <Tab.Screen
         name="Screen_A"
          component={Screen_A}
-        initialParams={{data:data}}
+        initialParams={{data:data,imgStr:imgStr}}
       />
       {/* <Tab.Screen
         

@@ -7,7 +7,7 @@ import { background, btnColor, darkPink, headColor } from "../components/Constan
 import Field from "../components/Field";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
-import { LoginApi, ProfilePic} from "./Api";
+import { getAds, LoginApi, ProfilePic} from "./Api";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Checkbox from 'expo-checkbox';
@@ -70,11 +70,17 @@ const LekpayLogin = () =>{
             // alert('Login Successful');
                 await ProfilePic({
                   "UserId":res.data.data[0].AuthID
-                }).then(resI=>{
+                }).then(async resI=>{
                   console.log('aoui fro profiag hot',resI.data.length);// console.log('pro data',resI.data);
                   setImage(`data:image/jpeg;base64,${resI.data}`);
-                  navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
-                  )
+                  await getAds().then(resAds=>{
+                     console.log('ads',resAds.data[Math.floor(Math.random() * resAds.data.length)].Num);
+                     navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`,imgStr:resAds.data[Math.floor(Math.random() * resAds.data.length)].adstr}
+                     )
+                  }).catch(err=>{
+                    console.log('erre ads',err);
+                  })
+                  
                 }).catch(err=>{
                   console.log('err pro sata',err)
                 })
@@ -128,13 +134,18 @@ const LekpayLogin = () =>{
             console.log('data',res.data.data[0])
             await ProfilePic({
               "UserId":res.data.data[0].AuthID
-            }).then(resI=>{
+            }).then(async resI=>{
               console.log('this should be format',res.data.data[0]);
               console.log('aoui fro profiag hot',resI.data.length);// console.log('pro data',resI.data);
               setImage(`data:image/jpeg;base64,${resI.data}`);
               
-              navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
-              )
+              await getAds().then(resAds=>{
+                console.log('ads',resAds.data[Math.floor(Math.random() * resAds.data.length)].Num);
+                navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`,imgStr:resAds.data[Math.floor(Math.random() * resAds.data.length)].adstr}
+                )
+             }).catch(err=>{
+               console.log('erre ads',err);
+             })
             }).catch(err=>{
               console.log('err pro sata',err)
             })

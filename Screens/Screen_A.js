@@ -15,12 +15,13 @@ import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 
 export default function Screen_A({route}){
   const uData = route.params.data;
+  const imgStr = route.params.imgStr;
   const navigation = useNavigation();
  const [adsImages,setAdsImages] = useState([]);
    const pagerRef = useRef(null);
    let totalPages;
    let currentPage =  0;
-   const [image,setImage] = useState('');
+   const [image,setImage] = useState(route.params.imgStr);
 
    const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
