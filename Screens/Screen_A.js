@@ -10,6 +10,7 @@ import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
 import { getAds, TransactionHistory, TransactionLastTicket } from './Api';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { Video } from 'expo-av';
 
 
 
@@ -90,7 +91,7 @@ export default function Screen_A({route}){
     
     return(
       <View style={styles.body}>
-       {console.log('data in useruuyjh dashoard',uData,image.length)} 
+       {console.log('data in useruuyjh dashoard',uData)} 
         <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}>
 
         </StatusBar>
@@ -117,7 +118,7 @@ export default function Screen_A({route}){
           >
        {/* {adsImages.map((ad) => (
             <View key={ad.Num} >
-              {console.log('num',ad.Num)}
+              {console.log('num',ad.Num)}      // not working code 
                 <Image
                     style={{flex:1,width:null,height:null}}
                     resizeMode="contain"
@@ -131,13 +132,21 @@ export default function Screen_A({route}){
 
             <View >
               
-                <Image
+                <Image                                      //working for ads single at at time
                     style={{flex:1,width:null,height:null}}
                     resizeMode="contain"
                     source={{uri:`data:image/jpeg;base64,${image}`}}
                     
                   />
+                  {/* <Video 
+                   source={{ uri: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4' }}
+                   style={styles.video}
+                   shouldPlay
+                   resizeMode="contain"
+                   isLooping
+                   ></Video> */}
                 </View>
+
                 </PagerView> 
          
           
@@ -232,6 +241,12 @@ export default function Screen_A({route}){
       borderWidth:0.2,
       flex:1,
       borderRadius:12,
+     
+    },
+    video: {
+      flex:1,
+      width: null,
+      height: null,
      
     },
 

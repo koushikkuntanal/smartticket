@@ -161,7 +161,7 @@ const removeProfile = ()=>{
   ToastAndroid.show('Profile pic removed',ToastAndroid.LONG)
 }
     
- 
+const disableCalendarIcon = true; 
 
     return ( 
       <ScrollView style={{backgroundColor:'#F9E5F3' ,flex:1}}>
@@ -218,7 +218,7 @@ const removeProfile = ()=>{
             <Field
              width="100%"
              value={`: ${(Data.Uname)}`}
-             editable={true}                   
+             editable={false}                   
              placeholder="Name" 
            onChangeText={(value)=>setName(value)}
             />
@@ -242,6 +242,7 @@ const removeProfile = ()=>{
               //selectedValue='Male'
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown" // Android only
+              enabled={false}
               style={styles.picker}
             >
               <Picker.Item style={styles.pickerItem} label="Select Gender" value="Unknown" />
@@ -255,7 +256,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>Mobile</Text> 
             <Field width="100%"
             value={`: ${(Data.Umobile)}`}
-             editable={true}
+             editable={false}
             keyboardType="numeric"
          placeholder="Mobile Number" 
        // onChangeText={(value)=>setNumber(value)}
@@ -272,6 +273,8 @@ const removeProfile = ()=>{
           is24Hour={false}
           display="default"
           onChange={onChange}
+          
+          
         />
       )}
          <View style={styles.container}>
@@ -281,15 +284,16 @@ const removeProfile = ()=>{
                    value= {`: ${(Data.UDoB)}`}
                 placeholder={"DOB"}
               width="57%"
-             
+              editable={false}
                 />
+                   
                    
                 <Ionicons.Button
                     name="calendar"
                     color='black'
-                    onPress={showDatepicker}
+                    // onPress={showDatepicker}
                     backgroundColor={background}
-                  
+                    
                     />
                     
          
@@ -299,7 +303,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>UPI ID</Text>
             <Field width="100%"
              value= {`: ${(Data.UPI)}`}
-             editable={true}
+             editable={false}
              placeholder="UPI ID"
             
             /> 
@@ -308,7 +312,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>Adress 1</Text> 
             <Field width="100%"
              value= {`: ${(Data.UAddr1)}`}
-             editable={true}                                              
+             editable={false}                                              
             placeholder="Address line 1" 
             multiline={true}
             
@@ -320,7 +324,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>Adress 2</Text>  
             <Field width="100%"
              value= {`: ${(Data.UAddr2)}`}
-             editable={true}
+             editable={false}
             placeholder="Address line 2" 
             multiline={true}
             
@@ -332,7 +336,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>City</Text>   
             <Field width="100%"
              value= {`: ${(Data.Ucity)}`}
-             editable={true}
+             editable={false}
             placeholder="City" 
            
             
@@ -344,7 +348,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>Pincode</Text>   
             <Field width="100%"
              value= {`: ${(Data.UPinCode)}`}
-             editable={true}
+             editable={false}
             placeholder="Pin-Code" 
            keyboardType='numeric'
             
@@ -356,7 +360,7 @@ const removeProfile = ()=>{
             <Text style={styles.text}>Aadhar</Text>   
             <Field width="100%"
               value= {`: ${(Data.Uaadhar)}`}
-             editable={true}
+             editable={false}
             keyboardType="numeric"
          placeholder="Aadhar Number" 
        // onChangeText={(value)=>setNumber(value)}

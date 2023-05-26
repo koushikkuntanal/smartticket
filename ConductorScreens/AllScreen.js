@@ -5,7 +5,7 @@ import Btn from "../components/Btn";
 import { background, btnColor, darkPink } from "../components/Constants";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { createUserApi, ProfileApi, ProfilePic, searchUserAPi, switchToUserApi } from "../Screens/Api";
+import { createUserApi, getAds, ProfileApi, ProfilePic, searchUserAPi, switchToUserApi } from "../Screens/Api";
 import { BackHandler } from "react-native";
 
 const AllScreens =({route}) =>{
@@ -138,11 +138,16 @@ const switchU = async() =>{
   if(res.data[0] != undefined){if(res.data[0].Flag == 'U' ){
     await ProfilePic({
       "UserId":id
-    }).then(resI=>{
+    }).then(async resI=>{
       console.log('aoui fro profiag hot',resI.data);// console.log('pro data',resI.data);
       
-      navigation.navigate('tab',{userData:res.data,imageData:`data:image/jpeg;base64,${resI.data}`}
-      )
+      await getAds().then(resAds=>{
+        console.log('ads',resAds.data[Math.floor(Math.random() * resAds.data.length)].Num);
+        navigation.navigate('tab',{userData:res.data,imageData:`data:image/jpeg;base64,${resI.data}`,imgStr:resAds.data[Math.floor(Math.random() * resAds.data.length)].adstr}
+        )
+     }).catch(err=>{
+       console.log('erre ads',err);
+     })
     }).catch(err=>{
       console.log('err pro sata',err)
     })
@@ -151,11 +156,16 @@ const switchU = async() =>{
     console('navigating to tab')
     await ProfilePic({
       "UserId":id
-    }).then(resI=>{
+    }).then(async resI=>{
       console.log('aoui fro profiag hot',resI.data,res.data.data[0]);// console.log('pro data',resI.data);
      
-      navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`}
-      )
+      await getAds().then(resAds=>{
+        console.log('ads',resAds.data[Math.floor(Math.random() * resAds.data.length)].Num);
+        navigation.navigate('tab',{userData:res.data.data[0],imageData:`data:image/jpeg;base64,${resI.data}`,imgStr:resAds.data[Math.floor(Math.random() * resAds.data.length)].adstr}
+        )
+     }).catch(err=>{
+       console.log('erre ads',err);
+     })
     }).catch(err=>{
       console.log('err pro sata',err)
     })
