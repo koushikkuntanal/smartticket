@@ -8,9 +8,9 @@
         }
       ]
     ],
-    "name": "lekpay",
+    "name": "LekPay",
     "slug": "lekpay",
-    "version": "7.0.0",
+    "version": "8.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -38,14 +38,14 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lekpay.lekpay",
-      "versionCode": 7
+      "versionCode": 8
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "82f55310-f377-497f-8166-dd43a81da2de"
+        "projectId": "c39178ec-f65f-4ccc-8183-d3cf203f549f"
       }
     }
   },

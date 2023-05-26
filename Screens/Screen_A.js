@@ -18,9 +18,9 @@ export default function Screen_A({route}){
   const navigation = useNavigation();
  const [adsImages,setAdsImages] = useState([]);
    const pagerRef = useRef(null);
-     const totalPages = adsImages.length;
+   let totalPages;
    let currentPage =  0;
-
+   const [image,setImage] = useState('');
 
    const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
@@ -28,23 +28,30 @@ export default function Screen_A({route}){
        navigation.navigate('Login');
     }
     useEffect(()=>{
-      (async()=>{
+      
+      const fetchData=async()=>{
         await getAds().then(res=>{
           // console.log('ads',res.data);
+          setImage(res.data[Math.floor(Math.random() * res.data.length)].adstr);
+          console.log('asdfghjk',res.data[Math.floor(Math.random() * res.data.length)].Num)
           setAdsImages(res.data);
+           totalPages = res.data.length;
+           const randomNumberIndex = Math.floor(Math.random() * res.data.length-1);
         }).catch(err=>{
           console.log('erre ads',err);
         })
-      })();
-      const intervalId = setInterval(() => {
-        currentPage = (currentPage + 1) % totalPages;
-        pagerRef.current.setPage(currentPage);
-      }, 5000);
-  
-      return () => {
-        clearInterval(intervalId);
       };
-    },[])
+
+       const intervalId = setInterval(()=>{
+        fetchData();
+       },10000);
+
+       return ()=>{
+        clearInterval(intervalId);
+       };
+
+      
+    },[]);
    
 
     const onclickHistory = async() => {
@@ -82,7 +89,7 @@ export default function Screen_A({route}){
     
     return(
       <View style={styles.body}>
-       {console.log('data in useruuyjh dashoard',uData)} 
+       {console.log('data in useruuyjh dashoard',uData,image.length)} 
         <StatusBar  backgroundColor='#f9e5f3' style={{backgroundColor: '#FFFFFF'}}>
 
         </StatusBar>
@@ -107,19 +114,29 @@ export default function Screen_A({route}){
           currentPage = event.nativeEvent.position;
           }}
           >
-       {adsImages.map((ad) => (
-            <View key={ad.Num} style={{borderRadius:8}}>
+       {/* {adsImages.map((ad) => (
+            <View key={ad.Num} >
               {console.log('num',ad.Num)}
                 <Image
-                    style={{width:"100%",height:"100%",borderRadius:11}}
-                    resizeMode='stretch'
+                    style={{flex:1,width:null,height:null}}
+                    resizeMode="contain"
                     source={{uri:`data:image/jpeg;base64,${ad.adstr}`}}
                     
                   />
                 </View>
                   
                   ))
-                }
+                } */}
+
+            <View >
+              
+                <Image
+                    style={{flex:1,width:null,height:null}}
+                    resizeMode="contain"
+                    source={{uri:`data:image/jpeg;base64,${image}`}}
+                    
+                  />
+                </View>
                 </PagerView> 
          
           
@@ -204,7 +221,7 @@ export default function Screen_A({route}){
       //marginBottom:355,
       marginTop:15,
       width:360,
-      height:150,
+      height:180,
       alignItems:'center'
     },
 

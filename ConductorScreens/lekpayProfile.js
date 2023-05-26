@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect } from "react";   //Not usig this LekpayProfile is used from Coductor profile
 import { ScrollView,View, Text, StyleSheet, Alert,Button,Image, TextInput,TouchableOpacity,ToastAndroid, ImageBackground} from "react-native";
 import { background, btnColor, darkPink, headColor } from "../components/Constants";
 import Field from "../components/Field";
