@@ -12,12 +12,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useNavigation } from "@react-navigation/native";
 import { ProfileApi, ProfilePic } from "./Api";
+import moment from "moment/moment";
 
 
 const Userregistration=({route}) =>{
 
   const Data = route.params.data;
-  console.log('profile screen data',Data);
+  console.log('profile screen data',Data.UDoB);
+  const formattedDob = moment(Data.UDoB).format('DD-MM-YYYY');
  const [profile,setProfile] = useState({});
   const navigation = useNavigation('');
   const [name,setName] = useState('');
@@ -235,21 +237,13 @@ const disableCalendarIcon = true;
             </View>
             <View style={[styles.container,{height:40},]}>
             <Text style={styles.text}>Gender</Text>
-            { <Picker
-              itemStyle={{height:40}}
-              value={`: ${(Data.Ugender)}`}
-              selectedValue={Data.Ugender}
-              //selectedValue='Male'
-              onValueChange={(value, index) => setGender(value)}
-              mode="dropdown" // Android only
-              enabled={false}
-              style={styles.picker}
-            >
-              <Picker.Item style={styles.pickerItem} label="Select Gender" value="Unknown" />
-              <Picker.Item style={styles.pickerItem} label=": Male" value="Male" />
-              <Picker.Item style={styles.pickerItem} label=": Female" value="Female" />
-              <Picker.Item style={styles.pickerItem} label=": Others" value="NA" />
-            </Picker> }
+            <Field
+             width="100%"
+             value={`: ${(Data.Ugender)}`}
+             editable={false}
+             placeholder="Email" 
+           
+            />
 
             </View>
             <View style={styles.container}>
@@ -281,20 +275,20 @@ const disableCalendarIcon = true;
          
          <Text style={styles.text}>DOB</Text>
                    <Field 
-                   value= {`: ${(Data.UDoB)}`}
+                   value= {`: ${(formattedDob)}`}
                 placeholder={"DOB"}
               width="57%"
               editable={false}
                 />
                    
                    
-                <Ionicons.Button
+                {/* <Ionicons.Button
                     name="calendar"
                     color='black'
                     // onPress={showDatepicker}
                     backgroundColor={background}
                     
-                    />
+                    /> */}
                     
          
          </View>

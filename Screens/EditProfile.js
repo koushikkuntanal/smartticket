@@ -12,6 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import Btn from "../components/Btn";
 import mime from "mime";
 import axios from "axios";
+import moment from "moment";
 
 let numreg = /^[0-9]+$/;
 const EditProfile =({route}) =>{
@@ -74,7 +75,7 @@ const EditProfile =({route}) =>{
         setName(data.Uname);
         setGender(data.Ugender);
         setMobile(data.Umobile);
-        setDob(data.UDoB);
+        setDob(moment(data.UDoB).format("DD-MM-YYYY"));
         setUpi(data.UPI)
         setAddress1(data.UAddr1);
         setAddress2(data.UAddr2);  

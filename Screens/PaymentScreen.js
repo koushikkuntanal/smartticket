@@ -7,6 +7,7 @@ import * as Linking from "expo-linking";
 import { Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PagerView from 'react-native-pager-view';
+import { btnColor } from "../components/Constants";
 // import QRCode from "react-native-qrcode-svg";
 
 const PaymentScreen = ({ route }) => {
@@ -32,7 +33,7 @@ const PaymentScreen = ({ route }) => {
   const ttype = route.params.ttype;
   const checkOrderS =() =>{
     var obj = setInterval(callCheck,1000);
-
+    
      function callCheck(){
        checkOrder(orderId)
        .then(async (res) => {
@@ -126,7 +127,10 @@ const PaymentScreen = ({ route }) => {
         navigation.goBack();
       });
   };
-
+  const handlePayPress = () => {
+    Linking.openURL(data);
+    checkOrderS();
+  };
   return status == "paid" ? (
   
     <View style={{flexDirection:'column'}}>
@@ -224,36 +228,39 @@ const PaymentScreen = ({ route }) => {
     
   ) : (
     <View style={styles.body}>
-      {console.log(
-        "details in payment screen",
-        orderId,
-        phone,
-        email,
-        Upi,
-        amount,
-        from,
-        to
-      )}
-      <TouchableOpacity onPress={createOrderApi}>
-        <Text>UPI Payment</Text>
+
+<View style={styles.card}>
+<View style={styles.cardHeader}>
+        <Text style={styles.cardHeaderText}>Payment Details</Text>
+      </View>
+      <View style={styles.cardBody}>
+        <View style={styles.detailRow}>
+          <Text style={styles.label}>Amount:</Text>
+          <Text style={styles.value}>{'\u20B9'} {amount}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={styles.label}>Currency:</Text>
+          <Text style={styles.value}>INR</Text>
+        </View>
+        
+        <View style={styles.detailRow}>
+          <Text style={styles.label}>Upi Id:</Text>
+          <Text style={styles.value}>{Upi}</Text>
+        </View>
+      </View>
+      {console.log("details in payment screen",  orderId,  phone,  email,  Upi,  amount,  from,  to)}
+      </View>
+      <TouchableOpacity onPress={createOrderApi} style={styles.button} >
+        <Text style={styles.buttonText}>UPI Payment</Text>
         {console.log("trans data in view", trancData)}
       </TouchableOpacity>
       {data ? (
-        <Button
-          title="pay"
-          onPress={() => {
-            Linking.openURL(data);
-            
-            
-            checkOrderS();
-          }}
-        />
+        <TouchableOpacity onPress={handlePayPress} style={styles.button}>
+        <Text style={styles.buttonText}>Proceed To Pay</Text>
+      </TouchableOpacity>
       ) : null}
-      <View>
+     
       
-        
-      
-      </View>
       
     </View>
   );
@@ -263,8 +270,8 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "pink",
+   
+    backgroundColor: "#ffffff",
   },
   container: {
     backgroundColor: "#ffffff",
@@ -284,11 +291,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 4,
   },
+  detailsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
   label: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
   },
+  
   value: {
     fontSize: 16,
     color: "#666",
@@ -328,6 +341,56 @@ const styles = StyleSheet.create({
     height:150,
     
    
+  },
+  button: {
+    backgroundColor: btnColor,
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    marginBottom:15
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    elevation: 4,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    width: '90%',
+    marginTop:25,
+    marginBottom:20
+  },
+  cardHeader: {
+    backgroundColor: btnColor ,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  cardHeaderText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardBody: {
+    padding: 16,
+    marginBottom:10,
+    
+  },
+  detailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  label: {
+    fontSize: 16,
+    color: '#333333',
+    fontWeight: 'bold',
   },
 });
 
