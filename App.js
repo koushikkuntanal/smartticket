@@ -70,6 +70,7 @@ import SetPassStage from './ConductorScreens/SetPassStage';
 import AboutUs from './Screens/AboutUs';
 import ForgotPassword from './Screens/ForgotPassword';
 import ForgotPasswordOtp from './Screens/ForgotPasswordOtp';
+import BusPass from './Screens/BusPass';
 
 
 
@@ -243,71 +244,24 @@ const imgStr = route.params.imgStr;
 
   return (
     <Tab.Navigator
+   barStyle={{height:0                                       }}
+    screenOptions={{
+      tabBarIcon:{display:'none'}
+    }}
    
-    barStyle={{backgroundColor:'#ffffff'}}
-    screenOptions={({ route }) => ({
-       
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
-        if (route.name === 'Screen_A') {
-
-          iconName =  'heart'
-            size = focused ? 25 : 22;
-           color = focused 
-           ? '#C80088'
-           :  'black'; 
-        // } else if (route.name === 'Screen_B') {
-        //   iconName = 'car'
-        //   size = focused ? 25 : 22;
-        //   color = focused
-        //   ? '#C80088'
-        //   : 'black'
-        } else if (route.name === 'Screen_C') {
-          iconName = 'rocket'
-          size = focused ? 25 : 22;
-          color = focused                                 
-          ? '#C80088'
-          : 'black'
-        } else if(route.name === 'Screen_D') {
-          
-          iconName = 'add'
-          size = focused ? 25 : 22;
-          color = focused
-          ? '#C80088'
-          : 'black'
-        }
-
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: 'white',
-      tabBarInactiveTintColor: 'black',
-      
-      
-    })}
-  
   >
-      <Tab.Screen
-        name="Screen_A"
-         component={Screen_A}
+    <Tab.Screen
+      name="Screen_A"
+      component={Screen_A}
+     options={{
+      tabBarVisible: false,
+      tabBarLabel:"",
+      tabBarStyle:{display:'none'},
+      backgroundColor:'transparent'
+     }}
         initialParams={{data:data,imgStr:imgStr}}
       />
-      {/* <Tab.Screen
-        
-        name="Screen_B"
-        component={Screen_B}
-       />  */}
-
-      <Tab.Screen
-        name="Screen_C"
-        component={Screen_C}
-       /> 
-
-       {/* <Tab.Screen
-        name="Screen_D"
-        component={Screen_D}
-       />  */}
+      
 
     
       
@@ -381,7 +335,9 @@ function StackNavigator (data) {
         component={TabNavigator}
 
         options={({route,navigation})=>({
+          tabBarVisible: false,
           title:'Lekpay',
+          tabBarStyle:{display:'none'},
          headerStyle: {
         backgroundColor: '#C80088',
         
@@ -810,6 +766,7 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Source Destination' component={SourceDestination}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Current Trip' component={CurrentTripAmt}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Set Pass Stage' component={SetPassStage}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Bus Pass' component={BusPass}/>
    
      
      

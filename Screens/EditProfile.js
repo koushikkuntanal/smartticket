@@ -381,7 +381,7 @@ const EditProfile =({route}) =>{
             
          
             <View style={styles.container}>
-            <Text style={styles.text}>Adress 1</Text> 
+            <Text style={styles.text}>Address 1</Text> 
             <Field width="100%"
              value= {`${(address1)}`}
              editable={true}
@@ -393,7 +393,7 @@ const EditProfile =({route}) =>{
 
             </View>
             <View style={styles.container}>
-            <Text style={styles.text}>Adress 2</Text>  
+            <Text style={styles.text}>Address 2</Text>  
             <Field width="100%"
              value= {`${(address2)}`}
              editable={true}
@@ -429,7 +429,7 @@ const EditProfile =({route}) =>{
 
             </View>
             <View style={styles.container}>
-            <Text style={styles.text}>Aadhar</Text>   
+            <Text style={styles.text}>Aadhar Card No</Text>   
             <Field width="100%"
               value= {`${(aadhar)}`}
              editable={true}

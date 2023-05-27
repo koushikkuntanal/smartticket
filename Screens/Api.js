@@ -472,3 +472,29 @@ export const getAds = async (data) => { //used in dashboard to display ads scree
   return res;
 }
 
+export const SuggestsOperatorApi = async (data) => { //used in dashboard to display ads screen a
+  const res = await axios({
+    method:'post',
+    url:'https://lekpay.com/buspass/operatorFilter',
+    data:data
+  });
+  return res;
+}
+
+export const SuggestsFromApi = async (data) => { //used in dashboard to display ads screen a
+  const res = await axios({
+    method:'post',
+    url:'https://lekpay.com/buspass/stageFilter',
+    data:data
+  });
+  return res;
+}
+
+export const BusPassApi = async (data) => { //used in dashboard to display ads screen a
+  const res = await axios({
+    method:'post',
+    url:'https://lekpay.com/buspass/routeFilter',
+    data:data
+  });
+  return res;
+}

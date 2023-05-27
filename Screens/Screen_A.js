@@ -86,7 +86,10 @@ export default function Screen_A({route}){
          console.log('udata',uData)  
          navigation.navigate('UsersPasswordChange',{EID:uData.AuthID,flag:uData.Flag})
     }
-
+  
+    const onClickBusPass = ()=>{
+      navigation.navigate('Bus Pass',{EID:uData.AuthID,flag:uData.Flag})
+    }
     
     
     return(
@@ -168,9 +171,14 @@ export default function Screen_A({route}){
            <TouchableOpacity onPress={onclickchangePassword}>
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-ResetPwd.png')}
-            /><Text style={styles.text}>Change Password</Text>
+            /><Text style={styles.text}>Change{'\n'}Password</Text>
            </TouchableOpacity> 
 
+           
+           </View>
+
+           <View style={styles.card}>
+             
            <TouchableOpacity 
            onPress={onclickLastTicket}>
             <Image style={styles.icon} resizeMode='contain'
@@ -178,6 +186,13 @@ export default function Screen_A({route}){
             /><Text style={styles.text}>LastTicket</Text>
            </TouchableOpacity> 
            
+           <TouchableOpacity 
+           onPress={onClickBusPass}
+           >
+            <Image style={styles.icon} resizeMode='contain'
+            source={require('../assets/LekPay-BusPass.png')}
+            /><Text style={styles.text}>Bus Pass</Text>
+           </TouchableOpacity> 
            </View>
            
            
@@ -215,7 +230,8 @@ export default function Screen_A({route}){
       fontSize: 12,
       fontWeight:'bold',
       marginTop:5,
-      alignSelf:'center'
+      alignSelf:'center',
+      textAlign:'center'
     },
 
     text1 : {
@@ -266,7 +282,7 @@ export default function Screen_A({route}){
         
       width:"90%",
       flexDirection:'row',
-      justifyContent:'space-evenly',
+      justifyContent:'space-around',
       backgroundColor: '#ffffff',
       borderRadius: 9,
       padding: 16,
@@ -296,8 +312,8 @@ export default function Screen_A({route}){
     
     icon:{
       aspectRatio:1,
-      width:50,
-      height:52,
+      width:70,
+      height:70,
       alignSelf:'center',
       marginTop:2.1
     }

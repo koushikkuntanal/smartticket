@@ -303,7 +303,7 @@ const disableCalendarIcon = true;
             /> 
             </View>
             <View style={styles.container}>
-            <Text style={styles.text}>Adress 1</Text> 
+            <Text style={styles.text}>Address 1</Text> 
             <Field width="100%"
              value= {`: ${(Data.UAddr1)}`}
              editable={false}                                              
@@ -315,7 +315,7 @@ const disableCalendarIcon = true;
 
             </View>
             <View style={styles.container}>
-            <Text style={styles.text}>Adress 2</Text>  
+            <Text style={styles.text}>Address 2</Text>  
             <Field width="100%"
              value= {`: ${(Data.UAddr2)}`}
              editable={false}
@@ -351,7 +351,7 @@ const disableCalendarIcon = true;
 
             </View>
             <View style={styles.container}>
-            <Text style={styles.text}>Aadhar</Text>   
+            <Text style={styles.text}>Aadhar Card no</Text>   
             <Field width="100%"
               value= {`: ${(Data.Uaadhar)}`}
              editable={false}
