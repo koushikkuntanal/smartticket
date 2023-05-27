@@ -106,7 +106,7 @@ const onPressSubmit = async () =>{
   console.log('Slected All valuse',selectedFrom,selectedTo,selectedOperId,id,Flag);
    if(!selectedFrom || !selectedTo || !selectedOperId )
    {
-    alert('lavede')
+    alert('Please Select Operator ')
    }else{
     await BusPassApi({
         "stage1":selectedFrom,
