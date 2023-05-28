@@ -81,7 +81,7 @@ if(result){
     });
     console.log('dara',Fdata)
   
-  try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+  try{ const res = await axios.post('https://lekpay.com/upload/userProfile',Fdata,{
     headers:{
       'Content-Type':'multipart/form-data'
     }
@@ -131,7 +131,7 @@ catch(err){console.log(err)}
       });
       console.log('dara',Fdata)
     
-    try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+    try{ const res = await axios.post('https://lekpay.com/upload/userProfile',Fdata,{
       headers:{
         'Content-Type':'multipart/form-data'
       }

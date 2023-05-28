@@ -127,7 +127,7 @@ const EditProfile =({route}) =>{
             });
             console.log('dara',Fdata)
           
-          try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+          try{ const res = await axios.post('https://lekpay.com/upload/userProfile',Fdata,{
             headers:{
               'Content-Type':'multipart/form-data'
             }
@@ -169,7 +169,7 @@ const EditProfile =({route}) =>{
             Fdata.append('userId',data.UserId);
             console.log('dara',Fdata)
           
-          try{ const res = await axios.post('https://amsweets.in/upload/userProfile',Fdata,{
+          try{ const res = await axios.post('https://lekpay.com/upload/userProfile',Fdata,{
             headers:{
               'Content-Type':'multipart/form-data'
             }

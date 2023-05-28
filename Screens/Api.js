@@ -7,7 +7,7 @@ import axios from "axios";
 // };
 
 // export const fetchPostApi = async (data)=>{
-//     const response = await fetch('https://amsweets.in/user/register', {
+//     const response = await fetch('https://lekpay.com/user/register', {
 //         method: 'POST',
 //         body: JSON.stringify(data),
 //         headers: {
@@ -22,7 +22,7 @@ import axios from "axios";
 export const getAxiosApi = async()=>{
     const res = await axios({
         method:'get',
-        url:'https://amsweets.in/user/otp'
+        url:'https://lekpay.com/user/otp'
     });
     return res;
 } 
@@ -32,7 +32,7 @@ export const getAxiosApi = async()=>{
 export const postAxiosApi = async(data)=>{
   const res = await axios({
       method:'post',
-      url:'https://amsweets.in/user/register',
+      url:'https://lekpay.com/user/register',
       data:data
   });
   return res;
@@ -41,7 +41,7 @@ export const postAxiosApi = async(data)=>{
 export const postAxiosApiOtp = async(data)=>{
     const res = await axios({
         method:'post',
-        url:'https://amsweets.in/user/otp',
+        url:'https://lekpay.com/user/otp',
         data:data
     });
     return res;
@@ -92,7 +92,7 @@ export const postAxiosApiOtp = async(data)=>{
  export const searchAxiosApi = async (data) =>{
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/find/employee',
+    url:'https://lekpay.com/find/employee',
     data:data
   });
   console.log('emp',res.data.message);
@@ -109,7 +109,7 @@ export const searchUserAPi =async (data) =>{
   console.log('comes to searchUserApi');
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/find/user',
+    url:'https://lekpay.com/find/user',
     data:data
   });
   console.log('user',res.data);                
@@ -125,7 +125,7 @@ export const createUserApi = async(data) =>{
   console.log('startig to create user');
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/user/register',
+    url:'https://lekpay.com/user/register',
     data:data
   });
   console.log('user created data',res.data.message);
@@ -136,7 +136,7 @@ export const createUserApi = async(data) =>{
 export const sendOtp = async (data) =>{
   const res = await axios({
     method :'post',
-    url:'https://amsweets.in/otp/',
+    url:'https://lekpay.com/otp/',
     data:data
   });
   return res;
@@ -145,7 +145,7 @@ export const sendOtp = async (data) =>{
 export const sendOtpForgotPassword = async (data) =>{
   const res = await axios({
     method :'post',
-    url:'https://amsweets.in/otp/forgotPassword',
+    url:'https://lekpay.com/otp/forgotPassword',
     data:data
   });
   return res;
@@ -154,7 +154,7 @@ export const sendOtpForgotPassword = async (data) =>{
 export const setPasswordApi = async (data) =>{
   const res = await axios({
     method :'patch',
-    url:'https://amsweets.in/set/Password',
+    url:'https://lekpay.com/set/Password',
     data:data
   });
   return res;
@@ -167,7 +167,7 @@ export const setPasswordApi = async (data) =>{
 export const LoginApi = async (data) =>{
   const res = await axios({
     method :'post',
-    url:'https://amsweets.in/login/',
+    url:'https://lekpay.com/login/',
     data:data
   });
   return res;
@@ -176,7 +176,7 @@ export const LoginApi = async (data) =>{
 export const Faq = async()=>{
   const res = await axios({
       method:'get',
-      url:'https://amsweets.in/faqs/'
+      url:'https://lekpay.com/faqs/'
   });
   return res;
 } 
@@ -184,7 +184,7 @@ export const Faq = async()=>{
 export const ChangePasswordApi = async (data) => {
   const res = await axios({
     method:'patch',
-    url:'https://amsweets.in/chng/Password',
+    url:'https://lekpay.com/chng/Password',
     data:data
   });
   return res;
@@ -193,7 +193,7 @@ export const ChangePasswordApi = async (data) => {
 export const UsersChangePasswordApi = async (data) => {
   const res = await axios({
     method:'patch',
-    url:'https://amsweets.in/chng/Password',
+    url:'https://lekpay.com/chng/Password',
     data:data
   });
   return res;
@@ -202,7 +202,7 @@ export const UsersChangePasswordApi = async (data) => {
 export const ProfileApi = async (data) => {
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/profile/',
+    url:'https://lekpay.com/profile/',
     data:data
   });
   return res;
@@ -211,7 +211,7 @@ export const ProfileApi = async (data) => {
 export const EditprofileApi = async (data) =>{
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/profile/edit',
+    url:'https://lekpay.com/profile/edit',
     data:data
   });
   return res;
@@ -220,7 +220,7 @@ export const EditprofileApi = async (data) =>{
 export const getRouteApi = async (data)=>{        //conductor gets routes ased o operator
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/getRoute/',
+    url:'https://lekpay.com/getRoute/',
     data:data,
   });
   return res;
@@ -229,7 +229,7 @@ export const getRouteApi = async (data)=>{        //conductor gets routes ased o
 export const setRouteApi = async (data) =>{   //conductor sets route
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/setRoute/',
+    url:'https://lekpay.com/setRoute/',
     data:data
   });
   return res;
@@ -238,7 +238,7 @@ export const setRouteApi = async (data) =>{   //conductor sets route
 export const getAssetIdApiForEmp = async (data) =>{   //conductor gets AssetID
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getRoute/astid',
+    url:'https://lekpay.com/getRoute/astid',
     data:data
   });
   return res;
@@ -250,7 +250,7 @@ export const getAssetIdApiForEmp = async (data) =>{   //conductor gets AssetID
 export const getRouteIdApi = async (data) =>{   //user gets route Id
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getStage/routeID',
+    url:'https://lekpay.com/getStage/routeID',
     data:data
   });
   return res;
@@ -259,7 +259,7 @@ export const getRouteIdApi = async (data) =>{   //user gets route Id
 export const getStagesIDApi = async (data) =>{   //user gets stages Id
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getStage/id',
+    url:'https://lekpay.com/getStage/id',
     data:data
   });
   return res;
@@ -267,7 +267,7 @@ export const getStagesIDApi = async (data) =>{   //user gets stages Id
 export const getStagesApi = async (data) =>{   //user gets stages 
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getStage/',
+    url:'https://lekpay.com/getStage/',
     data:data
   });
   return res;
@@ -276,7 +276,7 @@ export const getStagesApi = async (data) =>{   //user gets stages
 export const getRevRouteFlagApi = async (data) =>{   //user gets revRoute Flag
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getStage/arflag',
+    url:'https://lekpay.com/getStage/arflag',
     data:data
   });
   return res;
@@ -285,7 +285,7 @@ export const getRevRouteFlagApi = async (data) =>{   //user gets revRoute Flag
 export const getFareForUsers = async (data) =>{   //user gets revRoute Flag
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getFare/',
+    url:'https://lekpay.com/getFare/',
     data:data
   });
   return res;
@@ -294,7 +294,7 @@ export const getFareForUsers = async (data) =>{   //user gets revRoute Flag
 export const transactionforUsers = async (data) =>{  //transaction for users
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/id',
+    url:'https://lekpay.com/transaction/id',
     data:data
   });
   return res;
@@ -303,7 +303,7 @@ export const transactionforUsers = async (data) =>{  //transaction for users
 export const transactionStatusApi = async (data) =>{  //transaction data post for users
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/pay',
+    url:'https://lekpay.com/transaction/pay',
     data:data
   });
   return res;
@@ -312,7 +312,7 @@ export const transactionStatusApi = async (data) =>{  //transaction data post fo
 export const transactionQrApi = async (data) =>{  //transaction data qr  get for users
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/qr',
+    url:'https://lekpay.com/transaction/qr',
     data:data
   });
   return res;
@@ -321,7 +321,7 @@ export const transactionQrApi = async (data) =>{  //transaction data qr  get for
 export const ConductorVerifyApi = async (data) =>{  //Conductor verify used in CheckTickets.js
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/qrverify',
+    url:'https://lekpay.com/transaction/qrverify',
     data:data
   });
   return res;
@@ -330,7 +330,7 @@ export const ConductorVerifyApi = async (data) =>{  //Conductor verify used in C
 export const getRouteIdEmp = async (data) =>{  //get route id for emp used in isseuTickets.js
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/employee/routeid',
+    url:'https://lekpay.com/employee/routeid',
     data:data
   });
   return res;
@@ -339,7 +339,7 @@ export const getRouteIdEmp = async (data) =>{  //get route id for emp used in is
 export const TransactionHistory = async (data) => {  // used in Scree A
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/history',
+    url:'https://lekpay.com/transaction/history',
     data:data
   });
   return res;
@@ -348,7 +348,7 @@ export const TransactionHistory = async (data) => {  // used in Scree A
 export const TravelHandlerApi = async (data) => {  // used in CashHadler.js for id  also used in setPass
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/employee/astroid',
+    url:'https://lekpay.com/employee/astroid',
     data:data
   });
   return res;
@@ -358,7 +358,7 @@ export const TravelHandlerApi = async (data) => {  // used in CashHadler.js for 
 export const getRouteNamesApi = async (data) => {  // used in CashHadler.js for name
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/employee/tripamount',
+    url:'https://lekpay.com/employee/tripamount',
     data:data
   });
   return res;
@@ -367,7 +367,7 @@ export const getRouteNamesApi = async (data) => {  // used in CashHadler.js for 
 export const getTicketType = async (data) => {  // used in CashHadler.js for tickettype
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/ticket/type',
+    url:'https://lekpay.com/ticket/type',
     data:data
   });
   return res;
@@ -376,7 +376,7 @@ export const getTicketType = async (data) => {  // used in CashHadler.js for tic
 export const setStagePassApi = async (data) => {  // used in setPassStage.js for PassStage
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/stage/pass',
+    url:'https://lekpay.com/stage/pass',
     data:data
   });
   return res;
@@ -385,7 +385,7 @@ export const setStagePassApi = async (data) => {  // used in setPassStage.js for
 export const TransactionLastTicket = async (data) => {
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/last-ticket',
+    url:'https://lekpay.com/transaction/last-ticket',
     data:data
   });
   return res;
@@ -394,7 +394,7 @@ export const TransactionLastTicket = async (data) => {
 export const LastTickCountApi = async (data) => {
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/ticcount',
+    url:'https://lekpay.com/transaction/ticcount',
     data:data
   });
   return res;
@@ -403,7 +403,7 @@ export const LastTickCountApi = async (data) => {
 export const LastTicketCountUpdate = async (data) => {
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/transaction/cntupdt',
+    url:'https://lekpay.com/transaction/cntupdt',
     data:data
   });
   return res;
@@ -412,7 +412,7 @@ export const LastTicketCountUpdate = async (data) => {
 export const UserStageIdApi = async (data) => { //used in scanner.js to get stageid from
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/getStage/fromtoid',
+    url:'https://lekpay.com/getStage/fromtoid',
     data:data
   });
   return res;
@@ -421,7 +421,7 @@ export const UserStageIdApi = async (data) => { //used in scanner.js to get stag
 export const CurrentUsersCnt = async (data) => { //used in MapAssetsChecker.js to get cnt from db
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/checker/currusers',
+    url:'https://lekpay.com/checker/currusers',
     data:data
   });
   return res;
@@ -430,7 +430,7 @@ export const CurrentUsersCnt = async (data) => { //used in MapAssetsChecker.js t
 export const ReEnableTicket = async (data) => { //used in Scanner.js to put Tdata in Trasncation table
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/user/reenabled-tdata',
+    url:'https://lekpay.com/user/reenabled-tdata',
     data:data
   });
   return res;
@@ -439,7 +439,7 @@ export const ReEnableTicket = async (data) => { //used in Scanner.js to put Tdat
 export const ForgotPasswordForUser = async (data) => { //used in forgotpassword.js to get new password
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/forgot/password',
+    url:'https://lekpay.com/forgot/password',
     data:data
   });
   return res;
@@ -448,7 +448,7 @@ export const ForgotPasswordForUser = async (data) => { //used in forgotpassword.
 export const UploadPicApi = async (data) => { //used in forgotpassword.js to get new password
   const res = await axios({
     method:'Post',
-    url:'https://amsweets.in/upload/userProfile',
+    url:'https://lekpay.com/upload/userProfile',
     data:data
   });
   return res;
@@ -457,7 +457,7 @@ export const UploadPicApi = async (data) => { //used in forgotpassword.js to get
 export const ProfilePic = async (data) => { //used in edit.
   const res = await axios({
     method:'post',
-    url:'https://amsweets.in/upload/getProfile',
+    url:'https://lekpay.com/upload/getProfile',
     data:data
   });
   return res;

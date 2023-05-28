@@ -33,7 +33,7 @@ export default function Screen_A({route}){
       
       const fetchData=async()=>{
         await getAds().then(res=>{
-          // console.log('ads',res.data);
+           console.log('ads',res.data);
           setImage(res.data[Math.floor(Math.random() * res.data.length)].adstr);
           console.log('asdfghjk',res.data[Math.floor(Math.random() * res.data.length)].Num)
           setAdsImages(res.data);
