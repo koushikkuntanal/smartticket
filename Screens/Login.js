@@ -56,7 +56,7 @@ const LekpayLogin = () =>{
           if(res.data.message == "Wrong Phone number/Password!!"){
             // alert('Wrong Phone number/Password!!');
           }
-          else if(res.data.data[0].Flag == 'E'){
+          else if(res.data.data[0].Flag == 'E' && res.data.message === 'A'){
           
             // alert('Emp');
             navigation.navigate('AllScreens',{
@@ -86,6 +86,8 @@ const LekpayLogin = () =>{
                 })
             
            
+          }else if(res.data.message ==='I'){
+            alert('Employee currently inactive!!')
           }
           else alert('User does not exist.')
         })
@@ -115,7 +117,7 @@ const LekpayLogin = () =>{
           if(res.data.message == "Wrong Phone number/Password!!"){
             alert('Wrong Phone number/Password!!');
           }
-          else if(res.data.data[0].Flag == 'E'){
+          else if(res.data.data[0].Flag == 'E' && res.data.message == 'A'){   // for Inactivity check
             console.log('Asy',mNumber)
             AsyncStorage.setItem('Mobile',mNumber);
             AsyncStorage.setItem('Password',password);
@@ -149,6 +151,8 @@ const LekpayLogin = () =>{
             }).catch(err=>{
               console.log('err pro sata',err)
             })
+          }else if(res.data.message ==='I'){
+            alert('Employee currently inactive!!')
           }
           else alert('User does not exist.')
         })
