@@ -1,4 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -21,22 +22,37 @@ const SetRouteAsset = ({route}) =>{
     const [fromIndex,setFromIndex] = useState('');
 
     useEffect(()=>{
-      (async()=>
-      await getRouteApi({
-        "EmpId":id
-      }).then(res=>{console.log(res.data)
-      setRoutesData(res.data)
-      }).catch(error=>{console.log(error)
-      alert(error)
-      })
+      // (async()=>
+      // await getRouteApi({
+      //   "EmpId":id
+      // }).then(res=>{console.log(res.data)
+      // setRoutesData(res.data)
+      // }).catch(error=>{console.log(error)
+      // alert(error)
+      // })
         
-      )();
+      // )();
 
       (async()=>{
         await getAssetIdApiForEmp({
           "id":mapData
-        }).then(res=>{console.log('response when getAssetIdApiForEmp() is hit ',res.data)
+        }).then(async res=>{console.log('response when getAssetIdApiForEmp() is hit ',res.data.AstId)
       setAssetId(res.data.AstId)
+      if(res.data.AstId.slice(0, res.data.AstId.indexOf("A")) == id.slice(0, id.indexOf("E")))
+        {    await getRouteApi({
+            "EmpId":id
+          }).then(res=>{console.log('res wgen getRId is ht',res.data)
+          setRoutesData(res.data)
+          }).catch(error=>{console.log(error)
+          alert(error)
+          })
+        }
+          else{
+            alert('Operators Mismatch!!')
+            console.log('Asset operator',res.data.AstId.slice(0, res.data.AstId.indexOf("A")),'Conductr op',id.slice(0, id.indexOf("E")))
+            navigation.goBack();
+            navigation.goBack();
+          }
       }).catch(err=>{console.log(err)
       alert(err);
       })
@@ -87,9 +103,10 @@ const SetRouteAsset = ({route}) =>{
               "AstId":assetId,
               "revRoute":revRoute ? 'T' : 'F' ,
               "time": datestamp +' '+timestamp
-            }).then(res=>{console.log(res.data)
+            }).then(async res=>{console.log(res.data)
               if(res.data.message == 'Asset Route Map Success')
               {alert('Route successfully set!');
+             await AsyncStorage.setItem('EmpAsset',mapData);                      // for display QR
             navigation.goBack();
             navigation.goBack();
             }
@@ -121,7 +138,7 @@ const SetRouteAsset = ({route}) =>{
         <View style={styles.body}>
           <Text>{mapData}</Text>
            <View style={styles.input}>
-            {console.log('var routes',routesData,assetId)}
+            
             {console.log('id of emp in setRouteScreen',id)}
                 <Picker
                         // itemStyle={{height:40}}

@@ -31,7 +31,7 @@ useEffect(()=>{
     await ProfilePic({
       "UserId":empData.EmpId
     }).then(res=>{
-      console.log('pro data',res.data);
+      console.log('pro data got img');
       setImage(`data:image/jpeg;base64,${res.data}`);
     }).catch(err=>{
       console.log('err pro sata',err)

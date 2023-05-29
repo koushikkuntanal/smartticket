@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
@@ -96,10 +97,13 @@ const SetPassStage = ({route}) => {
         "AstId":assetId,
         "revRoute":'',
         "time":  datestamp + ' ' + timestamp
-      }).then(res=>{console.log(res.data)
+      }).then(async res=>{console.log(res.data)
         if(res.data.message == 'Asset Route Map Success')
-        {alert('Route successfully Detached!!');
-      navigation.goBack();
+        
+        {
+          alert('Route successfully Detached!!');
+          await AsyncStorage.removeItem('EmpAsset');
+          navigation.goBack();
       }
         else{alert('Please try again!!')}
       }).catch(error=>{'error when setting route',console.log(error)});

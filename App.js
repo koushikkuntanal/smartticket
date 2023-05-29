@@ -71,9 +71,7 @@ import AboutUs from './Screens/AboutUs';
 import ForgotPassword from './Screens/ForgotPassword';
 import ForgotPasswordOtp from './Screens/ForgotPasswordOtp';
 import BusPass from './Screens/BusPass';
-
-
-
+import DisplayQR from './ConductorScreens/DisplayQR';
 
 
 
@@ -767,6 +765,7 @@ function StackNavigator (data) {
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Current Trip' component={CurrentTripAmt}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Set Pass Stage' component={SetPassStage}/>
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Bus Pass' component={BusPass}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Display QR' component={DisplayQR}/>
    
      
      

@@ -9,6 +9,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { searchAxiosApi } from "./Api";
 import dayjs from "dayjs";
+import moment from "moment";
 
 
 const SignUp = () =>{
@@ -174,7 +175,8 @@ const SignUp = () =>{
                    <View style={styles.container1}>
                    <Field 
                    
-                value= { date.toLocaleDateString()}
+                // value= { date.toLocaleDateString()}
+                value={moment(date).format("DD-MM-YYYY")}
                 placeholder={"DOB"}
               width="57%"
               onChangeText={(value)=>setDob(value)}

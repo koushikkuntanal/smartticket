@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { createUserApi, getAds, ProfileApi, ProfilePic, searchUserAPi, switchToUserApi } from "../Screens/Api";
 import { BackHandler } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AllScreens =({route}) =>{
     const [dob,setDob]= useState();
@@ -190,6 +191,13 @@ setLoading(false);
 const onPressAssetChecker=()=>{
   navigation.navigate('Map Asset',{id:id});
 }  
+
+const onPressDisplayQr = async ()=>{
+  const EmpAsset = await AsyncStorage.getItem('EmpAsset');
+  console.log('resses',id,EmpAsset);
+  navigation.navigate('Display QR',{id:id,asset:EmpAsset})
+
+}
     return(
         <View style={styles.body}>  
           
@@ -246,33 +254,48 @@ const onPressAssetChecker=()=>{
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-ResetPwd.png')}
             />
-          <Text style={styles.text}>Change</Text>
-          <Text style={styles.text}>Password</Text>
-           </TouchableOpacity>
+            <Text style={styles.text}>Change</Text>
+            <Text style={styles.text}>Password</Text>
+            </TouchableOpacity>
+              </View>
+
+              <View style={styles.card}>
+              <TouchableOpacity onPress={onPressCurrentTrip}>
+              <Image style={styles.icon} resizeMode='contain'
+              source={require('../assets/LekPay-CurrentTrip.png')}
+              />
+              <Text style={styles.text}>Current{'\n'}Trip</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={onPressSetPass}>
+              <Image style={styles.icon} resizeMode='contain'
+              source={require('../assets/LekPay-StagePass.png')}
+              />
+              <Text style={styles.text}>Passed Stage</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={switchU}>
+              <Image style={styles.icon} resizeMode='contain'
+              source={require('../assets/LekPay-Switch.png')}
+              />
+              <Text style={styles.text}>Switch User</Text>
+            </TouchableOpacity>
+
             </View>
+
             <View style={styles.card}>
-            <TouchableOpacity onPress={onPressCurrentTrip}>
-            <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-CurrentTrip.png')}
-            />
-            <Text style={styles.text}>Current{'\n'}Trip</Text>
-           </TouchableOpacity>
+              <TouchableOpacity onPress={onPressDisplayQr}>
+              <Image style={styles.icon} resizeMode='contain'
+              source={require('../assets/LekPay-CurrentTrip.png')}
+              />
+              <Text style={styles.text}>Display{'\n'}Qr</Text>
+            </TouchableOpacity>
 
-           <TouchableOpacity onPress={onPressSetPass}>
-            <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-StagePass.png')}
-            />
-            <Text style={styles.text}>Passed Stage</Text>
-           </TouchableOpacity>
-
-           <TouchableOpacity onPress={switchU}>
-            <Image style={styles.icon} resizeMode='contain'
-            source={require('../assets/LekPay-Switch.png')}
-            />
-            <Text style={styles.text}>Switch User</Text>
-           </TouchableOpacity>
-
+            
             </View>
+            
+
+            
              </View>
             
           : 
