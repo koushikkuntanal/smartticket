@@ -10,7 +10,7 @@
     ],
     "name": "LekPay",
     "slug": "lekpay",
-    "version": "8.0.0",
+    "version": "9.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -38,7 +38,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lekpay.lekpay",
-      "versionCode": 8
+      "versionCode": 9
     },
     "web": {
       "favicon": "./assets/favicon.png"
