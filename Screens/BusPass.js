@@ -1,9 +1,10 @@
 import { StyleSheet, View ,TextInput, FlatList, Text, TouchableOpacity,ScrollView} from 'react-native'
 import React ,{ useState }from 'react'
-import { BusPassApi, SuggestsFromApi, SuggestsOperatorApi } from './Api';
+import { BusPassApi, ProfileApi, SuggestsFromApi, SuggestsOperatorApi, transactionforUsers } from './Api';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 export default function BusPass({route}){
     const id = route.params.EID;
@@ -15,6 +16,7 @@ export default function BusPass({route}){
   const [fareObj, setFareObj] = useState();
   const [fare,setFare]=useState('');
 const [seTTtype,setSelTTtype] = useState('');
+const navigation = useNavigation();
   const handleQueryChange = (text) => {
     setQueryOperator(text);
     
@@ -106,7 +108,7 @@ setSuggestionsTo([]);
 
 
 const onPressSubmit = async () =>{
-  console.log('Slected All valuse',selectedFrom,selectedTo,selectedOperId,id,Flag);
+  console.log('Slected All valuse',selectedFrom,selectedTo,selectedOperId,id,Flag,id,Flag);
    if(!selectedFrom || !selectedTo || !selectedOperId )
    {
     alert('Please Select Operator ')
@@ -130,11 +132,56 @@ const getFare = (value) =>{
   console.log(value,'valse')
   setFare(fareObj[value]);
 }
+
+const onPressProceed = async ()=>{
+  await ProfileApi({
+    "flag":Flag,
+      "id": id
+  })
+  .then(async resProfile=>{
+    console.log('for Payment screendata',resProfile.data)
+    await transactionforUsers({
+      "Id":id,
+      "RouteName": '',//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+      "StartStage":queryFrom,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+      "EndStage":queryTo,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+      "Fare":fare,
+      "Passengers":'',
+      "Ttype":seTTtype,
+      "Trip":'',
+      "Counter":''
+    }).then(res=>{console.log('res ehrn transactionforUsers is hit ',res.data.data)
+   if(res.data.message == 'OrderID generated'){
+    navigation.navigate('PaymentScreen', {
+      From: queryFrom,
+      To: queryTo,
+      routeName:'',
+      Fare: fare,
+      Date: '',
+      Time: '',
+      //Fare:fare,
+      passengerNumber: '',
+      mail: resProfile.data.Uemail,
+      cphone: resProfile.data.Umobile,
+      upi: resProfile.data.UPI,
+      Orderid: res.data.data.orderid,
+      customerid: resProfile.data.UserId,
+      busNo:'',
+       ttype:'Bus Pass',
+       tripData:''
+    });
+   }
+  })
+    .catch(err=>{console.log('when id api',err)})
+
+})
+  .catch(error=>{console.log(error)})
+}
     return (
         
         <ScrollView style={{backgroundColor:'#ffffff'}}>
             {/* {//select oprator  }              */}
-            {console.log('seled vales',selectedOperId,selectedFrom,selectedTo,seTTtype,fare)}
+            {console.log('seled vales',selectedOperId,selectedFrom,selectedTo,seTTtype,fare,Flag,id)}
             <View style={styles.container}>   
         
         <View >
@@ -317,7 +364,7 @@ const getFare = (value) =>{
        
         </View>
                   </View>}
-                  {fare && <TouchableOpacity style={styles.button} >
+                  {fare && <TouchableOpacity onPress={onPressProceed} style={styles.button} >
         <Text style={styles.buttonText}>Proceed</Text>
         
       </TouchableOpacity>}

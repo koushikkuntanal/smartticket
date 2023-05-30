@@ -9,8 +9,10 @@ import { useNavigation } from "@react-navigation/native";
 import PagerView from 'react-native-pager-view';
 import { btnColor } from "../components/Constants";
 // import QRCode from "react-native-qrcode-svg";
-
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 const PaymentScreen = ({ route }) => {
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
+
   const tripData = route.params.tripData;
   const [data, setData] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
@@ -191,38 +193,15 @@ const PaymentScreen = ({ route }) => {
       
     </View>
 
-    <View style={{padding:10}}>
-      
-         <PagerView
-         style={styles.pager}
-         initialPage={0}
-        >
-         <View key="1" style={{borderRadius:8}}>
-              <Image
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Scenry.png')}
-                  
-                />
-             </View>
-             <View key="2" style={{borderRadius:8}}>
-             <Image 
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Buildings.png')}
-                  
-                />
-             </View> 
-             <View key="3" style={{borderRadius:8}}>
-             <Image 
-                  style={{width:"100%",height:"100%",borderRadius:11}}
-                  resizeMode='stretch'
-                  source={require('../assets/Wow.png')}
-                  
-                />
-             </View>    
-        </PagerView> 
-      </View>
+    <View>
+      <BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+     />
+     </View>
     </View>
    
     

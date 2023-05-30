@@ -88,7 +88,7 @@ export default function Screen_A({route}){
     }
   
     const onClickBusPass = ()=>{
-      navigation.navigate('Bus Pass',{EID:uData.AuthID,flag:uData.Flag})
+      navigation.navigate('Bus Pass',{EID:uData.AuthID ? uData.AuthID : uData[0].UserId,flag:uData.Flag ? uData.Flag:uData[0].Flag})
     }
     
     
