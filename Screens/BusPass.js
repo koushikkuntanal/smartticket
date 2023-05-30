@@ -3,15 +3,18 @@ import React ,{ useState }from 'react'
 import { BusPassApi, SuggestsFromApi, SuggestsOperatorApi } from './Api';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
+import { Picker } from '@react-native-picker/picker';
 
 export default function BusPass({route}){
     const id = route.params.EID;
     const Flag = route.params.flag;
     const [selectedOperId,setOperId] = useState('');
-
+    const [tickettype,setTickettype] = useState([]);
     const [queryOperator, setQueryOperator] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-
+  const [fareObj, setFareObj] = useState();
+  const [fare,setFare]=useState('');
+const [seTTtype,setSelTTtype] = useState('');
   const handleQueryChange = (text) => {
     setQueryOperator(text);
     
@@ -113,16 +116,25 @@ const onPressSubmit = async () =>{
         "stage2":selectedTo
     }).then(res=>{
         console.log('Busapaiiapi',res.data.data);
+        console.log('TicketType', res.data.TicketType);
+        setTickettype(res.data.TicketType);
+        console.log('Fare', res.data.Fare);
+        setFareObj(res.data.Fare);
     }).catch(err=>{
         console.log('busApi',err)
     })
     }
 }
+
+const getFare = (value) =>{
+  console.log(value,'valse')
+  setFare(fareObj[value]);
+}
     return (
         
         <ScrollView style={{backgroundColor:'#ffffff'}}>
             {/* {//select oprator  }              */}
-            {console.log('seled vales',selectedOperId,selectedFrom,selectedTo)}
+            {console.log('seled vales',selectedOperId,selectedFrom,selectedTo,seTTtype,fare)}
             <View style={styles.container}>   
         
         <View >
@@ -220,6 +232,7 @@ const onPressSubmit = async () =>{
             placeholder="Type here..."
             />
         </View>
+       
         </View>
         
       <ScrollView
@@ -237,13 +250,77 @@ const onPressSubmit = async () =>{
       <Text style={styles.suggestionText}>{item.StageName}</Text>
     </TouchableOpacity>
   ))}
+
+{/* {tickettype.length>0 && tickettype.map((item, index) => (
+   <View key={index.toString()} style={styles.inputContainer}>
+     <TouchableOpacity
+      key={index.toString()}
+      style={styles.suggestionItem}
+      onPress={() => handleSuggestionToPress(item.TTname,item.TTshortname)
+    
+    }
+    >
+      <Text style={styles.suggestionText}>{item.TTname}</Text>
+    </TouchableOpacity>
+   </View>
+  )
+  )} */}
+
+
 </ScrollView>
 
       </View>
-      <TouchableOpacity onPress={onPressSubmit} style={styles.button} >
-        <Text style={styles.buttonText}>Calculate Fare</Text>
+
+     {tickettype.length == 0 && <TouchableOpacity onPress={onPressSubmit} style={styles.button} >
+        <Text style={styles.buttonText}>Submit</Text>
         
-      </TouchableOpacity>
+      </TouchableOpacity>}
+    {tickettype.length>0 && <View style={styles.container}>
+    <View style={styles.labelContainer}>
+            <Text style={styles.labelText}>Ticket Type:</Text>
+        </View>
+      <View style={{borderWidth:1,borderColor: '#DDDDDD',borderRadius:8}}>
+      <Picker
+                
+                selectedValue={seTTtype}
+                onValueChange={ (value ) => {
+                 setSelTTtype(value);
+                  getFare(value);
+                }}
+                mode="dropdown" // Android only
+                style={styles.picker}
+              >
+                {tickettype.length > 0 && tickettype.map((item, index) => {
+                   {
+                    return (
+                    <Picker.Item
+                      style={styles.pickerItem}
+                      key={index}
+                      label={item.TTname}
+                      value={item.TTshortname}
+                    />);
+                  }
+                })
+                  
+                  }
+              </Picker>
+      </View>
+     </View> }
+                 {fare && <View style={[styles.container,{flexDirection:'row',justifyContent:'center'}]}>
+                  <View >
+        <View style={styles.labelContainer}>
+            <Text style={[styles.labelText,{fontSize:18,fontWeight:'normal'}]}>Fare: {'\u20B9'}{fare}</Text>
+        </View>
+        </View>
+        <View >
+       
+       
+        </View>
+                  </View>}
+                  {fare && <TouchableOpacity style={styles.button} >
+        <Text style={styles.buttonText}>Proceed</Text>
+        
+      </TouchableOpacity>}
 
         </ScrollView>
   
@@ -357,5 +434,16 @@ const styles = StyleSheet.create({
       input: {
         fontSize: 16,
         color: '#333333',
+      },
+      picker: {
+        alignSelf: 'center',
+        width: "100%",
+        borderWidth:0.5
+      },
+      pickerItem: {
+        width: 40,
+        // height:40,
+        fontSize: 14,
+        borderWidth:0.5
       },
 });

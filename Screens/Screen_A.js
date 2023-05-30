@@ -187,7 +187,7 @@ export default function Screen_A({route}){
            </TouchableOpacity> 
            
            <TouchableOpacity 
-          //  onPress={onClickBusPass}
+           onPress={onClickBusPass}
            >
             <Image style={styles.icon} resizeMode='contain'
             source={require('../assets/LekPay-BusPass.png')}
