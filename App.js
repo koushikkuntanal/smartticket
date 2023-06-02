@@ -720,6 +720,7 @@ function StackNavigator (data) {
      options={{
       headerStyle:{backgroundColor:darkPink},
       headerLeft: null ,
+      title:'DashBoard',
       headerRight: () => (
        <View style={{flexDirection:'row'}}>
         <MaterialCommunityIcons
@@ -739,7 +740,7 @@ function StackNavigator (data) {
     
      />
 
-     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Cash Handler' component={CashHandler}/>
+     <Stack.Screen options={{headerStyle:{backgroundColor:darkPink},title:'Cash Collection'}} name='Cash Handler' component={CashHandler}/>
       
      <Stack.Screen options={{headerStyle:{backgroundColor:darkPink}}} name='Check Tickets' component={CheckTickets}/> 
      

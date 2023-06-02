@@ -7,7 +7,7 @@ const DisplayQR = ({route})=>{
    const id = route.params.id;
    const asset = route.params.asset;
    const qrData = asset;
-    return (
+    return asset ? (
       <View style={styles.body}>
          <View style={styles.container}>
             <Text style={styles.operatorText}>Conductor ID: {id}</Text>
@@ -19,7 +19,9 @@ const DisplayQR = ({route})=>{
       {qrData && <QRCode value={qrData} size={200} />}
     </View>
       </View>
-    )
+    ):<View style={styles.body}>
+      <Text>No Asset Mapped</Text>
+    </View>
   
 }
 

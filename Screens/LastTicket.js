@@ -1,11 +1,11 @@
 import React, { useEffect,useState } from "react";
 import { View,Text,StyleSheet,Image} from "react-native";
 import { transactionQrApi } from "./Api";
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 export default function LastTicket({route}){
 
-  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
+  // const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
     const historyData = route.params.historyData;
     // const RevhistoryData = ([...(historyData)].reverse());
@@ -99,13 +99,13 @@ export default function LastTicket({route}){
     </View> 
 
     <View>
-      <BannerAd
+      {/* <BannerAd
       unitId={adUnitId}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
       }}
-     />
+     /> */}
      </View>
      </View>
 

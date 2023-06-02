@@ -174,7 +174,7 @@ const SetPassStage = ({route}) => {
         ])
         // ALalert('pressed Pass Stage');
     }
-  return (
+  return revData ? (
     <View style={styles.body}>
         {/* {console.log('csd',EmpData)} */}
         {/* {console.log('revDta',revData)} */}
@@ -257,7 +257,9 @@ const SetPassStage = ({route}) => {
             Press={()=>onPressPassStage(assetId)}
           />}
     </View>
-  )
+  ):<View style={styles.body}>
+    <Text>Asset Not Mapped!!</Text>
+  </View>
 }
 const styles = StyleSheet.create({
     body: {

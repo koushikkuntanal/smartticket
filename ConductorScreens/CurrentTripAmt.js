@@ -71,7 +71,7 @@ const CurrentTripAmt =({route}) =>{
     })();
     setLoading(false);
   },[]);
-    return(
+    return assetRouteNameFare.length!=0 ? (
         <View style={styles.body}>
            {loading ? <Image source={require('../assets/loading.gif')} /> : null}
          { console.log('AssetRouteName',assetRouteNameFare)}
@@ -104,7 +104,9 @@ const CurrentTripAmt =({route}) =>{
 
 
         </View>
-    );
+    ):   <View style={styles.body}>
+      <Text>No Current Trip Available</Text>
+    </View>
 }
 
 const styles = StyleSheet.create({

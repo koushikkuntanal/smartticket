@@ -9,7 +9,7 @@ import PagerView from 'react-native-pager-view';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
 import { getAds, TransactionHistory, TransactionLastTicket } from './Api';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { Video } from 'expo-av';
 
 
@@ -24,7 +24,7 @@ export default function Screen_A({route}){
    let currentPage =  0;
    const [image,setImage] = useState(route.params.imgStr);
 
-   const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
+  //  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
 
     const onPressHandler = () => {
        navigation.navigate('Login');

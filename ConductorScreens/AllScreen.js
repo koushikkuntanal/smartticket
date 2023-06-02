@@ -286,7 +286,7 @@ const onPressDisplayQr = async ()=>{
             <View style={styles.card}>
               <TouchableOpacity onPress={onPressDisplayQr}>
               <Image style={styles.icon} resizeMode='contain'
-              source={require('../assets/LekPay-CurrentTrip.png')}
+              source={require('../assets/LekPay-DisplayQR.png')}
               />
               <Text style={styles.text}>Display{'\n'}Qr</Text>
             </TouchableOpacity>

@@ -13,6 +13,10 @@ import Btn from "../components/Btn";
 import mime from "mime";
 import axios from "axios";
 import moment from "moment";
+import * as DocumentPicker from 'expo-document-picker';
+
+
+
 
 let numreg = /^[0-9]+$/;
 const EditProfile =({route}) =>{
@@ -58,7 +62,7 @@ const EditProfile =({route}) =>{
           await ProfilePic({
             "UserId":data.UserId
           }).then(res=>{
-            console.log('pro data',res.data);
+            console.log('pro data',res.data.length);
             setImage(`data:image/jpeg;base64,${res.data}`);
           }).catch(err=>{
             console.log('err pro sata',err)
@@ -191,8 +195,94 @@ const EditProfile =({route}) =>{
         ToastAndroid.show('Profile pic removed',ToastAndroid.LONG)
       
       }
-          
+         
+      // const handleFileUpload = async () => {
+      //   try {
+      //     const file = await DocumentPicker.getDocumentAsync({
+      //       type: 'application/pdf',
+      //     });
+      
+      //     if (file.type === 'success') {
+      //       const fileInfo = await FileSystem.getInfoAsync(file.uri);
+      //       const formData = new FormData();
+      //       formData.append('file', {
+      //         uri: file.uri,
+      //         type: 'application/pdf',
+      //         name: fileInfo.uri.split('/').pop(),
+      //       });
+      
+      //       // Use your preferred method (e.g., fetch) to upload the file to a server
+      //       // Replace 'YOUR_UPLOAD_ENDPOINT' with the actual endpoint URL
+      //       const response = await fetch('https://lekpay.com/doc/upload', {
+      //         method: 'POST',
+      //         body: formData,
+      //         headers: {
+      //           'Content-Type': 'multipart/form-data',
+      //         },
+      //       });
+            
+      //       // Handle the response accordingly
+      //       console.log('File uploaded successfully',response);
+      //     } else {
+      //       console.log('File selection canceled');
+      //     }
+      //   } catch (error) {
+      //     console.error('Error occurred during file upload', error);
+      //   }
+      // };
 
+     
+      const handleDocumentUpload = async () => {
+        
+          // const result = await DocumentPicker.pick({
+          //   type: [DocumentPicker.types.doc, DocumentPicker.types.docx],
+          // });
+
+          try{const result = await DocumentPicker.getDocumentAsync({
+            type:'application/pdf',
+          });
+
+
+
+          if (result) {
+            // console.log('res',result)
+            const formData = new FormData();
+            formData.append('file', {
+              uri:result.uri,
+              type:'pdf',
+              name:data.UserId,
+            });
+            console.log('formData',formData)
+            
+            //  const res = await fetch('https://lekpay.com/doc/upload', {
+            //   method: 'POST',
+            //   body: formData,
+            //   headers: {
+            //     'Content-Type': 'multipart/form-data',
+            //   },
+            // });
+           try{ 
+            console.log('fromayuasb',formData)
+            const res = await axios.post('https://lekpay.com/doc/upload',formData,{
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+          });
+      console.log('res',res,formData)
+    }catch(err){
+        console.log('err in api call',err)
+      }
+            // Handle the response accordingly
+          
+          } else {
+            console.log('File selection canceled');
+          }}catch(error){
+            console.log('err ',error)
+          }
+        
+      };
+      
+      
       const onPressSave = async()=>{
         setLoading(true);
        if(image == '')
@@ -439,6 +529,21 @@ const EditProfile =({route}) =>{
             />
             
             </View>
+          
+
+            <View style={styles.container}>
+            <Text style={styles.text}>Document</Text>   
+            
+          
+
+            <Btn
+            textColor="white"
+            bgColor={btnColor}
+            btnLabel="Upload PDF"
+            Press={handleDocumentUpload}
+            />
+            </View>
+
              
             </View>
             

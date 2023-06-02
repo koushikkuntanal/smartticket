@@ -11,6 +11,7 @@ import Btn from "../components/Btn";
 import { ProfileApi, ProfilePic } from "../Screens/Api";
 import mime from "mime";
 import axios from "axios";
+import moment from "moment";
 
 
 const LekpayProfile=({route}) =>{
@@ -200,7 +201,8 @@ const removeProfile = ()=>{
             <Field width="100%"
              editable={false}
          placeholder="DOB" 
-         value={`: ${empData.EmpDOB}`}
+        //  value={`: ${empData.EmpDOB}`}
+        value={`:${moment(empData.EmpDOB).format("DD-MM-YYYY")}`}
        // onChangeText={(value)=>setNumber(value)}
             />
             </View>

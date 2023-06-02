@@ -176,7 +176,7 @@ const IssueTickets = ({route}) =>{
     }).catch(err => { console.log('err when get fare is hit', err) })
     setLoading(false);
   }
-  return (
+  return revData ? (
     
     <View style={styles.body}>
     {console.log('idxx',actualIndex)}
@@ -376,14 +376,18 @@ const IssueTickets = ({route}) =>{
   </View>
   //  <View>{console.log('array final',stages)}<Text>Hello</Text></View>
 
-);
+):<View style={styles.body}>
+<Text>Asset not Mapped!!</Text>
+</View>
 }
+
+
 const styles = StyleSheet.create({
 body: {
   flex: 1,
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: '#F9E5F3'
+  backgroundColor: '#ffffff'
 },
 parent: {
   paddingBottom: 25,

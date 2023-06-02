@@ -1,5 +1,5 @@
 import { StyleSheet, View ,TextInput, FlatList, Text, TouchableOpacity,ScrollView} from 'react-native'
-import React ,{ useState }from 'react'
+import React ,{ useEffect, useState }from 'react'
 import { BusPassApi, ProfileApi, SuggestsFromApi, SuggestsOperatorApi, transactionforUsers } from './Api';
 import Btn from '../components/Btn';
 import { btnColor } from '../components/Constants';
@@ -17,6 +17,10 @@ export default function BusPass({route}){
   const [fare,setFare]=useState('');
 const [seTTtype,setSelTTtype] = useState('');
 const navigation = useNavigation();
+
+useEffect(()=>{
+setSelTTtype('Select Ticket')
+},[])
   const handleQueryChange = (text) => {
     setQueryOperator(text);
     
@@ -76,7 +80,7 @@ const handleSuggestionFromPress = (suggestionFrom,FromId) => {
 
 
 const [selectedTo,setTo] = useState('');
-
+const [rId,setRid]=useState('');
 const [queryTo, setQueryTo] = useState('');
 const [suggestionsTo, setSuggestionsTo] = useState([]);
 
@@ -118,6 +122,7 @@ const onPressSubmit = async () =>{
         "stage2":selectedTo
     }).then(res=>{
         console.log('Busapaiiapi',res.data.data);
+        setRid(res.data.data);
         console.log('TicketType', res.data.TicketType);
         setTickettype(res.data.TicketType);
         console.log('Fare', res.data.Fare);
@@ -142,9 +147,9 @@ const onPressProceed = async ()=>{
     console.log('for Payment screendata',resProfile.data)
     await transactionforUsers({
       "Id":id,
-      "RouteName": '',//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
-      "StartStage":queryFrom,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
-      "EndStage":queryTo,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+      "RouteName": rId,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+      "StartStage":selectedFrom,//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+      "EndStage":selectedTo,//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
       "Fare":fare,
       "Passengers":'',
       "Ttype":seTTtype,
@@ -155,7 +160,7 @@ const onPressProceed = async ()=>{
     navigation.navigate('PaymentScreen', {
       From: queryFrom,
       To: queryTo,
-      routeName:'',
+      routeName:resProfile.data.data,
       Fare: fare,
       Date: '',
       Time: '',
@@ -167,7 +172,7 @@ const onPressProceed = async ()=>{
       Orderid: res.data.data.orderid,
       customerid: resProfile.data.UserId,
       busNo:'',
-       ttype:'Bus Pass',
+       ttype:seTTtype,
        tripData:''
     });
    }
@@ -328,29 +333,39 @@ const onPressProceed = async ()=>{
         </View>
       <View style={{borderWidth:1,borderColor: '#DDDDDD',borderRadius:8}}>
       <Picker
-                
-                selectedValue={seTTtype}
-                onValueChange={ (value ) => {
-                 setSelTTtype(value);
-                  getFare(value);
-                }}
-                mode="dropdown" // Android only
-                style={styles.picker}
-              >
-                {tickettype.length > 0 && tickettype.map((item, index) => {
-                   {
-                    return (
-                    <Picker.Item
-                      style={styles.pickerItem}
-                      key={index}
-                      label={item.TTname}
-                      value={item.TTshortname}
-                    />);
-                  }
-                })
-                  
-                  }
-              </Picker>
+  selectedValue={seTTtype}
+  onValueChange={(value) => {
+    setSelTTtype(value);
+    getFare(value);
+  }}
+  onAccessibilityTap={(value) => {
+    setSelTTtype(value);
+    getFare(value);
+  }}
+  mode="dropdown" // Android only
+  style={styles.picker}
+>
+  {/* Default "Select Ticket" option */}
+  <Picker.Item
+    style={styles.pickerItem}
+    label="Select Ticket"
+    value="" // Set the value as empty string or appropriate value for default option
+  />
+
+  {tickettype.length > 0 &&
+    tickettype.map((item, index) => {
+      if (item.Flag === 'P') {
+        return (
+          <Picker.Item
+            style={styles.pickerItem}
+            key={index}
+            label={item.TTname}
+            value={item.TTshortname}
+          />
+        );
+      }
+    })}
+</Picker>
       </View>
      </View> }
                  {fare && <View style={[styles.container,{flexDirection:'row',justifyContent:'center'}]}>

@@ -434,7 +434,7 @@ const SourceDestination = ({ route }) => {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <Text style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>Ticket Type</Text>
-            
+            {console.log('fald check',TicketTypeData)}
             {/* <View style={styles.input}>
            <Picker
            selectedValue={SelectTicket}
@@ -466,31 +466,35 @@ const SourceDestination = ({ route }) => {
            </Picker>
            </View> */}
            <View style={styles.input}>
-              <Picker
-                
-                selectedValue={SelectTicket}
-                onValueChange={ (value ) => {
-                  setSelectTicket(value);
-                  getFareBoth(from, to,value)
-                  
-                }}
-                mode="dropdown" // Android only
-                style={styles.picker}
-              >
-                { TicketTypeData.map((item, index) => {
-                   {
-                    return (
-                    <Picker.Item
-                      style={styles.pickerItem}
-                      key={index}
-                      label={item.ttname}
-                      value={item.ttshortname}
-                    />);
-                  }
-                })
-                  
-                  }
-              </Picker>
+           <Picker
+  selectedValue={SelectTicket}
+  onValueChange={(value) => {
+    setSelectTicket(value);
+    getFareBoth(from, to, value);
+  }}
+  mode="dropdown" // Android only
+  style={styles.picker}
+>
+  {/* Default "Select Ticket" option */}
+  <Picker.Item
+    style={styles.pickerItem}
+    label="Select Ticket"
+    value="" // Set the value as empty string or appropriate value for default option
+  />
+
+  {TicketTypeData.map((item, index) => {
+    if (item.flag === 'T') {
+      return (
+        <Picker.Item
+          style={styles.pickerItem}
+          key={index}
+          label={item.ttname}
+          value={item.ttshortname}
+        />
+      );
+    }
+  })}
+</Picker>
             </View>
            </View>
            

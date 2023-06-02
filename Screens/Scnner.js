@@ -5,11 +5,11 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Linking from 'expo-linking';
 import { useNavigation } from "@react-navigation/native";
 import { getAssetIdApiForEmp, getRouteIdApi, getStagesIDApi, LastTickCountApi, LastTicketCountUpdate, ReEnableTicket, transactionforUsers, TransactionHistory, TransactionLastTicket, UserStageIdApi } from "./Api";
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 const Scnner = ({route}) =>{
 
-  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
+  // const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-9003278618989837/9736516844';
   const forEmaildata = route.params.data;
 
   const height = 800;
@@ -585,8 +585,446 @@ const Scnner = ({route}) =>{
                               navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
                             }
                           }
+                          //                          For Weekly pass     
+                          else if(histobj.ttype == 'WP'){
+                            // alert('tic type is not st or RT')
+                            console.log('tic type is not st or RT or DP it is Wp')
+                            if(res1.data.RouteID == res.data.RouteName)
+                            {
+                              
+                              await UserStageIdApi({
+                                "oid":histobj.orderid
+                              }).then(
+                                async responseOfUserStageIdApi=>{console.log('res when oid is hit to get from stage od Auth in DP',responseOfUserStageIdApi.data)
+                                console.log('Authathauth')
+
+                                  await getRouteIdApi({
+                                    "AssetID": resAsset.data.AstId
+                                  }).then(async resWhenPasswedStageIsGot=>{
+                                    console.log('resWhenPasswedStageIsGot',resWhenPasswedStageIsGot.data)
+                                        await getStagesIDApi({
+                                          "RouteID": resWhenPasswedStageIsGot.data.RouteID 
+                              
+                                        }).then(async resFirstStage=>{
+                                          
+                                            
+                                           
+                                            console.log('stages got ',resFirstStage.data.data);
+                                            let myArray;
+                                            if(resWhenPasswedStageIsGot.data.revRoute == 'T' ) 
+                                            {
+                                             myArray = (resFirstStage.data.data.reverse());
+                                            } else myArray = resFirstStage.data.data;
+                                            console.log('MyArray',myArray);
+                                            
+                                            console.log('Passes Stage of Bus = ', myArray[resWhenPasswedStageIsGot.data.idx].StageID )
+                                            if(myArray[resWhenPasswedStageIsGot.data.idx].StageID == responseOfUserStageIdApi.data.EndStage || myArray[resWhenPasswedStageIsGot.data.idx].StageID == responseOfUserStageIdApi.data.StartStage )
+                                            {
+                                              console.log('Valid bec passed stage == use Start in tik satrt or end stage and so it is ebus')
+                                              let datestamp;
+                                              const now = new Date();
+                                              var dd = now.getDate();
+                                              var mm = now.getMonth() + 1;
+                                              var yyyy = now.getFullYear();
+                                              if (dd < 10) {
+                                                dd = '0' + dd;
+                                              }
+                                              if (mm < 10) {
+                                                mm = '0' + mm;
+                                              }
+                                              datestamp = yyyy + '-' + mm + '-' + dd;
+                                              
+                                              console.log('for ticket draw', datestamp, 'ticket time', histobj.time.slice(0, 10));
+                                              
+                                              const ticketDate = new Date(histobj.time.slice(0, 10));
+                                              const dateDiff = Math.ceil((now - ticketDate) / (1000 * 60 * 60 * 24));
+                                              
+                                        
+                                                console.log('for tic ckeh dtaw',datestamp,'tic time',histobj.time.slice(0,10));
+                                                if (dateDiff <= 7)
+                                              { 
+                                                Alert.alert('Last Ticket Available','Would you like to Re-Enable ?',[
+                                                  {
+                                                    text: 'Cancel',
+                                                    style: 'cancel',
+                                                  },
+                                                  {
+                                                    text: 'OK',
+                                                    onPress: async () => {
+                                                      navigation.navigate('LastTicket',{historyData:historyData});
+
+                                                      await transactionforUsers({
+                                                        "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+                                                        "RouteName": resWhenPasswedStageIsGot.data.RouteID,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+                                                        "StartStage":'',//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+                                                        "EndStage":'',//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+                                                        "Fare":0,
+                                                        "Passengers":0,
+                                                        "Ttype":'',
+                                                        "Trip":resWhenPasswedStageIsGot.data.Trip,
+                                                        "Counter":''
+                                                      }).then(async res=>{
+                                                        console.log(res.data,'res when transactionforUsers','data sendinf to renablre,',res.data.data.orderid,historyData.Tdata)
+                                                        
+                                                      await ReEnableTicket({
+                                                        "oid":res.data.data.orderid,
+                                                            "tdata":historyData.Tdata
+                                                      }).then(res=>{
+                                                        console.log(res.data)
+                                                      }).catch(err=>{console.log(err)})
+                                                      }).catch(err=>{console.log(err)})
+
+                                                     
+                                                    },
+                                                  },
+                                                ],
+                                                )
+                                             
+                                              }
+                                          else{
+                                            console.log('time of ticket expired')
+                                            navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                          }
+                                              console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
+
+                                            }
+                                            else{
+                                              let stagesInbetween;
+                                              console.log('Not Valid bec passed stage != use Start in DP S check for Inbetween stages')
+                                              console.log('start and end stages',responseOfUserStageIdApi.data.StartStage,responseOfUserStageIdApi.data.EndStage)
+                                               if(resWhenPasswedStageIsGot.data.revRoute == 'T') 
+                                             {
+                                              console.log('start',responseOfUserStageIdApi.data.StartStage,' End',responseOfUserStageIdApi.data.EndStage);
+                                               stagesInbetween = myArray.filter(str => str.StageID.localeCompare(responseOfUserStageIdApi.data.EndStage)>0 && str.StageID.localeCompare(responseOfUserStageIdApi.data.StartStage)<0) ;
+                                             }
+                                             else {
+                                              console.log('start',responseOfUserStageIdApi.data.StartStage,' End',responseOfUserStageIdApi.data.EndStage);
+                                              stagesInbetween = myArray.filter(str => str.StageID.localeCompare(responseOfUserStageIdApi.data.EndStage)>0 && str.StageID.localeCompare(responseOfUserStageIdApi.data.StartStage)<0);
+                                             }
+                                             
+                                              console.log('stagesInbetween',stagesInbetween);
+                                              if(stagesInbetween.length == 0){
+                                                console.log('no stages in etween got to buy');
+                                                console.log('go to byu when stagesInbetween.length == 0)')
+                                                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                              }
+                                              else{
+                                                let approve=false;
+                                                for(let i = 0;i<=stagesInbetween.length-1;i++){
+                                                  if(myArray[resWhenPasswedStageIsGot.data.idx].StageID == stagesInbetween[i].StageID)
+                                                  {
+                                                    approve=!approve;
+                                                    // console.log('user is in berween stags so arropve and go to last ticket')
+                                                    break;
+                                                  }
+                                                }
+                                                console.log('approve?',approve);
+                                                if(approve == true){
+                                                  let datestamp;
+                                                  const now = new Date();
+                                                  var  dd =now.getDate();
+                                                var mm =now.getMonth()+1;
+                                                var yyyy = now.getFullYear();
+                                                if(dd<10){
+                                                  dd='0'+dd;
+                                                }
+                                                if(mm<10){
+                                                  mm='0'+mm;
+                                                }
+                                                datestamp= yyyy+'-'+mm+'-'+dd;
+                                            
+                                                    console.log('for tic ckeh dtaw',datestamp,'tic time',histobj.time.slice(0,10));
+                                                if(datestamp==histobj.time.slice(0,10))
+                                                {
+
+                                                  console.log('Approved send to last tcket');
+                                                 
+                                                  Alert.alert('Last Ticket Available','Would you like to Re-Enable ?',[
+                                                    {
+                                                      text: 'Cancel',
+                                                      style: 'cancel',
+                                                    },
+                                                    { 
+                                                      text: 'OK',
+                                                      onPress: async () => {
+                                                        {navigation.navigate('LastTicket',{historyData:historyData});}
+                                                        await transactionforUsers({
+                                                          "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+                                                          "RouteName": resWhenPasswedStageIsGot.data.RouteID,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+                                                          "StartStage":'',//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+                                                          "EndStage":'',//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+                                                          "Fare":0,
+                                                          "Passengers":0,
+                                                          "Ttype":'',
+                                                          "Trip":resWhenPasswedStageIsGot.data.Trip,
+                                                          "Counter":''
+                                                        }).then(async res=>{console.log(res.data)
+                                                          console.log(res.data,'res when transactionforUsers','data sendinf to renablre,',res.data.data.orderid,historyData.Tdata)
+                                                          await ReEnableTicket({
+                                                            "oid":res.data.data.orderid,
+                                                            "tdata":historyData.Tdata
+                                                          }).then(res=>{
+                                                            console.log(res.data)
+                                                          }).catch(err=>{console.log(err)})
+                                                        }).catch(err=>{console.log(err)})
+                                                        
+                                                      },
+                                                    },
+                                                  ],
+                                                  )
+                                                 
+                                                 
+                                              }else{
+                                                console.log('tic time expi' );
+                                                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata}); 
+                                                
+                                              }
+                                                  console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
+                                                }
+                                                else{
+                                                  console.log('not Approved',approve);
+                                                  navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                                }
+                                              }
+                                            }
+                                        })
+                                  }).catch(err=>{
+                                    console.log('resWhenPasswedStageIsGot ERR',err)
+                                  })
+
+                              }).catch(err=>{
+                                console.log('err when user satdge id in AuthID stage passed id',err)
+                              })
+
+                           
+                              
+                              
+                            }
+                            else {
+                              // alert('r id not match')
+                              console.log('navigae when route id mismatch')
+                              navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                            }
+                          }else if(histobj.ttype == 'MP'){
+                            // alert('tic type is not st or RT')
+                            console.log('tic type is not st or RT or DP orwp it is Mp')
+                            if(res1.data.RouteID == res.data.RouteName)
+                            {
+                              
+                              await UserStageIdApi({
+                                "oid":histobj.orderid
+                              }).then(
+                                async responseOfUserStageIdApi=>{console.log('res when oid is hit to get from stage od Auth in DP',responseOfUserStageIdApi.data)
+                                console.log('Authathauth')
+
+                                  await getRouteIdApi({
+                                    "AssetID": resAsset.data.AstId
+                                  }).then(async resWhenPasswedStageIsGot=>{
+                                    console.log('resWhenPasswedStageIsGot',resWhenPasswedStageIsGot.data)
+                                        await getStagesIDApi({
+                                          "RouteID": resWhenPasswedStageIsGot.data.RouteID 
+                              
+                                        }).then(async resFirstStage=>{
+                                          
+                                            
+                                           
+                                            console.log('stages got ',resFirstStage.data.data);
+                                            let myArray;
+                                            if(resWhenPasswedStageIsGot.data.revRoute == 'T' ) 
+                                            {
+                                             myArray = (resFirstStage.data.data.reverse());
+                                            } else myArray = resFirstStage.data.data;
+                                            console.log('MyArray',myArray);
+                                            
+                                            console.log('Passes Stage of Bus = ', myArray[resWhenPasswedStageIsGot.data.idx].StageID )
+                                            if(myArray[resWhenPasswedStageIsGot.data.idx].StageID == responseOfUserStageIdApi.data.EndStage || myArray[resWhenPasswedStageIsGot.data.idx].StageID == responseOfUserStageIdApi.data.StartStage )
+                                            {
+                                              console.log('Valid bec passed stage == use Start in tik satrt or end stage and so it is ebus')
+                                              let datestamp;
+                                                  const now = new Date();
+                                                  var dd = now.getDate();
+                                                  var mm = now.getMonth() + 1;
+                                                  var yyyy = now.getFullYear();
+                                                  if (dd < 10) {
+                                                    dd = '0' + dd;
+                                                  }
+                                                  if (mm < 10) {
+                                                    mm = '0' + mm;
+                                                  }
+                                                  datestamp = yyyy + '-' + mm + '-' + dd;
+
+                                                  console.log('for ticket draw', datestamp, 'ticket time', histobj.time.slice(0, 10));
+
+                                                  const ticketDate = new Date(histobj.time.slice(0, 10));
+                                                  const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()); // Calculate date 1 month ago
+                                                  if (ticketDate >= oneMonthAgo && ticketDate <= now)
+                                              { 
+                                                Alert.alert('Last Ticket Available','Would you like to Re-Enable ?',[
+                                                  {
+                                                    text: 'Cancel',
+                                                    style: 'cancel',
+                                                  },
+                                                  {
+                                                    text: 'OK',
+                                                    onPress: async () => {
+                                                      navigation.navigate('LastTicket',{historyData:historyData});
+
+                                                      await transactionforUsers({
+                                                        "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+                                                        "RouteName": resWhenPasswedStageIsGot.data.RouteID,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+                                                        "StartStage":'',//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+                                                        "EndStage":'',//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+                                                        "Fare":0,
+                                                        "Passengers":0,
+                                                        "Ttype":'',
+                                                        "Trip":resWhenPasswedStageIsGot.data.Trip,
+                                                        "Counter":''
+                                                      }).then(async res=>{
+                                                        console.log(res.data,'res when transactionforUsers','data sendinf to renablre,',res.data.data.orderid,historyData.Tdata)
+                                                        
+                                                      await ReEnableTicket({
+                                                        "oid":res.data.data.orderid,
+                                                            "tdata":historyData.Tdata
+                                                      }).then(res=>{
+                                                        console.log(res.data)
+                                                      }).catch(err=>{console.log(err)})
+                                                      }).catch(err=>{console.log(err)})
+
+                                                     
+                                                    },
+                                                  },
+                                                ],
+                                                )
+                                             
+                                              }
+                                          else{
+                                            console.log('time of ticket expired')
+                                            navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                          }
+                                              console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
+
+                                            }
+                                            else{
+                                              let stagesInbetween;
+                                              console.log('Not Valid bec passed stage != use Start in DP S check for Inbetween stages')
+                                              console.log('start and end stages',responseOfUserStageIdApi.data.StartStage,responseOfUserStageIdApi.data.EndStage)
+                                               if(resWhenPasswedStageIsGot.data.revRoute == 'T') 
+                                             {
+                                              console.log('start',responseOfUserStageIdApi.data.StartStage,' End',responseOfUserStageIdApi.data.EndStage);
+                                               stagesInbetween = myArray.filter(str => str.StageID.localeCompare(responseOfUserStageIdApi.data.EndStage)>0 && str.StageID.localeCompare(responseOfUserStageIdApi.data.StartStage)<0) ;
+                                             }
+                                             else {
+                                              console.log('start',responseOfUserStageIdApi.data.StartStage,' End',responseOfUserStageIdApi.data.EndStage);
+                                              stagesInbetween = myArray.filter(str => str.StageID.localeCompare(responseOfUserStageIdApi.data.EndStage)>0 && str.StageID.localeCompare(responseOfUserStageIdApi.data.StartStage)<0);
+                                             }
+                                             
+                                              console.log('stagesInbetween',stagesInbetween);
+                                              if(stagesInbetween.length == 0){
+                                                console.log('no stages in etween got to buy');
+                                                console.log('go to byu when stagesInbetween.length == 0)')
+                                                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                              }
+                                              else{
+                                                let approve=false;
+                                                for(let i = 0;i<=stagesInbetween.length-1;i++){
+                                                  if(myArray[resWhenPasswedStageIsGot.data.idx].StageID == stagesInbetween[i].StageID)
+                                                  {
+                                                    approve=!approve;
+                                                    // console.log('user is in berween stags so arropve and go to last ticket')
+                                                    break;
+                                                  }
+                                                }
+                                                console.log('approve?',approve);
+                                                if(approve == true){
+                                                  let datestamp;
+                                                  const now = new Date();
+                                                  var  dd =now.getDate();
+                                                var mm =now.getMonth()+1;
+                                                var yyyy = now.getFullYear();
+                                                if(dd<10){
+                                                  dd='0'+dd;
+                                                }
+                                                if(mm<10){
+                                                  mm='0'+mm;
+                                                }
+                                                datestamp= yyyy+'-'+mm+'-'+dd;
+                                            
+                                                    console.log('for tic ckeh dtaw',datestamp,'tic time',histobj.time.slice(0,10));
+                                                if(datestamp==histobj.time.slice(0,10))
+                                                {
+
+                                                  console.log('Approved send to last tcket');
+                                                 
+                                                  Alert.alert('Last Ticket Available','Would you like to Re-Enable ?',[
+                                                    {
+                                                      text: 'Cancel',
+                                                      style: 'cancel',
+                                                    },
+                                                    { 
+                                                      text: 'OK',
+                                                      onPress: async () => {
+                                                        {navigation.navigate('LastTicket',{historyData:historyData});}
+                                                        await transactionforUsers({
+                                                          "Id":forEmaildata.AuthID ? forEmaildata.AuthID : forEmaildata.UserId,
+                                                          "RouteName": resWhenPasswedStageIsGot.data.RouteID,//(revData == 'F')  ? (stages[0].StageName + '-' + stages[stages.length - 1].StageName) : (reversedStages[0].StageName + '-' + reversedStages[reversedStages.length - 1].StageName),
+                                                          "StartStage":'',//(revData == 'F')  ? stages[fromIndex].StageName : reversedStages[fromIndex].StageName,
+                                                          "EndStage":'',//(revData == 'F')  ? stages[1+fromIndex+toIndex].StageName : reversedStages[1+fromIndex+toIndex].StageName ,
+                                                          "Fare":0,
+                                                          "Passengers":0,
+                                                          "Ttype":'',
+                                                          "Trip":resWhenPasswedStageIsGot.data.Trip,
+                                                          "Counter":''
+                                                        }).then(async res=>{console.log(res.data)
+                                                          console.log(res.data,'res when transactionforUsers','data sendinf to renablre,',res.data.data.orderid,historyData.Tdata)
+                                                          await ReEnableTicket({
+                                                            "oid":res.data.data.orderid,
+                                                            "tdata":historyData.Tdata
+                                                          }).then(res=>{
+                                                            console.log(res.data)
+                                                          }).catch(err=>{console.log(err)})
+                                                        }).catch(err=>{console.log(err)})
+                                                        
+                                                      },
+                                                    },
+                                                  ],
+                                                  )
+                                                 
+                                                 
+                                              }else{
+                                                console.log('tic time expi' );
+                                                navigation.navigate('Source Destination',{data:data,emailData:forEmaildata}); 
+                                                
+                                              }
+                                                  console.log(`workg because ${res1.data.RouteID} == ${res.data.RouteName}` )
+                                                }
+                                                else{
+                                                  console.log('not Approved',approve);
+                                                  navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                                                }
+                                              }
+                                            }
+                                        })
+                                  }).catch(err=>{
+                                    console.log('resWhenPasswedStageIsGot ERR',err)
+                                  })
+
+                              }).catch(err=>{
+                                console.log('err when user satdge id in AuthID stage passed id',err)
+                              })
+
+                           
+                              
+                              
+                            }
+                            else {
+                              // alert('r id not match')
+                              console.log('navigae when route id mismatch')
+                              navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
+                            }
+                          }
                           else{
-                            alert('t type is not st rt or DP')
+                            //alert('t type is not st rt or DP or Wp orMp')
+                            navigation.navigate('Source Destination',{data:data,emailData:forEmaildata});
                           }
 
                           }
@@ -629,13 +1067,13 @@ const Scnner = ({route}) =>{
      
           
            
-          <BannerAd
+          {/* <BannerAd
       unitId={adUnitId}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
       }}
-     />
+     /> */}
 
             
             

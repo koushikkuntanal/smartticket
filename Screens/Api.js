@@ -498,3 +498,12 @@ export const BusPassApi = async (data) => { //used in dashboard to display ads s
   });
   return res;
 }
+
+export const DocumentsforUsers = async (data) => {
+  const res = await axios({
+    method:'post',
+    url:'https://lekpay.com/doc/upload',
+    data:data
+  })
+  return res;
+}
